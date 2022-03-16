@@ -15,7 +15,7 @@ var jsonWrite = function(res, ret) {
       msg: '操作失败'
     });
   } else {
-    console.log("数据返回-> " + ret);
+    console.log(ret);
     res.json(ret);
   }
 };
