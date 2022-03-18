@@ -77,41 +77,42 @@ import {mapMutations} from 'vuex'
     methods: {
       ...mapMutations('loginModule',['setUser']),
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let { username,password} = this.loginForm;
-            //请求登录接口------------- 
-            this.$api.getLogin({
-              username,password
-            }).then(res=>{
-              console.log('-----',res.data);
-              if(res.data.status===200){
-                console.log(jwt(res.data.data));
-                //登录成功后：1. 存储登录信息  2. 跳转网页 3. 顶部区域显示用户信息  4. 持久化
-                let obj ={
-                  user:jwt(res.data.data).username,
-                  token:res.data.data
-                }
-                this.setUser(obj)
-                //存储本地
-                localStorage.setItem('user',JSON.stringify(obj))
-                //跳转
-                this.$router.push('/')
-                // this.info=''
+        this.$router.push('/home')
+        // this.$refs[formName].validate((valid) => {
+        //   if (valid) {
+        //     let { username,password} = this.loginForm;
+        //     //请求登录接口------------- 
+        //     this.$api.getLogin({
+        //       username,password
+        //     }).then(res=>{
+        //       console.log('-----',res.data);
+        //       if(res.data.status===200){
+        //         console.log(jwt(res.data.data));
+        //         //登录成功后：1. 存储登录信息  2. 跳转网页 3. 顶部区域显示用户信息  4. 持久化
+        //         let obj ={
+        //           user:jwt(res.data.data).username,
+        //           token:res.data.data
+        //         }
+        //         this.setUser(obj)
+        //         //存储本地
+        //         localStorage.setItem('user',JSON.stringify(obj))
+        //         //跳转
+        //         this.$router.push('/')
+        //         // this.info=''
 
-              }else{
-                //账号或者密码错误
-                // this.info='账号或者密码错误'
-                 this.$message.error('错了哦，这是一条错误消息');
-              }
-            })
+        //       }else{
+        //         //账号或者密码错误
+        //         // this.info='账号或者密码错误'
+        //          this.$message.error('错了哦，这是一条错误消息');
+        //       }
+        //     })
 
 
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+        //   } else {
+        //     console.log('error submit!!');
+        //     return false;
+        //   }
+        // });
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
