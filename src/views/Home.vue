@@ -22,9 +22,30 @@
     <el-container class="main-con">
       <el-header class="index-header">
         <!-- <navcon></navcon> -->
-        <div class="buttonimg">
-          <img class="showimg" :src="isCollapse?imgsq:imgshow" @click="toggle(isCollapse)">
-        </div>
+        <span class="buttonimg">
+          <!-- <img class="showimg" :src="isCollapse?imgsq:imgshow" @click="toggle(isCollapse)" style="cursor: pointer;"> -->
+          <i :class="isCollapse?imgsq:imgshow" @click="toggle(isCollapse)" style="cursor: pointer;"></i>
+        </span>
+        <!-- <el-menu class="topbar"  mode="horizontal" background-color="#334157" text-color="#fff" active-text-color="#fff">
+          <el-submenu index="2" class="submenu">
+            <template slot="title">超级管理员</template>
+            <el-menu-item class="menu-iten" index="2-1">设置</el-menu-item>
+            <el-menu-item @click="content()" index="2-2">个人中心</el-menu-item>
+            <el-menu-item @click="exit()" index="2-3">退出</el-menu-item>
+          </el-submenu>
+        </el-menu> -->
+        <el-dropdown class="el-dropdown" style="float: right;">
+          <div class="el-dropdown-link">
+            <i class="el-icon-s-custom"></i>
+            个人中心
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </div>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-files">我的信息</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-lock">修改密码</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-circle-close" @click="exit()">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-header>
       <el-main clss="index-main">
         <router-view></router-view>
@@ -42,8 +63,8 @@ export default {
   data() {
     return {
       showclass: 'asideshow',
-      imgshow: require('../assets/img/show.png'),
-      imgsq: require('../assets/img/sq.png'),
+      imgshow: 'el-icon-s-unfold',
+      imgsq: 'el-icon-s-fold',
       isCollapse: true
     }
   },
@@ -64,6 +85,29 @@ export default {
         }, 300);
       }
       
+    },
+    exit() {
+      this.$confirm('退出登录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          setTimeout(() => {
+            this.$store.commit('logout', 'false')
+            this.$router.push({ path: '/login' })
+            this.$message({
+              type: 'success',
+              message: '已退出登录!'
+            })
+          }, 1000)
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          })
+        })
     }
   },
   created() {
@@ -89,7 +133,21 @@ export default {
   // }
 }
 </script>
-<style scoped>
+<style land="less" scoped>
+.el-dropdown {
+  display: flex;
+  align-items: center;
+}
+.el-dropdown .el-dropdown-link {
+  height: 60px;
+  width: 110px;
+  float: right;
+  font-size: 16px;
+  line-height: 60px;
+  color: rgb(59, 58, 58);
+  cursor: pointer;
+}
+
 .index-con {
   height: 100%;
   width: 100%;
@@ -105,12 +163,12 @@ export default {
 .asideshow {
   width: 240px !important;
   height: 100%;
-  background-color: #334157;
+  background-color: #151D41;
   margin: 0px;
 }
 .index-header{
-  background-color: #334157;
-  border-left: 2px solid #333;
+  background-color: #fafafa;
+  border-bottom: 1px solid rgb(211, 209, 209);
 } 
 .index-main {
   border-left: 2px solid #333;
@@ -122,6 +180,7 @@ export default {
   float: left;
   display: flex;
   align-items: center;
+  font-size: 30px;
 }
 .buttonimg img{
   align-items: center;

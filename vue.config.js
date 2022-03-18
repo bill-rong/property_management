@@ -5,6 +5,7 @@
  */
  module.exports = {
   assetsDir: 'assets',
+  lintOnSave: false,
   transpileDependencies: true,
    //修改打包路径
   publicPath: process.env.NODE_ENV === 'production'? './': '/',
@@ -12,8 +13,8 @@
   devServer: {
       proxy: {
           '/api': {
-              target: 'http://localhost:3000',//
-              // target:process.env.VUE_APP_BASE_URL,//
+            //   target: 'http://localhost:3000',
+              target: process.env.VUE_APP_SERVER_URL,
               ws: true,
               changeOrigin: true,
               pathRewrite:{//重写路径

@@ -10,9 +10,10 @@
       text-color="#fff"
       :collapse="!isCollapse"
     >
-      <el-menu-item index="/">
-        <i class="el-icon-s-home"></i>
-        <span slot="title">首页</span>
+      <el-menu-item index="/login" style="height:80px; display:flex; align-items:center; justify-content:center;">
+        <img src="../assets/logo.png" height="20px">
+        <!-- <i class="el-icon-s-home" ></i> -->
+        <span slot="title" style="font-size:18px; margin-left:7px;">物业管理系统</span>
       </el-menu-item>
       <el-submenu v-for="(item,index) in menuList" :index="'' + index" :key="index">
         <template slot="title">

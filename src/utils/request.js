@@ -7,7 +7,8 @@ import router from "@/router";
 const TOKEN_PREFIX = 'Bearer '
 // create an axios instance
 const service = axios.create({
-    baseURL: 'http://localhost:3000', // url = base url + request url
+    // baseURL: 'http://localhost:3000',
+    baseURL: process.env.VUE_APP_SERVER_URL,
     timeout: 5000, // request timeout
 });
 

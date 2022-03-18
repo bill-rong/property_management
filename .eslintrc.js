@@ -21,6 +21,5 @@ module.exports = {
     "no-unused-components": 0,
     "no-unused-labels": 0,
     "no-undef": 0,
-    "no-extra-semi": 0
   }
 }

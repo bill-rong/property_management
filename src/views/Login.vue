@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="login-box">
       <div class="logo">
-        <img src="../assets/logo.png" height="120px" alt="">
+        <img src="../assets/logo-303643.png" height="100px" alt="">
       </div>
       <!-- <h3 class="title">登录界面</h3> -->
       <div>{{ info }}</div>
@@ -77,7 +77,7 @@ import {mapMutations} from 'vuex'
     methods: {
       ...mapMutations('loginModule',['setUser']),
       submitForm(formName) {
-        this.$router.push('/home')
+        this.$router.push('/')
         // this.$refs[formName].validate((valid) => {
         //   if (valid) {
         //     let { username,password} = this.loginForm;
@@ -154,8 +154,9 @@ import {mapMutations} from 'vuex'
   margin-left: -60px;
   padding:8px;
   img{
-    border-radius: 50%;
+    // border-radius: 50%;
     background: #fff;
+    margin-top: 10px;
   }
 }
 .demo-ruleForm{

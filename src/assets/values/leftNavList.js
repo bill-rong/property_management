@@ -2,21 +2,16 @@ function menuList() {
     return [
         {
         id: 0,
-        authName: "通讯录",
+        authName: "导航一",
         icon: "el-icon-s-custom",
         children: [
-            {
-            authName: "用户与部门管理",
-            id: 1,
-            path: "department",
-            parentid: 0
-            },
+            { authName: "用户与部门管理", id: 1, path: "department", parentid: 0},
             { authName: "通讯录设置", id: 2, path: "adrbook", parentid: 0 }
         ]
         },
         {
         id: 1,
-        authName: "数据报表",
+        authName: "导航二",
         icon: "el-icon-s-claim",
         children: [
             { authName: "数据概览", id: 1, path: "overview", parentid: 1 },
@@ -25,15 +20,10 @@ function menuList() {
         },
         {
         id: 2,
-        authName: "企业设置",
+        authName: "导航三",
         icon: "el-icon-office-building",
         children: [
-            {
-            authName: "企业信息管理",
-            id: 1,
-            path: "information",
-            parentid: 2
-            },
+            { authName: "企业信息管理", id: 1, path: "information", parentid: 2 },
             { authName: "权限管理", id: 2, path: "authority", parentid: 2 },
             { authName: "团队邀请设置", id: 3, path: "team", parentid: 2 },
             { authName: "安全策略", id: 4, path: "safety", parentid: 2 },
