@@ -41,8 +41,17 @@
 
 <script>
 import jwt from 'jwt-decode'
-import {mapMutations} from 'vuex'
+// import {mapMutations} from 'vuex'
+import bcrypt from 'bcryptjs'
+import { login } from '../api/userApi'
+import { showSuccessMsg, showErrorMsg } from '../utils/msg'
  export default {
+   created() {
+    var salt = bcrypt.genSaltSync(12);    //定义密码加密的计算强度,默认10
+    var hash = bcrypt.hashSync("123", salt);
+    console.log(hash);
+  
+   },
     data() {
       var validateUser = (rule, value, callback) => {
         if (value === '') {
@@ -75,9 +84,17 @@ import {mapMutations} from 'vuex'
       };
     },
     methods: {
-      ...mapMutations('loginModule',['setUser']),
+      // ...mapMutations('loginModule',['setUser']),
       submitForm(formName) {
-        this.$router.push('/')
+        login(this.loginForm).then(res => {
+          console.log("login api success ", res);
+          showSuccessMsg("登录成功！")
+          // this.$router.push('/');
+        }).catch(err => {
+        
+          // showErrorMsg(this, "后端连接异常！"+err.message);
+          // console.error("login api err", err);
+        })
         // this.$refs[formName].validate((valid) => {
         //   if (valid) {
         //     let { username,password} = this.loginForm;

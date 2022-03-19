@@ -9,6 +9,9 @@ app.use(cors())
 //静态文件托管 ----  访问：http:localhost:8989/图片.jpg
 app.use(express.static('upload'))
 
+// const bcrypt = require('bcrypt');
+// app.use(bcrypt())
+
 
 const bodyParser = require('body-parser');
 
@@ -16,7 +19,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 //路由
-const userApi = require('./api/index')
+const userApi = require('./api/user')
+const bcrypt = require('bcryptjs/dist/bcrypt')
 
 app.use('/api/user',userApi)
 

@@ -1,4 +1,4 @@
- export default {
+module.exports =  {
   /**
    * MD5加密
    * @param {*} word 明文密码
@@ -17,8 +17,8 @@
    * @param {*} encryptWord 加密过后的密码
    * @returns true || false
    */
-  decrypt(word, encryptWord) {
+  decrypt(word, encrypted) {
     const bcrypt = require('bcryptjs');
-    return bcrypt.compareSync(word, encryptWord);
+    return bcrypt.compareSync(word, encrypted);
   }
 };

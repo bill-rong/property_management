@@ -1,7 +1,7 @@
 import Vue from "vue";
 
-export function showSuccessMsg(msg, duration = 2000) {
-    Vue.toasted.show(msg, {position: 'top-center', duration: duration, theme: 'outline', type: 'success'})
+export function showSuccessMsg( msg, duration = 2000) {
+    Vue.toasted.show(msg, {position: 'top-center', duration: duration, theme: 'outline', type: 'success'});
 }
 
 export function showInfoMsg(msg, confirmFunc, params) {
@@ -29,5 +29,5 @@ export function showInfoMsg(msg, confirmFunc, params) {
 }
 
 export function showErrorMsg(msg, duration = 2000) {
-    Vue.toasted.show(msg, {position: 'top-center', duration: duration, theme: 'outline', type: 'error'})
+    Vue.toasted.show(msg, {position: 'top-center', duration: duration, theme: 'outline', type: 'error'});
 }

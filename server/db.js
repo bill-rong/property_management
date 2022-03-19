@@ -6,7 +6,7 @@ const DB = {
         port:'3306', 
         user:'root',
         password:'root',
-        database:'test'  // 数据库名
+        database:'property_management'  // 数据库名
     }
 };
 

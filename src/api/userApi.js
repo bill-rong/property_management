@@ -7,3 +7,12 @@ export function getUser() {
         method: 'get',
     })
 }
+
+
+export function login(loginForm) {
+    return request({
+        url: '/api/user/login/',
+        method: 'post',
+        data: loginForm
+    })
+}
