@@ -6,6 +6,7 @@ const sqlRun = require('../DBHelper');
 const $sql = require('../sqlMap');
 const bcryptjs = require('../utils/BcryptJS');
 const bcrypt = require('../utils/BcryptJS');
+const code = require('../utils/Code')
 
 
 
@@ -62,11 +63,17 @@ router.post('/login', (req, res) => {
       // console.log(result[0].password);
       const flag = bcrypt.decrypt(params.password, result[0].password);
       if (flag) {
-        console.log("密码正确");
-      } else{
-        console.log("密码cuowu");
+        jsonWrite(res, {
+          code: code.PASSWORD_CORRECT,
+          msg: "密码正确"
+        });
+      } else {
+        // console.log("密码cuowu");
+        jsonWrite(res, {
+          code: code.PASSWORD_INCORRECT,
+          msg: "密码错误"
+        });
       }
-      jsonWrite(res, result);
     }
   });
 });
