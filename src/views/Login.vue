@@ -45,105 +45,100 @@ import jwt from 'jwt-decode'
 import bcrypt from 'bcryptjs'
 import { login } from '../api/userApi'
 import { showSuccessMsg, showErrorMsg } from '../utils/msg'
+import { setUserInfo } from '../utils/auth'
 
 const mode = require('../../server/utils/Mode')
- export default {
-   created() {
-    var salt = bcrypt.genSaltSync(12);    //定义密码加密的计算强度,默认10
-    var hash = bcrypt.hashSync("123", salt);
-    console.log(hash);
-  
-   },
-    data() {
-      var validateUser = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入账号'));
-        } else {
-          callback();
-        }
-      };
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入密码'));
-        } else {
-          callback();
-        }
-      };
-      return {
-        info:'',
-        loginForm: {
-          username: '',
-          password: '',
-        },
-        rules: {
-          username: [
-            { validator: validateUser, trigger: 'blur' }
-          ],
-          password: [
-            { validator: validatePass, trigger: 'blur' }
-          ],
-        }
-      };
-    },
-    methods: {
-      // ...mapMutations('loginModule',['setUser']),
-      submitForm(formName) {
-        login(this.loginForm).then(res => {
-          // console.log("login api" + res);
-          console.log(res);
-          if (res.data.mode == mode.PASSWORD_CORRECT) {
-            showSuccessMsg("登录成功！");
-            this.$router.push('/');
-          } else if (res.data.mode == mode.PASSWORD_INCORRECT) {
-            showErrorMsg("密码错误！");
-          }
-          
-          
-        }).catch(err => {
-          // showErrorMsg("后端连接异常！"+err.message);
-          console.error("login api err" + err);
-        })
-        // this.$refs[formName].validate((valid) => {
-        //   if (valid) {
-        //     let { username,password} = this.loginForm;
-        //     //请求登录接口------------- 
-        //     this.$api.getLogin({
-        //       username,password
-        //     }).then(res=>{
-        //       console.log('-----',res.data);
-        //       if(res.data.status===200){
-        //         console.log(jwt(res.data.data));
-        //         //登录成功后：1. 存储登录信息  2. 跳转网页 3. 顶部区域显示用户信息  4. 持久化
-        //         let obj ={
-        //           user:jwt(res.data.data).username,
-        //           token:res.data.data
-        //         }
-        //         this.setUser(obj)
-        //         //存储本地
-        //         localStorage.setItem('user',JSON.stringify(obj))
-        //         //跳转
-        //         this.$router.push('/')
-        //         // this.info=''
-
-        //       }else{
-        //         //账号或者密码错误
-        //         // this.info='账号或者密码错误'
-        //          this.$message.error('错了哦，这是一条错误消息');
-        //       }
-        //     })
-
-
-        //   } else {
-        //     console.log('error submit!!');
-        //     return false;
-        //   }
-        // });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+export default {
+  created() { },
+  data() {
+    var validateUser = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入账号'));
+      } else {
+        callback();
       }
+    };
+    var validatePass = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请输入密码'));
+      } else {
+        callback();
+      }
+    };
+    return {
+      info:'',
+      loginForm: {
+        username: '',
+        password: '',
+      },
+      rules: {
+        username: [
+          { validator: validateUser, trigger: 'blur' }
+        ],
+        password: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+      }
+    };
+  },
+  methods: {
+    // ...mapMutations('loginModule',['setUser']),
+    submitForm(formName) {
+      login(this.loginForm).then(res => {
+        // console.log("login api" + res);
+        console.log(res);
+        if (res.data.mode == mode.PASSWORD_CORRECT) {
+          showSuccessMsg("登录成功！");
+          setUserInfo(res.data.data);
+          this.$router.push('/');
+        } else if (res.data.mode == mode.PASSWORD_INCORRECT) {
+          showErrorMsg("密码错误！");
+        }
+      }).catch(err => {
+        // showErrorMsg("后端连接异常！"+err.message);
+        console.error("login api err" + err);
+      })
+      // this.$refs[formName].validate((valid) => {
+      //   if (valid) {
+      //     let { username,password} = this.loginForm;
+      //     //请求登录接口------------- 
+      //     this.$api.getLogin({
+      //       username,password
+      //     }).then(res=>{
+      //       console.log('-----',res.data);
+      //       if(res.data.status===200){
+      //         console.log(jwt(res.data.data));
+      //         //登录成功后：1. 存储登录信息  2. 跳转网页 3. 顶部区域显示用户信息  4. 持久化
+      //         let obj ={
+      //           user:jwt(res.data.data).username,
+      //           token:res.data.data
+      //         }
+      //         this.setUser(obj)
+      //         //存储本地
+      //         localStorage.setItem('user',JSON.stringify(obj))
+      //         //跳转
+      //         this.$router.push('/')
+      //         // this.info=''
+
+      //       }else{
+      //         //账号或者密码错误
+      //         // this.info='账号或者密码错误'
+      //          this.$message.error('错了哦，这是一条错误消息');
+      //       }
+      //     })
+
+
+      //   } else {
+      //     console.log('error submit!!');
+      //     return false;
+      //   }
+      // });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
   }
+}
 </script>
 
 <style lang='less' scoped>

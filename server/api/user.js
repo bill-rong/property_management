@@ -38,13 +38,13 @@ var jsonWrite = function(res, ret) {
 // });
 
 router.get('/getUser', (req, res) => {
-  console.log("请求接口-> /api/user/getUser");
   let sql = $sql.user.select;
   sqlRun(sql, (err, result) => {
     if (err) {
       console.log("失败" + err);
     }
     if (result) {
+      res.status = 401;
       jsonWrite(res, result);
       // res.json(result)
     }
@@ -52,7 +52,6 @@ router.get('/getUser', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-  console.log("请求接口-> /api/user/login", req.body);
   let params = req.body;
   let sql = $sql.user.login;
   sqlRun(sql, params.username, (err, result) => {

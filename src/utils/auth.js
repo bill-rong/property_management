@@ -1,7 +1,7 @@
 import {getLocalData, removeLocalData, setLocalData} from "./cache";
 
-const TOKEN_KEY = 'jwt-token'
-const USER_INFO_KEY = 'user-info'
+const TOKEN_KEY = 'property-jwt-token'
+const USER_INFO_KEY = 'property-user-info'
 
 export function getToken() {
     return getLocalData(TOKEN_KEY)

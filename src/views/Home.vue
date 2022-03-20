@@ -57,6 +57,7 @@
 // 导入组件
 // import navcon from '../components/navcon.vue'
 import leftnav from '../components/leftnav.vue'
+import { getUserInfo } from '../utils/auth'
 
 export default {
   name: 'index',
@@ -112,15 +113,16 @@ export default {
   },
   created() {
     // 监听
-    this.$root.Bus.$on('toggle', value => {
-      if (value) {
-        this.showclass = 'asideshow'
-      } else {
-        setTimeout(() => {
-          this.showclass = 'aside'
-        }, 300)
-      }
-    })
+    // this.$root.Bus.$on('toggle', value => {
+    //   if (value) {
+    //     this.showclass = 'asideshow'
+    //   } else {
+    //     setTimeout(() => {
+    //       this.showclass = 'aside'
+    //     }, 300)
+    //   }
+    // })
+    console.log(getUserInfo());
   },
   beforeUpdate() {},
   // 挂载前状态(里面是操作)

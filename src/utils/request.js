@@ -52,13 +52,14 @@ service.interceptors.request.use(
         // 每次发送请求之前检测都vuex存有token,那么都要放在请求头发送给服务器,没有则不带token
         // Authorization是必须的
         if (getToken()) {
-            config.headers.Authorization = TOKEN_PREFIX + getToken()
+            config.headers.Authorization = getToken()
         }
         return config;
     },
     error => {
         console.log("在request拦截器显示错误：", error.response)
         return Promise.reject(error);
+
     }
 );
 
@@ -102,14 +103,18 @@ service.interceptors.response.use(
         return Promise.reject(new Error(msg))
     },
     error => {
-        console.log('err: ' + error)
+        console.log(error.response.status)
         let {message} = error;
         if (message == "Network Error") {
             message = "后端接口连接异常";
         } else if (message.includes("timeout")) {
             message = "后端接口请求超时";
         } else if (message.includes("Request failed with status code")) {
-            message = "后端接口" + message.substr(message.length - 3) + "异常";
+            if (error.response.status == 401) {
+                message = "您未登录或登录超时！";
+            } else {
+                message = "后端接口" + message.substr(message.length - 3) + "异常";
+            }
         }
         showErrorMsg(message)
         return Promise.reject(error)
