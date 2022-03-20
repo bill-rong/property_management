@@ -45,6 +45,8 @@ import jwt from 'jwt-decode'
 import bcrypt from 'bcryptjs'
 import { login } from '../api/userApi'
 import { showSuccessMsg, showErrorMsg } from '../utils/msg'
+
+const mode = require('../../server/utils/Mode')
  export default {
    created() {
     var salt = bcrypt.genSaltSync(12);    //定义密码加密的计算强度,默认10
@@ -87,13 +89,19 @@ import { showSuccessMsg, showErrorMsg } from '../utils/msg'
       // ...mapMutations('loginModule',['setUser']),
       submitForm(formName) {
         login(this.loginForm).then(res => {
-          console.log("login api success ", res);
-          showSuccessMsg("登录成功！")
-          // this.$router.push('/');
+          // console.log("login api" + res);
+          console.log(res);
+          if (res.data.mode == mode.PASSWORD_CORRECT) {
+            showSuccessMsg("登录成功！");
+            this.$router.push('/');
+          } else if (res.data.mode == mode.PASSWORD_INCORRECT) {
+            showErrorMsg("密码错误！");
+          }
+          
+          
         }).catch(err => {
-        
-          // showErrorMsg(this, "后端连接异常！"+err.message);
-          // console.error("login api err", err);
+          // showErrorMsg("后端连接异常！"+err.message);
+          console.error("login api err" + err);
         })
         // this.$refs[formName].validate((valid) => {
         //   if (valid) {
