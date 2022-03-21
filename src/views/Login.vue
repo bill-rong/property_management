@@ -14,10 +14,10 @@
         label-width="60px"
         class="demo-ruleForm"
       >
-        <el-form-item label="账号" prop="username">
+        <el-form-item label="账号" prop="tel">
           <el-input
             type="text"
-            v-model="loginForm.username"
+            v-model="loginForm.tel"
             autocomplete="off"
           ></el-input>
         </el-form-item>
@@ -68,11 +68,11 @@ export default {
     return {
       info:'',
       loginForm: {
-        username: '',
+        tel: '',
         password: '',
       },
       rules: {
-        username: [
+        tel: [
           { validator: validateUser, trigger: 'blur' }
         ],
         password: [

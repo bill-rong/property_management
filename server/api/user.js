@@ -1,26 +1,15 @@
-// import bcrypt from '../utils/BcryptJS';
-
 const express = require('express');
 const router = express.Router();
 const sqlRun = require('../DBHelper');
 const $sql = require('../sqlMap');
 const bcryptjs = require('../utils/BcryptJS');
 const bcrypt = require('../utils/BcryptJS');
-const mode = require('../utils/Mode')
+const MODE = require('../utils/Mode');
+const jsonWrite = require('../utils/JsonWrite');
 
 
 
-var jsonWrite = function(res, ret) {
-  if(typeof ret === 'undefined') {
-    res.json({
-      code: '1',
-      msg: '操作失败'
-    });
-  } else {
-    console.log(ret);
-    res.json(ret);
-  }
-};
+
 
 // 模板
 // router.post('/router', (req, res) => {
@@ -51,10 +40,16 @@ router.get('/getUser', (req, res) => {
   });
 });
 
+/**
+ * 登录接口
+ * url: /api/user/login
+ * params: {tel, password}
+ * res: {mode, [data,] msg}
+ */
 router.post('/login', (req, res) => {
   let params = req.body;
   let sql = $sql.user.login;
-  sqlRun(sql, params.username, (err, result) => {
+  sqlRun(sql, params.tel, (err, result) => {
     if (err) {
       console.log("失败" + err);
     }
@@ -63,18 +58,16 @@ router.post('/login', (req, res) => {
       const flag = bcrypt.decrypt(params.password, result[0].password);
       if (flag) {
         jsonWrite(res, {
-          mode: mode.PASSWORD_CORRECT,
+          mode: MODE.PASSWORD_CORRECT,
           data: {
             tel: result[0].tel,
             name: result[0].name
           },
           msg: "密码正确"
         });
-        // jsonWrite(res, result);
       } else {
-        // console.log("密码cuowu");
         jsonWrite(res, {
-          mode: mode.PASSWORD_INCORRECT,
+          mode: MODE.PASSWORD_INCORRECT,
           msg: "密码错误"
         });
       }

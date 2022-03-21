@@ -71,7 +71,7 @@ service.interceptors.response.use(
         // 获取响应信息
         const msg = resp.data.msg
         if (code === 200) {
-            return resp
+          return resp
         } else if (code === 401) {
             removeToken()
             removeUserInfo()
@@ -111,7 +111,9 @@ service.interceptors.response.use(
             message = "后端接口请求超时";
         } else if (message.includes("Request failed with status code")) {
             if (error.response.status == 401) {
-                message = "您未登录或登录超时！";
+              message = "登录异常或登录超时";
+            } else if (error.response.status == 401) {
+              message = "还没有登录";
             } else {
                 message = "后端接口" + message.substr(message.length - 3) + "异常";
             }

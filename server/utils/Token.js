@@ -9,7 +9,7 @@ module.exports =  {
    */
   sign(payload) {
     let token = jwt.sign(payload, secret);
-    console.log("token  ", token);
+    console.log("生成token  ", token);
     return token
   },
   /**
