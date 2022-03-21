@@ -47,8 +47,11 @@ app.use(function (req, res, next) {
 });
 
 // 添加接口路由
-const userApi = require('./api/user')
-app.use('/api/user', userApi)
+const user = require('./api/user')
+app.use('/api/user', user)
+
+const admin = require('./api/admin')
+app.use('/api/admin', admin)
 
 
 // 监听3000端口
