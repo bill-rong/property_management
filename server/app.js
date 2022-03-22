@@ -40,7 +40,7 @@ app.use(function (req, res, next) {
       // 没有拿到token 返回错误 
       return res.status(403).send({
           success: false,
-          msg: '没有找到token.'
+          msg: '没有找到token'
       });
     }
   }

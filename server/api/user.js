@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sqlRun = require('../DBHelper');
-const $sql = require('../sqlMap');
+const SQL = require('../sqlMap');
 const bcryptjs = require('../utils/BcryptJS');
 const bcrypt = require('../utils/BcryptJS');
 const MODE = require('../utils/Mode');
@@ -27,7 +27,7 @@ const jsonWrite = require('../utils/JsonWrite');
 // });
 
 router.get('/getUser', (req, res) => {
-  let sql = $sql.user.select;
+  let sql = SQL.user.select;
   sqlRun(sql, (err, result) => {
     if (err) {
       console.log("失败" + err);
@@ -48,7 +48,7 @@ router.get('/getUser', (req, res) => {
  */
 router.post('/login', (req, res) => {
   let params = req.body;
-  let sql = $sql.user.login;
+  let sql = SQL.user.login;
   sqlRun(sql, params.tel, (err, result) => {
     if (err) {
       console.log("失败" + err);

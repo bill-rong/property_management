@@ -1,24 +1,24 @@
 // 数据库连接助手
 const mysql = require('mysql');
 
-const DB = require('./db');
+const DB = require('./DB');
 
 const conn = mysql.createConnection(DB.mysql);
-conn.connect();
 
-
-//封装数据库操作语句 sql语句 参数数组arr  callback成功函数结果
-// function sqlRun(sql, arr, callback) {
-//     conn.query(sql, arr, function (error, result) {
-//         if (error) {
-//             console.log('数据库语句错误');
-//             return;
-//         }
-//         callback(result)
-//     })
-// }
 function sqlRun(sql, arr, callback) {
-    conn.query(sql, arr, callback)
+  conn.connect(err => {
+    if (err) {
+      console.log("数据库连接失败");
+    }
+  });
+  // 执行sql语句
+  conn.query(sql, arr, callback);
+
+  conn.end(err => {
+    if (err) {
+      console.log("关闭数据库连接失败");
+    }
+  });
 }
 
 module.exports = sqlRun

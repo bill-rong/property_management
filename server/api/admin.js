@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const sqlRun = require('../DBHelper');
-const $sql = require('../sqlMap');
+const SQL = require('../sqlMap');
 const bcryptjs = require('../utils/BcryptJS');
 const bcrypt = require('../utils/BcryptJS');
 const MODE = require('../utils/Mode');
@@ -16,7 +16,7 @@ const JWT = require('../utils/Token')
  */
  router.post('/login', (req, res) => {
   let params = req.body;
-  let sql = $sql.user.login;
+  let sql = SQL.admin.login;
   sqlRun(sql, params.tel, (err, result) => {
     if (err) {
       console.log("失败" + err);
