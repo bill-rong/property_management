@@ -51,7 +51,7 @@ import { login } from '../api/userApi'
 import { showSuccessMsg, showErrorMsg } from '../utils/msg'
 import { setUserInfo } from '../utils/auth'
 
-const mode = require('../../server/utils/Mode')
+const MODE = require('../../server/utils/Mode')
 export default {
   created() { },
   data() {
@@ -89,15 +89,15 @@ export default {
   methods: {
     // ...mapMutations('loginModule',['setUser']),
     submitForm(formName) {
-      login(this.loginForm).then(res => {
+      login(this.loginForm, this.radio).then(res => {
         // console.log("login api" + res);
         console.log(res);
         if (res.data.mode == mode.PASSWORD_CORRECT) {
           showSuccessMsg("登录成功！");
           setUserInfo(res.data.data);
           this.$router.push('/');
-        } else if (res.data.mode == mode.PASSWORD_INCORRECT) {
-          showErrorMsg("密码错误！");
+        } else if (res.data.mode == MODE.PASSWORD_INCORRECT || res.data.mode == MODE.LOW_PERMISSION) {
+          showErrorMsg("账号或密码错误！");
         }
       }).catch(err => {
         // showErrorMsg("后端连接异常！"+err.message);

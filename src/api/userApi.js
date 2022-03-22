@@ -8,10 +8,16 @@ export function getUser() {
     })
 }
 
-
-export function login(loginForm) {
+// 登录
+export function login(loginForm, ident) {
+  let url = '';
+  if (ident == '1') {
+    url = '/api/user/login/';
+  } else if (ident == '2') {
+    url = '/api/admin/login/';
+  }
     return request({
-        url: '/api/user/login/',
+        url: url,
         method: 'post',
         data: loginForm
     })

@@ -1,5 +1,11 @@
+// 数据库表名
+var property_management = {
+  resident: "resident",
+  admin: "admin"
+}
+
 // sql语句
-var sqlMap = {
+const sqlMap = {
   user: {
     // 用户登录
     login: "select tel, name, password from resident where tel=?;",
