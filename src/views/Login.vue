@@ -29,6 +29,10 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
+          <el-radio v-model="radio" label="1">住户</el-radio>
+          <el-radio v-model="radio" label="2">物业管理员</el-radio>
+        </el-form-item>
+        <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')"
             >提交</el-button
           >
@@ -66,6 +70,7 @@ export default {
       }
     };
     return {
+      radio: '1',
       info:'',
       loginForm: {
         tel: '',

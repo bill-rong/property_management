@@ -54,15 +54,13 @@ router.post('/login', (req, res) => {
       console.log("失败" + err);
     }
     if (result) {
-      // console.log(result[0].password);
       const flag = bcrypt.decrypt(params.password, result[0].password);
       if (flag) {
+        let data = result[0];
+        data.token = JWT.sign(result[0]);
         jsonWrite(res, {
           mode: MODE.PASSWORD_CORRECT,
-          data: {
-            tel: result[0].tel,
-            name: result[0].name
-          },
+          data: data,
           msg: "密码正确"
         });
       } else {
@@ -71,6 +69,11 @@ router.post('/login', (req, res) => {
           msg: "密码错误"
         });
       }
+    } else {
+      jsonWrite(res, {
+        mode: MODE.USER_NOT_EXIST,
+        msg: "用户不存在"
+      });
     }
   });
 });

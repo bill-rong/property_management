@@ -6,6 +6,7 @@ const bcryptjs = require('../utils/BcryptJS');
 const bcrypt = require('../utils/BcryptJS');
 const MODE = require('../utils/Mode');
 const jsonWrite = require('../utils/JsonWrite');
+const JWT = require('../utils/Token')
 
 /**
  * 登录接口
@@ -24,12 +25,11 @@ const jsonWrite = require('../utils/JsonWrite');
       // console.log(result[0].password);
       const flag = bcrypt.decrypt(params.password, result[0].password);
       if (flag) {
+        let data = result[0];
+        data.token = JWT.sign(result[0]);
         jsonWrite(res, {
           mode: MODE.PASSWORD_CORRECT,
-          data: {
-            tel: result[0].tel,
-            name: result[0].name
-          },
+          data: data,
           msg: "密码正确"
         });
       } else {
@@ -38,6 +38,11 @@ const jsonWrite = require('../utils/JsonWrite');
           msg: "密码错误"
         });
       }
+    } else {
+      jsonWrite(res, {
+        mode: MODE.USER_NOT_EXIST,
+        msg: "用户不存在"
+      });
     }
   });
 });
