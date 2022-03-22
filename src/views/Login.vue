@@ -33,7 +33,7 @@
           <el-radio v-model="radio" label="2">物业管理员</el-radio>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')"
+          <el-button type="primary" @click="submitForm()"
             >提交</el-button
           >
           <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -44,12 +44,9 @@
 </template>
 
 <script>
-import jwt from 'jwt-decode'
-// import {mapMutations} from 'vuex'
-import bcrypt from 'bcryptjs'
 import { login } from '../api/userApi'
 import { showSuccessMsg, showErrorMsg } from '../utils/msg'
-import { setUserInfo } from '../utils/auth'
+import { setToken, setUserInfo } from '../utils/auth'
 
 const MODE = require('../../server/utils/Mode')
 export default {
@@ -71,12 +68,13 @@ export default {
     };
     return {
       radio: '1',
-      info:'',
+      info: '',
       loginForm: {
         tel: '',
         password: '',
       },
       rules: {
+        // 不为空，长度
         tel: [
           { validator: validateUser, trigger: 'blur' }
         ],
@@ -87,57 +85,21 @@ export default {
     };
   },
   methods: {
-    // ...mapMutations('loginModule',['setUser']),
-    submitForm(formName) {
+    submitForm() {
       login(this.loginForm, this.radio).then(res => {
-        // console.log("login api" + res);
-        console.log(res);
+        console.log("登录请求结果", res);
         if (res.data.mode == mode.PASSWORD_CORRECT) {
           showSuccessMsg("登录成功！");
-          setUserInfo(res.data.data);
+          setUserInfo(res.data.data);     // 保存用户信息
+          setToken(res.data.token);       // 保存token
           this.$router.push('/');
         } else if (res.data.mode == MODE.PASSWORD_INCORRECT || res.data.mode == MODE.LOW_PERMISSION) {
           showErrorMsg("账号或密码错误！");
         }
       }).catch(err => {
         // showErrorMsg("后端连接异常！"+err.message);
-        console.error("login api err" + err);
+        console.error("login api err", err);
       })
-      // this.$refs[formName].validate((valid) => {
-      //   if (valid) {
-      //     let { username,password} = this.loginForm;
-      //     //请求登录接口------------- 
-      //     this.$api.getLogin({
-      //       username,password
-      //     }).then(res=>{
-      //       console.log('-----',res.data);
-      //       if(res.data.status===200){
-      //         console.log(jwt(res.data.data));
-      //         //登录成功后：1. 存储登录信息  2. 跳转网页 3. 顶部区域显示用户信息  4. 持久化
-      //         let obj ={
-      //           user:jwt(res.data.data).username,
-      //           token:res.data.data
-      //         }
-      //         this.setUser(obj)
-      //         //存储本地
-      //         localStorage.setItem('user',JSON.stringify(obj))
-      //         //跳转
-      //         this.$router.push('/')
-      //         // this.info=''
-
-      //       }else{
-      //         //账号或者密码错误
-      //         // this.info='账号或者密码错误'
-      //          this.$message.error('错了哦，这是一条错误消息');
-      //       }
-      //     })
-
-
-      //   } else {
-      //     console.log('error submit!!');
-      //     return false;
-      //   }
-      // });
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();

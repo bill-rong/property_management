@@ -57,10 +57,11 @@ router.post('/login', (req, res) => {
       const flag = bcrypt.decrypt(params.password, result[0].password);
       if (flag) {
         let data = result[0];
-        data.token = JWT.sign(result[0]);
+        let token = JWT.sign(result[0]);
         jsonWrite(res, {
           mode: MODE.PASSWORD_CORRECT,
           data: data,
+          token: token,
           msg: "密码正确"
         });
       } else {
