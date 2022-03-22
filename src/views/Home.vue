@@ -96,7 +96,7 @@ export default {
         .then(() => {
           setTimeout(() => {
             this.$store.commit('logout', 'false')
-            this.$router.push({ path: '/login' })
+            this.$router.push({name: 'login'})
             this.$message({
               type: 'success',
               message: '已退出登录!'

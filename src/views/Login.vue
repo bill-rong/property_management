@@ -92,7 +92,7 @@ export default {
           showSuccessMsg("登录成功！");
           setUserInfo(res.data.data);     // 保存用户信息
           setToken(res.data.token);       // 保存token
-          this.$router.push('/');
+          this.radio == '1' ? this.$router.push({name: 'home'}) : this.$router.push({name: 'adminHome'});
         } else if (res.data.mode == MODE.PASSWORD_INCORRECT || res.data.mode == MODE.LOW_PERMISSION) {
           showErrorMsg("账号或密码错误！");
         }
