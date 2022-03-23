@@ -35,7 +35,7 @@
           <el-radio v-model="radio" label="2">物业管理员</el-radio>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm()">提交</el-button>
+          <el-button type="primary" @click="submitForm()">登录</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
@@ -82,10 +82,11 @@ export default {
   },
   methods: {
     submitForm() {
+      if (!this.checkForm()) return;
       login(this.loginForm, this.radio)
         .then((res) => {
           console.log("登录请求结果", res);
-          if (res.data.mode == mode.PASSWORD_CORRECT) {
+          if (res.data.mode == MODE.PASSWORD_CORRECT) {
             showSuccessMsg("登录成功！");
             setUserInfo(res.data.data); // 保存用户信息
             setToken(res.data.token); // 保存token
@@ -94,7 +95,7 @@ export default {
               : this.$router.push({ name: "adminHome" });
           } else if (
             res.data.mode == MODE.PASSWORD_INCORRECT ||
-            res.data.mode == MODE.LOW_PERMISSION
+            res.data.mode == MODE.USER_NOT_EXIST
           ) {
             showErrorMsg("账号或密码错误！");
           }
@@ -107,6 +108,17 @@ export default {
     resetForm(formName) {
       this.radio = "1";
       this.$refs[formName].resetFields();
+    },
+    checkForm() {
+      let isNormal = false;
+      this.$refs["ruleForm"].validate((valid) => {
+        if (valid) {
+          isNormal = true;
+        } else {
+          isNormal = false;
+        }
+      });
+      return isNormal;
     },
   },
 };

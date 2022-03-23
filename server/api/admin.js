@@ -6,7 +6,7 @@ const bcryptjs = require('../utils/BcryptJS');
 const bcrypt = require('../utils/BcryptJS');
 const MODE = require('../utils/Mode');
 const jsonWrite = require('../utils/JsonWrite');
-const JWT = require('../utils/Token')
+const JWT = require('../utils/Token');
 
 /**
  * 登录接口
@@ -14,7 +14,7 @@ const JWT = require('../utils/Token')
  * params: {tel, password}
  * res: {mode, [data,] msg}
  */
- router.post('/login', (req, res) => {
+router.post('/login', (req, res) => {
   let params = req.body;
   let sql = SQL.admin.login;
   sqlRun(sql, params.tel, (err, result) => {

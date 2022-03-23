@@ -6,9 +6,7 @@ const bcryptjs = require('../utils/BcryptJS');
 const bcrypt = require('../utils/BcryptJS');
 const MODE = require('../utils/Mode');
 const jsonWrite = require('../utils/JsonWrite');
-
-
-
+const JWT = require('../utils/Token');
 
 
 // 模板
@@ -56,8 +54,8 @@ router.post('/login', (req, res) => {
     if (result) {
       const flag = bcrypt.decrypt(params.password, result[0].password);
       if (flag) {
-        let data = result[0];
-        let token = JWT.sign(result[0]);
+        let data = JSON.parse(JSON.stringify(result[0]));
+        let token = JWT.sign(data);
         jsonWrite(res, {
           mode: MODE.PASSWORD_CORRECT,
           data: data,

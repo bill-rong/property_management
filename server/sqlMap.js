@@ -17,7 +17,7 @@ const sqlMap = {
   },
   admin: {
     // 物业管理员登录
-    login: "SELECT tel, name, password, permission FROM admin where tel=?;"
+    login: "SELECT tel, name, password, permission FROM admin WHERE tel=?;"
   }
 }
 
