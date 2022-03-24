@@ -10,12 +10,7 @@ export function getUser() {
 
 // 登录
 export function login(loginForm, ident) {
-  let url = '';
-  if (ident == '1') {
-    url = '/api/user/login/';
-  } else if (ident == '2') {
-    url = '/api/admin/login/';
-  }
+  let url = ident == '1' ? '/api/user/login/' : ident == '2' ? '/api/admin/login/' : '';
     return request({
         url: url,
         method: 'post',

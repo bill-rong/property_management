@@ -1,23 +1,7 @@
 <template>
-  <!-- <el-container class="index-con">
-    <el-header class="index-header">
-      <navcon></navcon>
-    </el-header>
-    <el-container class="index-con">
-      <el-aside :class="showclass">
-        <leftnav></leftnav>
-      </el-aside>
-      <el-container class="main-con">
-        <el-main clss="index-main">
-          <router-view></router-view>
-        </el-main>
-      </el-container>
-    </el-container>
-  </el-container> -->
-
   <el-container class="index-con">
     <el-aside :class="showclass" class="aside" style="background-color: #151D41;">
-      <leftnav :isCollapse="isCollapse" :ident="false"></leftnav>
+      <leftnav :isCollapse="isCollapse" :ident="true"></leftnav>
     </el-aside>
     <el-container class="main-con">
       <el-header class="index-header">
@@ -26,14 +10,6 @@
           <!-- <img class="showimg" :src="isCollapse?imgsq:imgshow" @click="toggle(isCollapse)" style="cursor: pointer;"> -->
           <i :class="isCollapse?imgsq:imgshow" @click="toggle(isCollapse)" style="cursor: pointer;"></i>
         </span>
-        <!-- <el-menu class="topbar"  mode="horizontal" background-color="#334157" text-color="#fff" active-text-color="#fff">
-          <el-submenu index="2" class="submenu">
-            <template slot="title">超级管理员</template>
-            <el-menu-item class="menu-iten" index="2-1">设置</el-menu-item>
-            <el-menu-item @click="content()" index="2-2">个人中心</el-menu-item>
-            <el-menu-item @click="exit()" index="2-3">退出</el-menu-item>
-          </el-submenu>
-        </el-menu> -->
         <el-dropdown class="el-dropdown" style="float: right;">
           <div class="el-dropdown-link">
             <i class="el-icon-s-custom"></i>
@@ -56,11 +32,13 @@
 <script>
 // 导入组件
 // import navcon from '../components/navcon.vue'
-import leftnav from '../components/leftnav.vue'
-import { getUserInfo } from '../utils/auth'
+import leftnav from '../components/leftnav.vue';
+import { getUserInfo } from '../utils/auth';
+import { showSuccessMsg, showErrorMsg } from "../utils/msg";
+import { removeToken, removeUserInfo } from "../utils/auth";
 
 export default {
-  name: 'Home',
+  name: 'AdminHome',
   data() {
     return {
       showclass: 'asideshow',
@@ -92,47 +70,20 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      })
-        .then(() => {
-          setTimeout(() => {
-            this.$store.commit('logout', 'false')
-            this.$router.push({name: 'login'})
-            this.$message({
-              type: 'success',
-              message: '已退出登录!'
-            })
-          }, 1000)
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消'
-          })
-        })
+      }).then(() => {
+        setTimeout(() => {
+          removeToken();
+          removeUserInfo();
+          this.$router.push({name: 'login'})
+          showSuccessMsg("已退出登录");
+        }, 1000)
+      });
     }
   },
   created() {
-    // 监听
-    // this.$root.Bus.$on('toggle', value => {
-    //   if (value) {
-    //     this.showclass = 'asideshow'
-    //   } else {
-    //     setTimeout(() => {
-    //       this.showclass = 'aside'
-    //     }, 300)
-    //   }
-    // })
     console.log(getUserInfo());
   },
   beforeUpdate() {},
-  // 挂载前状态(里面是操作)
-  // beforeMount() {
-  //   // 弹出登录成功
-  //   this.$message({
-  //     message: '登录成功',
-  //     type: 'success'
-  //   })
-  // }
 }
 </script>
 <style land="less" scoped>

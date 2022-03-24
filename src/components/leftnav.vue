@@ -32,11 +32,15 @@
 </template>
 
 <script>
-import leftNavList from '../assets/values/leftNavList'
+import {userMenuList, adminMenuList} from '../assets/values/leftNavList'
 
 export default {
   props: {
     isCollapse: {
+      type: Boolean,
+      default: false
+    },
+    ident: {
       type: Boolean,
       default: false
     }
@@ -48,7 +52,7 @@ export default {
     };
   },
   created() {
-this.menuList = leftNavList();
+    this.menuList = ident ? adminMenuList() : userMenuList();
   },
   methods: {}
 };
