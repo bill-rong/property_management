@@ -47,9 +47,11 @@ router.get('/getUser', (req, res) => {
 router.post('/login', (req, res) => {
   let params = req.body;
   let sql = SQL.user.login;
+  console.log("params", params);
+  console.log("sql", sql);
   sqlRun(sql, params.tel, (err, result) => {
     if (err) {
-      console.log("失败" + err);
+      console.log("失败", err);
     }
     if (result) {
       const flag = bcrypt.decrypt(params.password, result[0].password);
