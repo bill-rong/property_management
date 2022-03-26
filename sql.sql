@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `property_management` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `property_management`;
--- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: localhost    Database: property_management
 -- ------------------------------------------------------
@@ -48,6 +48,162 @@ INSERT INTO `admin` VALUES (1,'134','sofia','0',NULL,'normal','$2a$12$/Qs3nXDWh4
 UNLOCK TABLES;
 
 --
+-- Table structure for table `announcement`
+--
+
+DROP TABLE IF EXISTS `announcement`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `announcement` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(45) DEFAULT NULL,
+  `content` text,
+  `date` datetime DEFAULT NULL,
+  `admin_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='公告';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `announcement`
+--
+
+LOCK TABLES `announcement` WRITE;
+/*!40000 ALTER TABLE `announcement` DISABLE KEYS */;
+/*!40000 ALTER TABLE `announcement` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `building`
+--
+
+DROP TABLE IF EXISTS `building`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `building` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='楼';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `building`
+--
+
+LOCK TABLES `building` WRITE;
+/*!40000 ALTER TABLE `building` DISABLE KEYS */;
+/*!40000 ALTER TABLE `building` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `community`
+--
+
+DROP TABLE IF EXISTS `community`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `community` (
+  `name` varchar(50) NOT NULL,
+  `created` date DEFAULT NULL,
+  `describe` text,
+  `tel` varchar(45) DEFAULT NULL,
+  `address` text,
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `community`
+--
+
+LOCK TABLES `community` WRITE;
+/*!40000 ALTER TABLE `community` DISABLE KEYS */;
+/*!40000 ALTER TABLE `community` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `family`
+--
+
+DROP TABLE IF EXISTS `family`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `family` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `resident_id` int(11) NOT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `sex` enum('0','1') DEFAULT '1',
+  `birthday` date DEFAULT NULL,
+  `relation` varchar(45) DEFAULT NULL COMMENT '关系',
+  `tel` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `family`
+--
+
+LOCK TABLES `family` WRITE;
+/*!40000 ALTER TABLE `family` DISABLE KEYS */;
+/*!40000 ALTER TABLE `family` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `parking`
+--
+
+DROP TABLE IF EXISTS `parking`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `parking` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `resident_id` int(11) DEFAULT NULL,
+  `license` varchar(45) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `number_UNIQUE` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='车位';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `parking`
+--
+
+LOCK TABLES `parking` WRITE;
+/*!40000 ALTER TABLE `parking` DISABLE KEYS */;
+/*!40000 ALTER TABLE `parking` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pet`
+--
+
+DROP TABLE IF EXISTS `pet`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pet` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `variety` varchar(45) DEFAULT NULL COMMENT '品种',
+  `name` varchar(45) DEFAULT NULL,
+  `documents` enum('0','1') DEFAULT '0' COMMENT '证件',
+  `path` varchar(100) DEFAULT NULL COMMENT '图片路径',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='宠物';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pet`
+--
+
+LOCK TABLES `pet` WRITE;
+/*!40000 ALTER TABLE `pet` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pet` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `resident`
 --
 
@@ -60,9 +216,10 @@ CREATE TABLE `resident` (
   `name` varchar(20) NOT NULL COMMENT '名字',
   `sex` enum('0','1') DEFAULT '1',
   `email` varchar(45) DEFAULT NULL,
-  `building` varchar(11) DEFAULT NULL COMMENT '楼号',
-  `room` varchar(11) DEFAULT NULL COMMENT '房号',
   `password` varchar(100) DEFAULT NULL,
+  `liveing` enum('0','1') DEFAULT '1' COMMENT '1为居住中',
+  `date` date DEFAULT NULL COMMENT '入住时间',
+  `birthday` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tel_UNIQUE` (`tel`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='住户信息';
@@ -74,17 +231,37 @@ CREATE TABLE `resident` (
 
 LOCK TABLES `resident` WRITE;
 /*!40000 ALTER TABLE `resident` DISABLE KEYS */;
-INSERT INTO `resident` VALUES (1,'133','bill','1',NULL,'1','101','$2a$12$/Qs3nXDWh403VRJ8FukJ4ewTbY1Z12EBwEmPzYXPrtG0sVEmFcZFe');
+INSERT INTO `resident` VALUES (1,'133','bill','1',NULL,'$2a$12$/Qs3nXDWh403VRJ8FukJ4ewTbY1Z12EBwEmPzYXPrtG0sVEmFcZFe','1',NULL,NULL);
 /*!40000 ALTER TABLE `resident` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping events for database 'property_management'
+-- Table structure for table `room`
 --
 
+DROP TABLE IF EXISTS `room`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `room` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `building_id` int(11) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `living` enum('0','1') DEFAULT '0',
+  `resident_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_room_building_idx` (`building_id`),
+  CONSTRAINT `FK_room_building` FOREIGN KEY (`building_id`) REFERENCES `building` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 --
--- Dumping routines for database 'property_management'
+-- Dumping data for table `room`
 --
+
+LOCK TABLES `room` WRITE;
+/*!40000 ALTER TABLE `room` DISABLE KEYS */;
+/*!40000 ALTER TABLE `room` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -95,4 +272,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-25  0:33:28
+-- Dump completed on 2022-03-26 17:57:46

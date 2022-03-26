@@ -24,7 +24,7 @@ app.use(function (req, res, next) {
     console.log("登录请求");
     next();
   } else {
-    let token = req.headers['Authorization'] || req.body.token || req.query.token;
+    let token = req.headers['authorization'];
     if (token) {
       // 解码 token (验证 secret 和检查有效期（exp）)
       let verifyRes = JWT.verify(token);

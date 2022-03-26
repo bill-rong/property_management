@@ -52,7 +52,8 @@ service.interceptors.request.use(
         // 每次发送请求之前检测都vuex存有token,那么都要放在请求头发送给服务器,没有则不带token
         // Authorization是必须的
         if (getToken()) {
-            config.headers.Authorization = getToken()
+          console.log("token", getToken());
+          config.headers.Authorization = getToken()
         }
         return config;
     },

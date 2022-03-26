@@ -53,18 +53,9 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </div>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-files" command="a"
-              >我的信息</el-dropdown-item
-            >
-            <el-dropdown-item icon="el-icon-lock" command="b"
-              >修改密码</el-dropdown-item
-            >
-            <el-dropdown-item
-              icon="el-icon-circle-close"
-              command="c"
-              @click="exit()"
-              >退出登录</el-dropdown-item
-            >
+            <el-dropdown-item icon="el-icon-files" command="a">我的信息</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-lock" command="b">修改密码</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-circle-close" command="c" @click="exit()">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
