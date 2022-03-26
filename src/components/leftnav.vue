@@ -67,10 +67,7 @@ export default {
   },
   created() {
     console.log(this.ident);
-    this.menuList =
-      this.ident
-        ? adminMenuList()
-        : userMenuList();
+    this.menuList = this.ident ? adminMenuList() : userMenuList();
   },
   methods: {},
 };

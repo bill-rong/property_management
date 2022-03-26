@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `property_management` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `property_management`;
--- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
 --
 -- Host: localhost    Database: property_management
 -- ------------------------------------------------------
@@ -123,6 +123,33 @@ LOCK TABLES `community` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `complaint`
+--
+
+DROP TABLE IF EXISTS `complaint`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `complaint` (
+  `id` int(11) NOT NULL,
+  `contacts` varchar(45) NOT NULL,
+  `tel` varchar(45) NOT NULL,
+  `describe` text NOT NULL,
+  `date` datetime NOT NULL,
+  `status` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='投诉信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `complaint`
+--
+
+LOCK TABLES `complaint` WRITE;
+/*!40000 ALTER TABLE `complaint` DISABLE KEYS */;
+/*!40000 ALTER TABLE `complaint` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `family`
 --
 
@@ -148,6 +175,35 @@ CREATE TABLE `family` (
 LOCK TABLES `family` WRITE;
 /*!40000 ALTER TABLE `family` DISABLE KEYS */;
 /*!40000 ALTER TABLE `family` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `healthy`
+--
+
+DROP TABLE IF EXISTS `healthy`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `healthy` (
+  `id` int(11) NOT NULL,
+  `release_time` date DEFAULT NULL COMMENT '发起日期',
+  `room` varchar(45) DEFAULT NULL,
+  `name` varchar(45) DEFAULT NULL,
+  `symptom` varchar(45) DEFAULT NULL COMMENT '症状',
+  `temperature` varchar(45) DEFAULT NULL COMMENT '体温',
+  `supplement` text COMMENT '补充',
+  `report_time` datetime DEFAULT NULL COMMENT '上报时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='健康信息';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `healthy`
+--
+
+LOCK TABLES `healthy` WRITE;
+/*!40000 ALTER TABLE `healthy` DISABLE KEYS */;
+/*!40000 ALTER TABLE `healthy` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -178,6 +234,36 @@ LOCK TABLES `parking` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `payment`
+--
+
+DROP TABLE IF EXISTS `payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `payment` (
+  `id` int(11) NOT NULL,
+  `type` varchar(45) DEFAULT NULL,
+  `describe` text COMMENT '描述',
+  `current` double DEFAULT NULL COMMENT '水/电当月数值',
+  `curryear` int(11) DEFAULT NULL COMMENT '当月日期',
+  `currmonth` int(11) DEFAULT NULL,
+  `amount` double DEFAULT NULL COMMENT '金额',
+  `handler` varchar(45) DEFAULT NULL COMMENT '处理人',
+  `paydate` varchar(45) DEFAULT NULL COMMENT '支付日期',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='缴费信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `payment`
+--
+
+LOCK TABLES `payment` WRITE;
+/*!40000 ALTER TABLE `payment` DISABLE KEYS */;
+/*!40000 ALTER TABLE `payment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pet`
 --
 
@@ -201,6 +287,35 @@ CREATE TABLE `pet` (
 LOCK TABLES `pet` WRITE;
 /*!40000 ALTER TABLE `pet` DISABLE KEYS */;
 /*!40000 ALTER TABLE `pet` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `repair`
+--
+
+DROP TABLE IF EXISTS `repair`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `repair` (
+  `id` int(11) NOT NULL,
+  `contacts` varchar(45) NOT NULL,
+  `tel` varchar(45) NOT NULL,
+  `room` varchar(45) NOT NULL,
+  `type` varchar(45) NOT NULL COMMENT '报修类型',
+  `describe` text NOT NULL,
+  `date` datetime NOT NULL,
+  `status` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报修信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `repair`
+--
+
+LOCK TABLES `repair` WRITE;
+/*!40000 ALTER TABLE `repair` DISABLE KEYS */;
+/*!40000 ALTER TABLE `repair` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -262,6 +377,14 @@ LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'property_management'
+--
+
+--
+-- Dumping routines for database 'property_management'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -272,4 +395,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-26 17:57:46
+-- Dump completed on 2022-03-26 23:05:23
