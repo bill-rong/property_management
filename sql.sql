@@ -159,6 +159,7 @@ DROP TABLE IF EXISTS `family`;
 CREATE TABLE `family` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `resident_id` int(11) NOT NULL,
+  `idcard` varchar(18) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
   `sex` enum('0','1') DEFAULT '1',
   `birthday` date DEFAULT NULL,
@@ -249,7 +250,7 @@ CREATE TABLE `payment` (
   `currmonth` int(11) DEFAULT NULL,
   `amount` double DEFAULT NULL COMMENT '金额',
   `handler` varchar(45) DEFAULT NULL COMMENT '处理人',
-  `paydate` varchar(45) DEFAULT NULL COMMENT '支付日期',
+  `paydate` datetime DEFAULT NULL COMMENT '支付日期',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='缴费信息表';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -328,13 +329,14 @@ DROP TABLE IF EXISTS `resident`;
 CREATE TABLE `resident` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tel` varchar(11) NOT NULL COMMENT '手机号',
+  `idcard` varchar(18) NOT NULL,
   `name` varchar(20) NOT NULL COMMENT '名字',
   `sex` enum('0','1') DEFAULT '1',
   `email` varchar(45) DEFAULT NULL,
+  `birthday` date DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
   `liveing` enum('0','1') DEFAULT '1' COMMENT '1为居住中',
   `date` date DEFAULT NULL COMMENT '入住时间',
-  `birthday` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `tel_UNIQUE` (`tel`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='住户信息';
@@ -346,7 +348,7 @@ CREATE TABLE `resident` (
 
 LOCK TABLES `resident` WRITE;
 /*!40000 ALTER TABLE `resident` DISABLE KEYS */;
-INSERT INTO `resident` VALUES (1,'133','bill','1',NULL,'$2a$12$/Qs3nXDWh403VRJ8FukJ4ewTbY1Z12EBwEmPzYXPrtG0sVEmFcZFe','1',NULL,NULL);
+INSERT INTO `resident` VALUES (1,'133','','bill','1',NULL,NULL,'$2a$12$/Qs3nXDWh403VRJ8FukJ4ewTbY1Z12EBwEmPzYXPrtG0sVEmFcZFe','1',NULL);
 /*!40000 ALTER TABLE `resident` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -395,4 +397,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-26 23:05:23
+-- Dump completed on 2022-03-27 23:32:17
