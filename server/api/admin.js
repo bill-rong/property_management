@@ -10,7 +10,7 @@ const JWT = require('../utils/Token');
 
 const api = {
   login: '/login',
-  updatePwd: '/update/admin/password',
+  updatePwd: '/update/password',
 }
 
 /**
@@ -56,6 +56,7 @@ router.post(api.login, (req, res) => {
 
 /**
  * 修改管理员密码
+ * params: {tel, password}
  */
 router.put(api.updatePwd, (req, res) => {
   let params = req.body;

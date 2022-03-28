@@ -11,7 +11,7 @@ const sqlMap = require('../sqlMap');
 
 const api = {
   login: '/login',
-  updatePwd: '/update/resident/password',
+  updatePwd: '/update/password',
 }
 
 

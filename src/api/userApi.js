@@ -21,7 +21,7 @@ export function login(loginForm, ident) {
 // 修改密码
 export function updatePassword(data) {
   return request({
-    url: '/api/user/updatePassword',
+    url: '/api/user/update/assword',
     method: 'put',
     data: data
   })
