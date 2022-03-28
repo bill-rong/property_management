@@ -26,6 +26,7 @@ router.post('/login', (req, res) => {
       const flag = bcrypt.decrypt(params.password, result[0].password);
       if (flag) {
         let data = JSON.parse(JSON.stringify(result[0]));
+        delete data.password;
         let token = JWT.sign(data);
         jsonWrite(res, {
           mode: MODE.PASSWORD_CORRECT,

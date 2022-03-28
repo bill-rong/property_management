@@ -8,11 +8,15 @@ var property_management = {
 const sqlMap = {
   user: {
     // 用户登录
-    login: "select tel, name, password from resident where tel=?;",
+    login: "SELECT tel, name, password FROM resident WHERE tel=?;",
     // 添加用户
-    add: 'insert into user(name, age) values (?, ?)',
-    // 查询用户
-    select: 'select * from resident;',
+    add: 'INSERT INTO user(name, age) VALUES (?, ?)',
+    // 查询所有用户
+    selectAll: 'SELECT * FROM resident;',
+    // 查询单个用户
+    selectByTel: 'SELECT * FROM resident WHERE tel=?;',
+    // 修改密码
+    updatePwd: 'UPDATE resident SET password=? WHERE tel=?;',
 
   },
   admin: {

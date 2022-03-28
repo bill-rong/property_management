@@ -91,7 +91,11 @@ export default {
           removeToken();
           removeUserInfo();
           this.$router.push({ name: "login" });
-          showSuccessMsg("已退出登录");
+          // showSuccessMsg("已退出登录");
+          this.$message({
+              type: 'success',
+              message: '已退出登录!'
+            });
         }, 500);
       });
     },

@@ -28,28 +28,12 @@
         <!-- <navcon></navcon> -->
         <span class="buttonimg">
           <!-- <img class="showimg" :src="isCollapse?imgsq:imgshow" @click="toggle(isCollapse)" style="cursor: pointer;"> -->
-          <i
-            :class="isCollapse ? imgsq : imgshow"
-            @click="toggle(isCollapse)"
-            style="cursor: pointer"
-          ></i>
+          <i :class="isCollapse ? imgsq : imgshow" @click="toggle(isCollapse)" style="cursor: pointer"></i>
         </span>
-        <!-- <el-menu class="topbar"  mode="horizontal" background-color="#334157" text-color="#fff" active-text-color="#fff">
-          <el-submenu index="2" class="submenu">
-            <template slot="title">超级管理员</template>
-            <el-menu-item class="menu-iten" index="2-1">设置</el-menu-item>
-            <el-menu-item @click="content()" index="2-2">个人中心</el-menu-item>
-            <el-menu-item @click="exit()" index="2-3">退出</el-menu-item>
-          </el-submenu>
-        </el-menu> -->
-        <el-dropdown
-          class="el-dropdown"
-          style="float: right"
-          @command="handleCommand"
-        >
+        <el-dropdown class="el-dropdown" style="float: right" @command="handleCommand" >
           <div class="el-dropdown-link">
             <i class="el-icon-s-custom"></i>
-            个人中心
+            {{this.userName}}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </div>
           <el-dropdown-menu slot="dropdown">
@@ -69,8 +53,7 @@
 // 导入组件
 // import navcon from '../components/navcon.vue'
 import leftnav from "../components/leftnav.vue";
-import { getUserInfo } from "../utils/auth";
-import { removeToken, removeUserInfo } from "../utils/auth";
+import { removeToken, removeUserInfo, getUserInfo } from "../utils/auth";
 
 export default {
   name: "Home",
@@ -80,6 +63,7 @@ export default {
       imgshow: "el-icon-s-unfold",
       imgsq: "el-icon-s-fold",
       isCollapse: true,
+      userName: ""
     };
   },
   // 注册组件
@@ -109,7 +93,11 @@ export default {
           removeToken();
           removeUserInfo();
           this.$router.push({ name: "login" });
-          showSuccessMsg("已退出登录");
+          this.$message({
+              type: 'success',
+              message: '已退出登录!'
+            });
+          // showSuccessMsg("已退出登录");
         }, 500);
       });
     },
@@ -126,17 +114,8 @@ export default {
     },
   },
   created() {
-    // 监听
-    // this.$root.Bus.$on('toggle', value => {
-    //   if (value) {
-    //     this.showclass = 'asideshow'
-    //   } else {
-    //     setTimeout(() => {
-    //       this.showclass = 'aside'
-    //     }, 300)
-    //   }
-    // })
-    console.log(getUserInfo());
+    console.log(getUserInfo().name);
+    this.userName = getUserInfo().name;
   },
   beforeUpdate() {},
   // 挂载前状态(里面是操作)

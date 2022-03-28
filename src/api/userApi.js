@@ -17,3 +17,12 @@ export function login(loginForm, ident) {
         data: loginForm
     })
 }
+
+// 修改密码
+export function updatePassword(data) {
+  return request({
+    url: '/api/user/updatePassword',
+    method: 'put',
+    data: data
+  })
+}

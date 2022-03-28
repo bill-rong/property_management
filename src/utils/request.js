@@ -97,7 +97,7 @@ service.interceptors.response.use(
             // })
             console.log(router.currentRoute.path)
             // 以路径后面挂参数的方式传参，刷新时不会丢失参数
-            router.push({path: '/login', query: {fromPath: router.currentRoute.path}})
+            router.push({path: '/', query: {fromPath: router.currentRoute.path}})
         } else {
             Vue.toasted.show(msg, {position: 'top-center', duration: 3000, theme: 'outline', type: 'error'})
         }
