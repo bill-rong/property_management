@@ -8,13 +8,18 @@ const MODE = require('../utils/Mode');
 const jsonWrite = require('../utils/JsonWrite');
 const JWT = require('../utils/Token');
 
+const api = {
+  login: '/login',
+  updatePwd: '/update/admin/password',
+}
+
 /**
  * 登录接口
  * url: /api/user/login
  * params: {tel, password}
  * res: {mode, [data,] msg}
  */
-router.post('/login', (req, res) => {
+router.post(api.login, (req, res) => {
   let params = req.body;
   let sql = SQL.admin.login;
   sqlRun(sql, params.tel, (err, result) => {
@@ -48,5 +53,24 @@ router.post('/login', (req, res) => {
     }
   });
 });
+
+/**
+ * 修改管理员密码
+ */
+router.put(api.updatePwd, (req, res) => {
+  let params = req.body;
+  let sql = "";
+  sqlRun(sql, [params.password, params.tel], (err, result) => {
+    if (err) {
+      console.log("修改管理员密码失败", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.UPDATE_PWD_SUCCESS,
+        msg: "密码修改成功"
+      });
+    }
+  })
+})
 
 module.exports = router;

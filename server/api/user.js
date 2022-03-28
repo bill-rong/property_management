@@ -9,6 +9,11 @@ const jsonWrite = require('../utils/JsonWrite');
 const JWT = require('../utils/Token');
 const sqlMap = require('../sqlMap');
 
+const api = {
+  login: '/login',
+  updatePwd: '/update/resident/password',
+}
+
 
 router.get('/getUser', (req, res) => {
   let sql = SQL.user.select;
@@ -30,7 +35,7 @@ router.get('/getUser', (req, res) => {
  * params: {tel, password}
  * res: {mode, [data,] msg}
  */
-router.post('/login', (req, res) => {
+router.post(api.login, (req, res) => {
   let params = req.body;
   let sql = SQL.user.login;
   console.log("params", params);
@@ -69,7 +74,7 @@ router.post('/login', (req, res) => {
  * url: /api/user/updatePassword
  * params: {tel, idcard, passwords}
  */
-router.put('/updatePassword', (req, res) => {
+router.put(api.updatePwd, (req, res) => {
   let params = req.body;
   let checkPwdSql = sqlMap.user.selectByTel;
   sqlRun(checkPwdSql, params.tel, (err, result) => {
