@@ -87,8 +87,7 @@ export default {
 
 <style>
 .el-pagination{
-  position:relative;  
-  top: -45%;
+  position: relative;  
   text-align: left;
 }
 

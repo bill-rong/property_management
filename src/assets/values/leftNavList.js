@@ -22,13 +22,6 @@ export function userMenuList() {
         id: 2,
         authName: "导航三",
         icon: "el-icon-office-building",
-        children: [
-            { authName: "企业信息管理", id: 1, path: "information", parentid: 2 },
-            { authName: "权限管理", id: 2, path: "authority", parentid: 2 },
-            { authName: "团队邀请设置", id: 3, path: "team", parentid: 2 },
-            { authName: "安全策略", id: 4, path: "safety", parentid: 2 },
-            { authName: "管理员日志", id: 5, path: "journal", parentid: 2 }
-        ]
         }
     ];
 };

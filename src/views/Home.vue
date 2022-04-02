@@ -14,22 +14,40 @@
       </el-container>
     </el-container>
   </el-container> -->
+  
 
   <el-container class="index-con">
-    <el-aside
+      <!-- <top-nav></top-nav> -->
+    <!-- <el-aside
       :class="showclass"
       class="aside"
       style="background-color: #151d41"
     >
       <leftnav :isCollapse="isCollapse" :ident="false"></leftnav>
-    </el-aside>
+    </el-aside> -->
     <el-container class="main-con">
       <el-header class="index-header">
-        <!-- <navcon></navcon> -->
-        <span class="buttonimg">
-          <!-- <img class="showimg" :src="isCollapse?imgsq:imgshow" @click="toggle(isCollapse)" style="cursor: pointer;"> -->
+        <top-nav></top-nav>
+        <!-- <span class="buttonimg">
           <i :class="isCollapse ? imgsq : imgshow" @click="toggle(isCollapse)" style="cursor: pointer"></i>
         </span>
+        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+          <el-menu-item index="home">处理中心</el-menu-item>
+          <el-submenu index="2">
+            <template slot="title">我的工作台</template>
+            <el-menu-item index="2-1">选项1</el-menu-item>
+            <el-menu-item index="2-2">选项2</el-menu-item>
+            <el-menu-item index="2-3">选项3</el-menu-item>
+            <el-submenu index="2-4">
+              <template slot="title">选项4</template>
+              <el-menu-item index="2-4-1">选项1</el-menu-item>
+              <el-menu-item index="2-4-2">选项2</el-menu-item>
+              <el-menu-item index="2-4-3">选项3</el-menu-item>
+            </el-submenu>
+          </el-submenu>
+          <el-menu-item index="3" disabled>消息中心</el-menu-item>
+          <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+        </el-menu>
         <el-dropdown class="el-dropdown" style="float: right" @command="handleCommand" >
           <div class="el-dropdown-link">
             <i class="el-icon-s-custom"></i>
@@ -41,7 +59,7 @@
             <el-dropdown-item icon="el-icon-lock" command="b">修改密码</el-dropdown-item>
             <el-dropdown-item icon="el-icon-circle-close" command="c" @click="exit()">退出登录</el-dropdown-item>
           </el-dropdown-menu>
-        </el-dropdown>
+        </el-dropdown> -->
       </el-header>
       <el-main clss="index-main">
         <router-view></router-view>
@@ -51,7 +69,7 @@
 </template>
 <script>
 // 导入组件
-// import navcon from '../components/navcon.vue'
+import TopNav from "../components/TopNav.vue";
 import leftnav from "../components/leftnav.vue";
 import { removeToken, removeUserInfo, getUserInfo } from "../utils/auth";
 
@@ -68,7 +86,7 @@ export default {
   },
   // 注册组件
   components: {
-    // navcon,
+    TopNav,
     leftnav,
   },
   methods: {
@@ -112,6 +130,9 @@ export default {
           break;
       }
     },
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    }
   },
   created() {
     console.log(getUserInfo().name);
