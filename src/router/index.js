@@ -4,6 +4,7 @@ import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import AdminHome from '../views/AdminHome.vue'
 import Personal from  '../views/components/user/personal/PersonalCenter.vue'
+import MyPage from '../components/MyTable.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -26,7 +27,7 @@ const routes = [
   {
     path: '/test',
     name: 'personal',
-    component: Personal
+    component: MyPage
   }
 ]
 
