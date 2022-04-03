@@ -1,65 +1,8 @@
 <template>
-  <!-- <el-container class="index-con">
-    <el-header class="index-header">
-      <navcon></navcon>
-    </el-header>
-    <el-container class="index-con">
-      <el-aside :class="showclass">
-        <leftnav></leftnav>
-      </el-aside>
-      <el-container class="main-con">
-        <el-main clss="index-main">
-          <router-view></router-view>
-        </el-main>
-      </el-container>
-    </el-container>
-  </el-container> -->
-  
-
   <el-container class="index-con">
-      <!-- <top-nav></top-nav> -->
-    <!-- <el-aside
-      :class="showclass"
-      class="aside"
-      style="background-color: #151d41"
-    >
-      <leftnav :isCollapse="isCollapse" :ident="false"></leftnav>
-    </el-aside> -->
     <el-container class="main-con">
       <el-header class="index-header">
-        <top-nav></top-nav>
-        <!-- <span class="buttonimg">
-          <i :class="isCollapse ? imgsq : imgshow" @click="toggle(isCollapse)" style="cursor: pointer"></i>
-        </span>
-        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-          <el-menu-item index="home">处理中心</el-menu-item>
-          <el-submenu index="2">
-            <template slot="title">我的工作台</template>
-            <el-menu-item index="2-1">选项1</el-menu-item>
-            <el-menu-item index="2-2">选项2</el-menu-item>
-            <el-menu-item index="2-3">选项3</el-menu-item>
-            <el-submenu index="2-4">
-              <template slot="title">选项4</template>
-              <el-menu-item index="2-4-1">选项1</el-menu-item>
-              <el-menu-item index="2-4-2">选项2</el-menu-item>
-              <el-menu-item index="2-4-3">选项3</el-menu-item>
-            </el-submenu>
-          </el-submenu>
-          <el-menu-item index="3" disabled>消息中心</el-menu-item>
-          <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
-        </el-menu>
-        <el-dropdown class="el-dropdown" style="float: right" @command="handleCommand" >
-          <div class="el-dropdown-link">
-            <i class="el-icon-s-custom"></i>
-            {{this.userName}}
-            <i class="el-icon-arrow-down el-icon--right"></i>
-          </div>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-files" command="a">我的信息</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-lock" command="b">修改密码</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-circle-close" command="c" @click="exit()">退出登录</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown> -->
+        <top-nav @navPath="routerJump" @personal="personalJump"></top-nav>
       </el-header>
       <el-main clss="index-main">
         <router-view></router-view>
@@ -90,65 +33,25 @@ export default {
     leftnav,
   },
   methods: {
-    toggle(showtype) {
-      this.isCollapse = !showtype;
-      // this.$root.Bus.$emit('toggle', this.collapsed)
-      if (!showtype) {
-        this.showclass = "asideshow";
-      } else {
-        setTimeout(() => {
-          this.showclass = "aside";
-        }, 300);
-      }
+    routerJump(pathName) {
+      console.log(pathName);
+      // this.$router.push({ name: pathName });
     },
-    exit() {
-      this.$confirm("退出登录, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      }).then(() => {
-        setTimeout(() => {
-          removeToken();
-          removeUserInfo();
-          this.$router.push({ name: "login" });
-          this.$message({
-              type: 'success',
-              message: '已退出登录!'
-            });
-          // showSuccessMsg("已退出登录");
-        }, 500);
-      });
-    },
-    handleCommand(command) {
+    personalJump(command) {
       switch (command) {
-        case "a":
+        case "myInfo":
+          this.$router.push({ name: 'personal' });
           break;
-        case "b":
-          break;
-        case "c":
-          this.exit();
+        case "upPwd":
+          this.$router.push({ name: 'personal' });
           break;
       }
-    },
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath);
     }
   },
-  created() {
-    console.log(getUserInfo().name);
-    this.userName = getUserInfo().name;
-  },
-  beforeUpdate() {},
-  // 挂载前状态(里面是操作)
-  // beforeMount() {
-  //   // 弹出登录成功
-  //   this.$message({
-  //     message: '登录成功',
-  //     type: 'success'
-  //   })
-  // }
+
 };
 </script>
+
 <style land="less" scoped>
 .el-dropdown {
   display: flex;
@@ -184,7 +87,7 @@ export default {
 }
 .index-header {
   background-color: #fafafa;
-  border-bottom: 1px solid rgb(211, 209, 209);
+  padding: 0%;
 }
 .index-main {
   border-left: 2px solid #333;

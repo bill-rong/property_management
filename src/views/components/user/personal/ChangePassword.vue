@@ -12,10 +12,10 @@
             </el-form-item>
 
             <div class="ulDiv">
-                <ul style="font-size: 14px">
-                    <li>密码长度8-64位</li>
-                    <li>需同时包含大写字母、小写字母、数字,不可使用特殊字符</li>
-                    <li>密码不能包含邮箱</li>
+                <ul style="font-size: 14px; text-align: left; list-style:none;">
+                    <li><i class="el-icon-warning-outline"></i> 密码长度8-64位</li>
+                    <li><i class="el-icon-warning-outline"></i> 需同时包含大写字母、小写字母、数字,不可使用特殊字符</li>
+                    <li><i class="el-icon-warning-outline"></i> 密码不能包含邮箱</li>
                 </ul>
             </div>
 
@@ -95,7 +95,7 @@
     }
 
     .ulDiv {
-        width: 50%;
+        width: 70%;
         margin-left: 5%;
         margin-top: 5%;
         color: rgb(107, 107, 107);

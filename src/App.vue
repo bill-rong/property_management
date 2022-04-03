@@ -33,7 +33,7 @@ html, body {
     box-sizing: border-box;
     padding: 0px;
     margin: 0px;
-    background-color: #F2F6FC;
+    /* background-color: #F2F6FC; */
 }
 
 </style>

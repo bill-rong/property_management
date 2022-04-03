@@ -1,30 +1,46 @@
 <template>
   <el-container class="main-con">
     <el-header>
-      <el-menu 
-      :default-active="activeIndex" 
-      class="el-menu-demo" 
-      mode="horizontal" 
-      @select="handleSelect"
-      active-text-color="#ffd04b">
-        <el-menu-item>
+      <el-menu
+        :default-active="activeIndex"
+        @select="handleSelect"
+        class="el-menu-demo"
+        mode="horizontal"
+        text-color="#000"
+        active-text-color="#67C23A">
+        <el-menu-item index="0">
           <img src="../assets/logo.png" height="20px" />
           <span slot="title" style="font-size: 20px; margin-left: 10px; margin-right: 60px">物业管理系统</span>
         </el-menu-item>
-        <el-submenu
-          v-for="(item, index) in menuList"
-          :index="item.path?item.path:index"
-          :key="index">
-          <template slot="title">
-            <span class="span-title">{{ item.authName }}</span>
-          </template>
-          <el-menu-item
-            v-for="(subItem, index) in item.children"
-            :index="subItem.path"
-            :key="index">
-            <span class="span-name">{{ subItem.authName }}</span>
-          </el-menu-item>
+        <el-menu-item index="1">大厅</el-menu-item>
+        <el-submenu index="repair">
+          <template slot="title">报修</template>
+          <el-menu-item index="reportRepair">上报维修</el-menu-item>
+          <el-menu-item index="repairInfo">维修记录</el-menu-item>
         </el-submenu>
+        <el-submenu index="pay">
+          <template slot="title">物业缴费</template>
+          <el-menu-item index="payment">缴纳费用</el-menu-item>
+          <el-menu-item index="paymentInfo">历史缴费记录</el-menu-item>
+        </el-submenu>
+        <el-submenu index="complaint">
+          <template slot="title">投诉</template>
+          <el-menu-item index="payment">发起投诉</el-menu-item>
+          <el-menu-item index="paymentInfo">历史投诉记录</el-menu-item>
+        </el-submenu>
+        <el-submenu index="2">
+          <template slot="title">我的工作台</template>
+          <el-menu-item index="2-1">选项1</el-menu-item>
+          <el-menu-item index="2-2">选项2</el-menu-item>
+          <el-menu-item index="2-3">选项3</el-menu-item>
+          <el-submenu index="2-4">
+            <template slot="title">选项4</template>
+            <el-menu-item index="2-4-1">选项1</el-menu-item>
+            <el-menu-item index="2-4-2">选项2</el-menu-item>
+            <el-menu-item index="2-4-3">选项3</el-menu-item>
+          </el-submenu>
+        </el-submenu>
+        <el-menu-item index="3" disabled>消息中心</el-menu-item>
       </el-menu>
       <el-dropdown class="el-dropdown" style="float: right" @command="handleCommand" >
         <div class="el-dropdown-link">
@@ -33,9 +49,9 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-files" command="a">我的信息</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-lock" command="b">修改密码</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-circle-close" command="c" @click="exit()">退出登录</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-files" command="myInfo">我的信息</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-lock" command="upPwd">修改密码</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-circle-close" command="exit" @click="exit()">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-header>
@@ -43,40 +59,53 @@
 </template>
 
 <script>
+import { getUserInfo } from '../utils/auth'
 export default {
-  name: 'navcon',
+  name: "TopNav",
   data() {
     return {
-      user: {},
       activeIndex: '1',
-      userName: "ababa",
-      menuList: [{
-        authName: "导航一",
-        children: [
-            { authName: "用户与部门管理", path: "department", parentid: 0},
-            { authName: "通讯录设置", id: 2, path: "adrbook", parentid: 0 }
-        ]
-        },
-        {
-        authName: "导航二",
-        children: [
-            { authName: "数据概览", path: "overview", parentid: 1 },
-            { authName: "员工活跃数据", path: "employees", parentid: 1 }
-        ]
-        },
-        {
-        authName: "导航三",
-        path: "path"
-        }]
+      userName: "ababadadad",
     }
   },
-  // 创建完毕状态(里面是操作)
   created() {
+    this.userName = getUserInfo().name;
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-      this.$router.push({ name: key });
+      this.$emit("navPath", key);
+    },
+    exit() {
+      this.$confirm("退出登录, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(() => {
+        setTimeout(() => {
+          removeToken();
+          removeUserInfo();
+          this.$router.push({ name: "login" });
+          this.$message({
+              type: 'success',
+              message: '已退出登录!'
+            });
+          // showSuccessMsg("已退出登录");
+        }, 500);
+      });
+    },
+    handleCommand(command) {
+      this.activeIndex = '-1';
+      switch (command) {
+        case "myInfo":
+          this.$emit("personal", command);
+          break;
+        case "upPwd":
+          this.$emit("personal", command);
+          break;
+        case "exit":
+          this.exit();
+          break;
+      }
     }
   }
 }
@@ -85,33 +114,43 @@ export default {
 <style land="less" scoped>
 .main-con {
   width: 100%;
-  height: 60px;
+  height: 61px;
   background-color: #fafafa;
   border-bottom: 1px solid rgb(211, 209, 209);
   /* background-color: #fff; */
 }
+
 .el-menu-demo {
   width: 80%;
+  height: 60px;
   margin: 0;
   float: left;
+  background-color: #fafafa00;
 }
+
+.el-menu--horizontal{
+  border-bottom: 0px solid #fafafa00 !important;
+  text-decoration: none;
+}
+.el-submenu {
+  background-color: #fafafa00;
+}
+
+.el-submenu:hover {
+  background-color: #fafafa00;
+}
+
 .el-dropdown {
   display: flex;
   align-items: center;
 }
 .el-dropdown .el-dropdown-link {
   height: 60px;
-  width: 110px;
+  width: 150px;
   float: right;
   font-size: 16px;
   line-height: 60px;
   color: rgb(59, 58, 58);
   cursor: pointer;
-}
-.span-title {
-  font-size: 16px;
-}
-.span-name {
-  font-size: 15px;
 }
 </style>
