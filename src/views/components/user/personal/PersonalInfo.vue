@@ -1,9 +1,9 @@
 <template>
 <el-container class="info-con">
   <el-row>
-    <el-descriptions title="" column="1" style="padding-left: 50px"></el-descriptions>
+    <el-descriptions title="" style="padding-left: 50px"></el-descriptions>
     <div class="info-div" style="border-right: 1px solid rgba(0, 0, 0, .12)">
-      <el-form label-position="right" label-width="100px" :model="formLabelAlign" style="width:400px">
+      <el-form label-position="right" label-width="100px" style="width:400px">
         <el-form-item label="真实姓名：">
           <el-input  placeholder="" v-model="residentInfo.name"></el-input>
         </el-form-item>
@@ -27,15 +27,25 @@
       </el-form>
     </div>
     <div class="info-div">
-      <el-form label-position="right" label-width="100px" :model="formLabelAlign" style="width:400px">
+      <el-form label-position="right" label-width="100px" style="width:400px">
         <el-form-item label="邮箱：">
           <el-input  placeholder="" v-model="residentInfo.email"></el-input>
         </el-form-item>
         <el-form-item label="生日：">
-          <el-input  placeholder="" v-model="residentInfo.birthday"></el-input>
+          <el-date-picker
+            v-model="residentInfo.birthday"
+            type="date"
+            placeholder="选择日期"
+             style="width:100%">
+          </el-date-picker>
         </el-form-item>
         <el-form-item label="入住时间：">
-          <el-input  placeholder="" v-model="residentInfo.living"></el-input>
+          <el-date-picker
+            v-model="residentInfo.date"
+            type="date"
+            placeholder="选择日期"
+             style="width:100%">
+          </el-date-picker>
         </el-form-item>
         <el-form-item label="房号：">
           <el-input  placeholder="" v-model="residentInfo.room"></el-input>
@@ -49,19 +59,22 @@
 </template>
 
 <script>
+import {getUser} from '@/api/userApi'
+import { getUserInfo, setToken } from '@/utils/auth'
 export default {
   data() {
     return {
       residentInfo: {
-        name: '',
+        id: 0,
         tel: '',
         idcard: '',
-        age: 18,
+        name: '',
         sex: '1',
         email: '',
         birthday: '',
-        living: '',
+        date: '',
         room: ''
+        
       },
       options: [{
         value: '1',
@@ -71,6 +84,15 @@ export default {
         label: '女'
       }]
     }
+  },
+  created() {
+    let tel = getUserInfo().tel;
+    getUser(tel).then(res => {
+      this.residentInfo = res.data;
+      // console.log(res.data);
+      // console.log(this.residentInfo);
+    });
+    this.residentInfo.date = moment(this.residentInfo.date).format("YYYY-MM-DD HH:DD:MM");
   }
 }
 </script>

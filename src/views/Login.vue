@@ -47,8 +47,7 @@
 import { login } from "../api/userApi";
 import { showSuccessMsg, showErrorMsg } from "../utils/msg";
 import { setToken, setUserInfo } from "../utils/auth";
-
-const MODE = require("../../server/utils/Mode");
+import MODE from "@/utils/Mode";
 export default {
   created() {},
   data() {

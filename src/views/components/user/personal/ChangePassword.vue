@@ -1,11 +1,11 @@
 <template>
     <div class="formDiv">
         <el-form label-position="right" ref="form" :rules="rules" :model="form" label-width="80px">
-            <el-form-item label="旧密码：" label-width="200px" prop="opwd">
-                <el-input v-model="form.opwd" type="password"></el-input>
+            <el-form-item label="旧密码：" label-width="200px" prop="oldPwd">
+                <el-input v-model="form.oldPwd" type="password"></el-input>
             </el-form-item>
-            <el-form-item label="新密码：" label-width="200px" prop="npwd">
-                <el-input v-model="form.npwd" type="password"></el-input>
+            <el-form-item label="新密码：" label-width="200px" prop="newPwd">
+                <el-input v-model="form.newPwd" type="password"></el-input>
             </el-form-item>
             <el-form-item label="确认新密码：" label-width="200px" prop="cpwd">
                 <el-input v-model="form.cpwd" type="password"></el-input>
@@ -13,8 +13,8 @@
 
             <div class="ulDiv">
                 <ul style="font-size: 14px; text-align: left; list-style:none;">
-                    <li><i class="el-icon-warning-outline"></i> 密码长度8-64位</li>
-                    <li><i class="el-icon-warning-outline"></i> 需同时包含大写字母、小写字母、数字,不可使用特殊字符</li>
+                    <li><i class="el-icon-warning-outline"></i> 密码长度8-16位</li>
+                    <li><i class="el-icon-warning-outline"></i> 需同时包含字母、数字,不可使用特殊字符</li>
                     <li><i class="el-icon-warning-outline"></i> 密码不能包含邮箱</li>
                 </ul>
             </div>
@@ -27,65 +27,82 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        // subPwd: '',
-        form: {
-          opwd:'',
-          npwd:'',
-          cpwd:''
-        },
-        rules: {
-          opwd: [
-            { required: true, message: '请输入旧密码', trigger: 'blur' },
-            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          npwd: [
-            { required: true, message: '请输入新密码', trigger: 'blur' },
-            { min: 8, max: 64, message: '长度在 8 到 64 个字符', trigger: 'blur' },
-            { pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,64}$/, message: '密码格式不正确', trigger: 'blur' },
-          ],
-          cpwd: [
-            { required: true, message: true, message: '请确认新密码', trigger: 'blur' },
-            { min: 8, max: 64, message: '长度在 8 到 64 个字符', trigger: 'blur' }
-          ],
-        }
+import { updatePassword } from '@/api/userApi';
+import { getUserInfo, setToken } from '@/utils/auth'
+import Mode from '@/utils/Mode'
+export default {
+  data() {
+    return {
+      // subPwd: '',
+      form: {
+        oldPwd:'',
+        newPwd:'',
+        cpwd:''
+      },
+      rules: {
+        oldPwd: [
+          { required: true, message: '请输入旧密码', trigger: 'blur' },
+          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        newPwd: [
+          { required: true, message: '请输入新密码', trigger: 'blur' },
+          { min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' },
+          { pattern: /^(?=.*\d)(?=.*[A-z]).{8,16}$/, message: '密码格式不正确', trigger: 'blur' },
+        ],
+        cpwd: [
+          { required: true, message: true, message: '请确认新密码', trigger: 'blur' },
+          { min: 8, max: 16, message: '长度在 8 到 16 个字符', trigger: 'blur' }
+        ],
       }
-    },
-
-    mounted() {
-        // this.form.opwd = this.opwd
-        // console.log('opwd:', opwd)
-    },
-
-
-    methods: {
-      onSubmit(formName) {
-          this.$refs[formName].validate((valid) => {
-            if(valid){
-                let {opwd, npwd, cpwd} = this.form;
-                if(cpwd === npwd) {
-                    console.log('submit!');
-                    this.subPwd = this.form.npwd
-                    this.$emit('subPwd', this.subPwd)
-                    this.$message({
-                        message: '修改成功',
-                        type: 'success'
-                    });
-                } else {
-                    this.$message({
-                        message: '修改失败，两次密码字段不一致',
-                        type: 'error'
-                    });
-                } 
-            } else {
-                console.log('修改失败');
-                return false;
-            }
-          }
-        )}    
     }
+  },
+  methods: {
+    onSubmit(formName) {
+      if (!this.checkForm()) return;
+      let {oldPwd, newPwd, cpwd} = this.form;
+      if(cpwd === newPwd) {
+        console.log('submit!');
+        let params = { oldPwd, newPwd };
+        updatePassword(params).then(res => {
+          if (res.data.mode == Mode.UPDATE_PWD_SUCCESS) {
+            this.$message({
+              message: res.data.msg,
+              type: 'success'
+            });
+          } else if (res.data.mode == Mode.PASSWORD_INCORRECT) {
+            this.$message({
+            message: res.data.msg,
+            type: 'error'
+          });
+          }
+          
+        }).catch(err => {
+          console.log(err);
+          this.$message({
+            message: '修改失败，原密码不正确',
+            type: 'error'
+          });
+        }) 
+      } else {
+        this.$message({
+          message: '修改失败，两次密码字段不一致',
+          type: 'error'
+        });
+      } 
+    },
+    checkForm() {
+    let isNormal = false;
+    this.$refs["form"].validate((valid) => {
+      if (valid) {
+        isNormal = true;
+      } else {
+        isNormal = false;
+      }
+    });
+    return isNormal; 
+  }
+  },
+    
 }
 </script>
 

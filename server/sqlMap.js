@@ -14,7 +14,7 @@ const sqlMap = {
     // 查询所有用户
     selectAll: 'SELECT * FROM resident;',
     // 查询单个用户
-    selectByTel: 'SELECT * FROM resident WHERE tel=?;',
+    selectByTel: 'SELECT rs.*, room.name room FROM resident rs LEFT JOIN room on rs.id=room.resident_id WHERE tel=?;',
     // 修改信息
     updateInfo: "UPDATE resident SET idcard=?, SET name=?, SET sex=?, SET email=?, SET birthday=? WHERE tel=?;",
     // 修改密码

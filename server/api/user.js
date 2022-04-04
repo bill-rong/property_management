@@ -11,19 +11,29 @@ const sqlMap = require('../sqlMap');
 
 const api = {
   login: '/login',
+  getUser: '/get/user',
   updatePwd: '/update/password',
+  forgetPwd: '/forget/password'
 }
 
-
-router.get('/getUser', (req, res) => {
-  let sql = SQL.user.select;
-  sqlRun(sql, (err, result) => {
+/**
+ * 获取用户信息接口
+ * url: /api/user/get/user
+ * params: {tel}
+ */
+router.get(api.getUser, (req, res) => {
+  let tel = req.query.tel;
+  let sql = SQL.user.selectByTel;
+  console.log(tel);
+  sqlRun(sql, tel, (err, result) => {
     if (err) {
       console.log("失败" + err);
     }
     if (result) {
-      res.status = 401;
-      jsonWrite(res, result);
+      let data = JSON.parse(JSON.stringify(result[0]));
+      delete data.password;
+      delete data.living
+      jsonWrite(res, data);
       // res.json(result)
     }
   });
@@ -47,6 +57,7 @@ router.post(api.login, (req, res) => {
       const flag = bcrypt.decrypt(params.password, result[0].password);
       if (flag) {
         let data = JSON.parse(JSON.stringify(result[0]));
+        delete data.password;
         let token = JWT.sign(data);
         jsonWrite(res, {
           mode: MODE.PASSWORD_CORRECT,
@@ -70,11 +81,11 @@ router.post(api.login, (req, res) => {
 });
 
 /**
- * 修改密码接口
- * url: /api/user/updatePassword
+ * 忘记密码接口
+ * url: /api/user/forget/password
  * params: {tel, idcard, passwords}
  */
-router.put(api.updatePwd, (req, res) => {
+router.post(api.forgetPwd, (req, res) => {
   let params = req.body;
   let checkPwdSql = sqlMap.user.selectByTel;
   sqlRun(checkPwdSql, params.tel, (err, result) => {
@@ -82,7 +93,7 @@ router.put(api.updatePwd, (req, res) => {
       console.log("查询密码失败", err);
     }
     if (result) {
-      let result = JSON.parse(JSON.stringify(result[0]));
+      result = JSON.parse(JSON.stringify(result[0]));
       if (params.idcard != result.idcard) {
         jsonWrite(res, {
           mode: MODE.IDCARD_INCORRECT,
@@ -108,6 +119,45 @@ router.put(api.updatePwd, (req, res) => {
         mode: MODE.USER_NOT_EXIST,
         msg: "用户不存在"
       });
+    }
+  });
+});
+
+/**
+ * 修改密码接口
+ * url: /api/user/update/password
+ * params: {tel, idcard, passwords}
+ */
+router.post(api.updatePwd, (req, res) => {
+  let params = req.body;
+  let checkPwdSql = sqlMap.user.selectByTel;
+  sqlRun(checkPwdSql, params.tel, (err, result) => {
+    if (err) {
+      console.log("查询密码失败", err);
+    }
+    if (result) {
+      result = JSON.parse(JSON.stringify(result[0]));
+      if (!bcrypt.decrypt(params.oldPwd, result.password)) {
+        jsonWrite(res, {
+          mode: MODE.PASSWORD_INCORRECT,
+          msg: "原密码错误"
+        });
+      } else {
+        let updatePwdSql = sqlMap.user.updatePwd;
+        let newPwd = bcrypt.encrypt(params.newPwd);
+        let tel = params.tel;
+        sqlRun(updatePwdSql, [newPwd, tel], (err, result) => {
+          if (err) {
+            console.log("修改密码失败", err);
+          }
+          if (result) {
+            jsonWrite(res, {
+              mode: MODE.UPDATE_PWD_SUCCESS,
+              msg: "密码修改成功",
+            });
+          }
+        })
+      }
     }
   });
 });

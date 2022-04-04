@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
 // 获取用户信息
-export function getUser() {
+export function getUser(tel) {
     return request({
-        url: '/api/user/getUser/',
-        method: 'get',
+        url: '/api/user/get/user?tel=' + tel,
+        method: 'get'
     })
 }
 
@@ -20,9 +20,10 @@ export function login(loginForm, ident) {
 
 // 修改密码
 export function updatePassword(data) {
+  console.log("1111s");
   return request({
-    url: '/api/user/update/assword',
-    method: 'put',
+    url: '/api/user/update/password',
+    method: 'post',
     data: data
   })
 }

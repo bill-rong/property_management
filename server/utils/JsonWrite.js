@@ -1,4 +1,4 @@
-const MODE = require('../utils/Mode');
+const MODE = require('../utils/Mode').default;
 
 const jsonWrite = function (res, result) {
   if (typeof result === 'undefined') {
