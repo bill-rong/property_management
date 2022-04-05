@@ -37,6 +37,12 @@ const sqlMap = {
     updateInfo: "UPDATE admin SET name=?, SET sex=?, SET email=? WHERE tel=?",
     // 删除管理员
     delete: "DELETE FROM admin WHERE tel=?;"
+  },
+  community: {
+    select: "SELECT * FROM community;",
+    update: "UPDATE community SET `name`=?, created=?, `describe`=?, phone=?, address=?;",
+    selectBuilding: "SELECT * FROM building;",
+    selectRoom: "SELECT rm.*, bd.name bdname, ri.name riname FROM room rm LEFT JOIN building bd ON rm.building_id=bd.id LEFT JOIN resident ri ON ri.id=rm.resident_id;"
   }
 }
 

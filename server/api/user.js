@@ -169,7 +169,7 @@ router.post(api.updatePwd, (req, res) => {
 router.post(api.uodateInfo, (req, res) => {
   let params = req.body;
   let updateInfoSql = SQL.user.updateInfo;
-  params.birthday =  moment(params.birthday).format("YYYY-MM-DD")
+  params.birthday = moment(params.birthday).format("YYYY-MM-DD");
   let arrInfo = [params.idcard, params.name, params.sex, params.email, params.birthday, params.tel];
   console.log("arr", arrInfo);
   sqlRun(updateInfoSql, arrInfo, (err, result) => {

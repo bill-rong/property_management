@@ -9,6 +9,7 @@
 
       <el-table-column
       v-for="(item, index) in tableColumn"
+      sortable
       :type=item.type
       :prop=item.prop
       :label=item.label
@@ -36,7 +37,8 @@
         :total="total" 
         :page-size="pageSize" 
         :current-page="currentPage"
-        @current-change="changePage">
+        @current-change="changePage"
+        style="margin-top: 5px;">
     </el-pagination>
   </div>
 </template>
@@ -54,7 +56,7 @@ export default {
     },
     pageSize: {
       type: Number,
-      default: 2
+      default: 7
     },
     currentPage: {
       type: Number,
@@ -63,11 +65,15 @@ export default {
   },
   data() {
     return {
-      total: this.tableData.length,
+      // total: this.tableData.length,
       multipleSelection: []
     }
   },
-
+  computed: {
+    total() {
+      return this.tableData.length;
+    }
+  },
   methods: {
     changePage(page) {
       this.currentPage = page

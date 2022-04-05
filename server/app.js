@@ -20,30 +20,31 @@ app.use(bodyParser.json());
 // 拦截请求  判断token
 app.use(function (req, res, next) { 
   console.log("请求接口-> ", req.url, req.body);
-  if (req.url.includes("login")) {
-    console.log("登录请求");
-    next();
-  } else {
-    let token = req.headers['authorization'];
-    if (token) {
-      // 解码 token (验证 secret 和检查有效期（exp）)
-      let verifyRes = JWT.verify(token);
-      if (verifyRes.flag) {
-          next(); //继续下一步路由
-      } else {
-        return res.status(401).send({
-          success: false,
-          msg: 'token 错误'
-      });
-      }
-    } else {
-      // 没有拿到token 返回错误 
-      return res.status(403).send({
-          success: false,
-          msg: '没有找到token'
-      });
-    }
-  }
+  next();
+  // if (req.url.includes("login")) {
+  //   console.log("登录请求");
+  //   next();
+  // } else {
+  //   let token = req.headers['authorization'];
+  //   if (token) {
+  //     // 解码 token (验证 secret 和检查有效期（exp）)
+  //     let verifyRes = JWT.verify(token);
+  //     if (verifyRes.flag) {
+  //         next(); //继续下一步路由
+  //     } else {
+  //       return res.status(401).send({
+  //         success: false,
+  //         msg: 'token 错误'
+  //     });
+  //     }
+  //   } else {
+  //     // 没有拿到token 返回错误 
+  //     return res.status(403).send({
+  //         success: false,
+  //         msg: '没有找到token'
+  //     });
+  //   }
+  // }
 });
 
 // 添加接口路由
@@ -52,6 +53,10 @@ app.use('/api/user', user)
 
 const admin = require('./api/admin')
 app.use('/api/admin', admin)
+
+const community = require('./api/community')
+app.use('/api/community', community)
+
 
 
 // 监听3000端口

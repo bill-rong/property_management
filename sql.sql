@@ -43,7 +43,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (1,'134','sofia','0',NULL,'normal','$2a$12$/Qs3nXDWh403VRJ8FukJ4ewTbY1Z12EBwEmPzYXPrtG0sVEmFcZFe');
+INSERT INTO `admin` VALUES (1,'134','sofia','0','111@qq.com','normal','$2a$12$/Qs3nXDWh403VRJ8FukJ4ewTbY1Z12EBwEmPzYXPrtG0sVEmFcZFe');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -61,7 +61,7 @@ CREATE TABLE `announcement` (
   `date` datetime DEFAULT NULL,
   `admin_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='公告';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='公告';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,6 +70,7 @@ CREATE TABLE `announcement` (
 
 LOCK TABLES `announcement` WRITE;
 /*!40000 ALTER TABLE `announcement` DISABLE KEYS */;
+INSERT INTO `announcement` VALUES (1,'公告标题1','公告内容公告内容','2022-04-04 15:00:44',1);
 /*!40000 ALTER TABLE `announcement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +85,7 @@ CREATE TABLE `building` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='楼';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='楼';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,6 +94,7 @@ CREATE TABLE `building` (
 
 LOCK TABLES `building` WRITE;
 /*!40000 ALTER TABLE `building` DISABLE KEYS */;
+INSERT INTO `building` VALUES (1,'A1'),(2,'A2'),(3,'B1');
 /*!40000 ALTER TABLE `building` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -107,7 +109,7 @@ CREATE TABLE `community` (
   `name` varchar(50) NOT NULL,
   `created` date DEFAULT NULL,
   `describe` text,
-  `tel` varchar(45) DEFAULT NULL,
+  `phone` varchar(45) DEFAULT NULL,
   `address` text,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -119,6 +121,7 @@ CREATE TABLE `community` (
 
 LOCK TABLES `community` WRITE;
 /*!40000 ALTER TABLE `community` DISABLE KEYS */;
+INSERT INTO `community` VALUES ('小区名2','2015-04-04','小区简介小区简介小区简介小区简介小区简介小区简介','010-1111111','地址地址地址地址地址地址地址');
 /*!40000 ALTER TABLE `community` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,7 +169,7 @@ CREATE TABLE `family` (
   `relation` varchar(45) DEFAULT NULL COMMENT '关系',
   `tel` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,6 +178,7 @@ CREATE TABLE `family` (
 
 LOCK TABLES `family` WRITE;
 /*!40000 ALTER TABLE `family` DISABLE KEYS */;
+INSERT INTO `family` VALUES (1,1,'441621200011110000','biu','1','2000-11-11','兄弟','13311112222');
 /*!40000 ALTER TABLE `family` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,7 +226,7 @@ CREATE TABLE `parking` (
   `date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `number_UNIQUE` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='车位';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='车位';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -231,6 +235,7 @@ CREATE TABLE `parking` (
 
 LOCK TABLES `parking` WRITE;
 /*!40000 ALTER TABLE `parking` DISABLE KEYS */;
+INSERT INTO `parking` VALUES (1,'P1001',1,'粤A23qw4','2022-04-04'),(2,'P1002',NULL,NULL,NULL),(3,'P1003',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `parking` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -273,6 +278,7 @@ DROP TABLE IF EXISTS `pet`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pet` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `resident` int(11) NOT NULL,
   `variety` varchar(45) DEFAULT NULL COMMENT '品种',
   `name` varchar(45) DEFAULT NULL,
   `documents` enum('0','1') DEFAULT '0' COMMENT '证件',
@@ -335,11 +341,11 @@ CREATE TABLE `resident` (
   `email` varchar(45) DEFAULT NULL,
   `birthday` date DEFAULT NULL,
   `password` varchar(100) DEFAULT NULL,
-  `liveing` enum('0','1') DEFAULT '1' COMMENT '1为居住中',
+  `living` enum('0','1') DEFAULT '1' COMMENT '1为居住中',
   `date` date DEFAULT NULL COMMENT '入住时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `tel_UNIQUE` (`tel`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='住户信息';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='住户信息';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -348,7 +354,7 @@ CREATE TABLE `resident` (
 
 LOCK TABLES `resident` WRITE;
 /*!40000 ALTER TABLE `resident` DISABLE KEYS */;
-INSERT INTO `resident` VALUES (1,'133','','bill','1',NULL,NULL,'$2a$12$/Qs3nXDWh403VRJ8FukJ4ewTbY1Z12EBwEmPzYXPrtG0sVEmFcZFe','1',NULL);
+INSERT INTO `resident` VALUES (1,'133','441621199901012323','bill','1','lbr@qq.com','1999-01-01','$2a$12$/Qs3nXDWh403VRJ8FukJ4ewTbY1Z12EBwEmPzYXPrtG0sVEmFcZFe','1','2020-04-04'),(2,'144','441621199901012345','马3','1','lbr@qq.com','1999-01-01','$2a$12$BWyRDE69V/Tf23zHBP4aluJZ6LWxBavMUuCvHtjyPscDat5GEIr7.','1','2020-04-04');
 /*!40000 ALTER TABLE `resident` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -368,7 +374,7 @@ CREATE TABLE `room` (
   PRIMARY KEY (`id`),
   KEY `FK_room_building_idx` (`building_id`),
   CONSTRAINT `FK_room_building` FOREIGN KEY (`building_id`) REFERENCES `building` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -377,6 +383,7 @@ CREATE TABLE `room` (
 
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
+INSERT INTO `room` VALUES (1,1,'A1101','0',NULL),(2,1,'A1102','1',1),(3,2,'A2101','0',NULL),(4,3,'B1101','1',2);
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -397,4 +404,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-27 23:32:17
+-- Dump completed on 2022-04-05 23:58:45
