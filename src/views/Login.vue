@@ -90,8 +90,8 @@ export default {
             setUserInfo(res.data.data); // 保存用户信息
             setToken(res.data.token); // 保存token
             this.radio == "1"
-              ? this.$router.push({ name: "home" })
-              : this.$router.push({ name: "adminHome" });
+              ? this.$router.push({ name: "index" })
+              : this.$router.push({ name: "adminIndex" });
           } else if (
             res.data.mode == MODE.PASSWORD_INCORRECT ||
             res.data.mode == MODE.USER_NOT_EXIST

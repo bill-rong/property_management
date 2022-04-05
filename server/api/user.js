@@ -7,13 +7,14 @@ const bcrypt = require('../utils/BcryptJS');
 const MODE = require('../utils/Mode');
 const jsonWrite = require('../utils/JsonWrite');
 const JWT = require('../utils/Token');
-const sqlMap = require('../sqlMap');
+const moment = require('moment');
 
 const api = {
   login: '/login',
   getUser: '/get/user',
   updatePwd: '/update/password',
-  forgetPwd: '/forget/password'
+  forgetPwd: '/forget/password',
+  uodateInfo: '/update/info'
 }
 
 /**
@@ -53,7 +54,7 @@ router.post(api.login, (req, res) => {
     if (err) {
       console.log("失败", err);
     }
-    if (result) {
+    if (result.length > 0) {
       const flag = bcrypt.decrypt(params.password, result[0].password);
       if (flag) {
         let data = JSON.parse(JSON.stringify(result[0]));
@@ -87,7 +88,7 @@ router.post(api.login, (req, res) => {
  */
 router.post(api.forgetPwd, (req, res) => {
   let params = req.body;
-  let checkPwdSql = sqlMap.user.selectByTel;
+  let checkPwdSql = SQL.user.selectByTel;
   sqlRun(checkPwdSql, params.tel, (err, result) => {
     if (err) {
       console.log("查询密码失败", err);
@@ -100,7 +101,7 @@ router.post(api.forgetPwd, (req, res) => {
           msg: "身份证号不匹配"
         });
       } else {
-        let updatePwdSql = sqlMap.user.updatePwd;
+        let updatePwdSql = SQL.user.updatePwd;
         let newPwd = bcrypt.encrypt(params.password);
         sqlRun(updatePwdSql, newPwd, (err, result) => {
           if (err) {
@@ -130,7 +131,7 @@ router.post(api.forgetPwd, (req, res) => {
  */
 router.post(api.updatePwd, (req, res) => {
   let params = req.body;
-  let checkPwdSql = sqlMap.user.selectByTel;
+  let checkPwdSql = SQL.user.selectByTel;
   sqlRun(checkPwdSql, params.tel, (err, result) => {
     if (err) {
       console.log("查询密码失败", err);
@@ -143,7 +144,7 @@ router.post(api.updatePwd, (req, res) => {
           msg: "原密码错误"
         });
       } else {
-        let updatePwdSql = sqlMap.user.updatePwd;
+        let updatePwdSql = SQL.user.updatePwd;
         let newPwd = bcrypt.encrypt(params.newPwd);
         let tel = params.tel;
         sqlRun(updatePwdSql, [newPwd, tel], (err, result) => {
@@ -153,7 +154,7 @@ router.post(api.updatePwd, (req, res) => {
           if (result) {
             jsonWrite(res, {
               mode: MODE.UPDATE_PWD_SUCCESS,
-              msg: "密码修改成功",
+              msg: "密码修改成功"
             });
           }
         })
@@ -161,6 +162,29 @@ router.post(api.updatePwd, (req, res) => {
     }
   });
 });
+
+/**
+ * 修改个人信息
+ */
+router.post(api.uodateInfo, (req, res) => {
+  let params = req.body;
+  let updateInfoSql = SQL.user.updateInfo;
+  params.birthday =  moment(params.birthday).format("YYYY-MM-DD")
+  let arrInfo = [params.idcard, params.name, params.sex, params.email, params.birthday, params.tel];
+  console.log("arr", arrInfo);
+  sqlRun(updateInfoSql, arrInfo, (err, result) => {
+    if (err) {
+      console.log("修改个人信息", err);
+    }
+    if (result) {
+      console.log("result", result);
+      jsonWrite(res, {
+        mode: MODE.UPDATE_INFO_SUCCESS,
+        msg: "修改成功"
+      });
+    }
+  })
+})
 
 
 module.exports = router;

@@ -7,9 +7,7 @@
         <el-form-item label="真实姓名：">
           <el-input  placeholder="" v-model="residentInfo.name"></el-input>
         </el-form-item>
-        <el-form-item label="手机号：">
-          <el-input placeholder="" v-model="residentInfo.tel"></el-input>
-        </el-form-item>
+        
         </el-form-item>
         <el-form-item label="身份证号：">
           <el-input  placeholder="" v-model="residentInfo.idcard"></el-input>
@@ -24,12 +22,15 @@
             </el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="邮箱：">
+          <el-input  placeholder="" v-model="residentInfo.email"></el-input>
+        </el-form-item>
       </el-form>
     </div>
     <div class="info-div">
       <el-form label-position="right" label-width="100px" style="width:400px">
-        <el-form-item label="邮箱：">
-          <el-input  placeholder="" v-model="residentInfo.email"></el-input>
+        <el-form-item label="手机号：">
+          <el-input placeholder="" v-model="residentInfo.tel" disabled></el-input>
         </el-form-item>
         <el-form-item label="生日：">
           <el-date-picker
@@ -43,24 +44,26 @@
           <el-date-picker
             v-model="residentInfo.date"
             type="date"
+            disabled
             placeholder="选择日期"
-             style="width:100%">
+            style="width:100%">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="房号：">
-          <el-input  placeholder="" v-model="residentInfo.room"></el-input>
+          <el-input  placeholder="" v-model="residentInfo.room" disabled></el-input>
         </el-form-item>
       </el-form>
     </div>
-    <div class="btn-div"><el-button type="primary" :plain="true">确认修改</el-button></div>
+    <div class="btn-div"><el-button type="primary" :plain="true" @click="submit()">确认修改</el-button></div>
   </el-row>
 </el-container>
 
 </template>
 
 <script>
-import {getUser} from '@/api/userApi'
+import {getUser, updateInfo} from '@/api/userApi'
 import { getUserInfo, setToken } from '@/utils/auth'
+import Mode from '@/utils/Mode'
 export default {
   data() {
     return {
@@ -89,10 +92,19 @@ export default {
     let tel = getUserInfo().tel;
     getUser(tel).then(res => {
       this.residentInfo = res.data;
-      // console.log(res.data);
-      // console.log(this.residentInfo);
     });
-    this.residentInfo.date = moment(this.residentInfo.date).format("YYYY-MM-DD HH:DD:MM");
+  },
+  methods: {
+    submit() {
+      updateInfo(this.residentInfo).then(res => {
+        if (res.data.mode == Mode.UPDATE_INFO_SUCCESS) {
+          this.$message({
+            message: res.data.msg,
+            type: 'success'
+          });
+        }
+      })
+    }
   }
 }
 </script>

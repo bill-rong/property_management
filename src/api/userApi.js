@@ -20,9 +20,17 @@ export function login(loginForm, ident) {
 
 // 修改密码
 export function updatePassword(data) {
-  console.log("1111s");
   return request({
     url: '/api/user/update/password',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改个人信息
+export function updateInfo(data) {
+  return request({
+    url: '/api/user/update/info',
     method: 'post',
     data: data
   })

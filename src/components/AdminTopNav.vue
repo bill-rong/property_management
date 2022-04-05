@@ -12,21 +12,38 @@
           <img src="../assets/logo.png" height="20px" />
           <span slot="title" style="font-size: 20px; margin-left: 10px; margin-right: 60px">物业管理系统</span>
         </el-menu-item>
-        <el-menu-item index="index">大厅</el-menu-item>
-        <el-submenu index="repair">
-          <template slot="title">报修</template>
-          <el-menu-item index="reportRepair">上报维修</el-menu-item>
-          <el-menu-item index="repairInfo">维修记录</el-menu-item>
+        <el-menu-item index="adminIndex">大厅</el-menu-item>
+        <el-submenu index="community">
+          <template slot="title">小区信息管理</template>
+          <el-menu-item index="communityManage">小区信息</el-menu-item>
+          <el-menu-item index="roomManage">房屋管理</el-menu-item>
+          <el-menu-item index="parkingManage">停车位管理</el-menu-item>
         </el-submenu>
-        <el-submenu index="pay">
-          <template slot="title">物业缴费</template>
-          <el-menu-item index="payment">缴纳费用</el-menu-item>
-          <el-menu-item index="paymentInfo">历史缴费记录</el-menu-item>
+        <el-submenu index="business">
+          <template slot="title">物业业务</template>
+          <el-menu-item index="repairManage">报修</el-menu-item>
+          <el-menu-item index="complaintManage">投诉</el-menu-item>
+          <el-submenu index="pay">
+            <template slot="title">物业缴费管理</template>
+            <el-menu-item index="toll">收取费用</el-menu-item>
+            <el-menu-item index="paymentList">缴费信息列表</el-menu-item>
+          </el-submenu>
         </el-submenu>
-        <el-submenu index="complaint">
-          <template slot="title">投诉</template>
-          <el-menu-item index="initiate">发起投诉</el-menu-item>
-          <el-menu-item index="complaintInfo">历史投诉记录</el-menu-item>
+        <el-submenu index="resident">
+          <template slot="title">住户管理</template>
+          <el-menu-item index="residentList">住户列表</el-menu-item>
+          <el-menu-item index="petList">宠物列表</el-menu-item>
+        </el-submenu>
+        <el-submenu index="affairs">
+          <template slot="title">事务</template>
+          <el-menu-item index="announcement">公告</el-menu-item>
+          <el-menu-item index="visitor">访客登记</el-menu-item>
+          <el-menu-item index="healthy">健康上报</el-menu-item>
+        </el-submenu>
+        <el-submenu index="system">
+          <template slot="title">系统管理</template>
+          <el-menu-item index="userManage">用户管理</el-menu-item>
+          <el-menu-item index="adminManage">管理员管理</el-menu-item>
         </el-submenu>
       </el-menu>
       <el-dropdown class="el-dropdown" style="float: right" @command="handleCommand" >
@@ -46,19 +63,18 @@
 </template>
 
 <script>
-import { getUserInfo, removeToken, removeUserInfo } from '../utils/auth'
+import { getUserInfo } from '../utils/auth'
 export default {
   name: "TopNav",
   data() {
     return {
-      activeIndex: 'index',
+      activeIndex: 'adminIndex',
       userName: "ababadadad",
     }
   },
   created() {
     this.userName = getUserInfo().name;
     this.activeIndex = this.$router.currentRoute.name;
-    console.log(this.activeIndex);
   },
   methods: {
     handleSelect(key, keyPath) {
@@ -74,24 +90,23 @@ export default {
         setTimeout(() => {
           removeToken();
           removeUserInfo();
+          this.$router.push({ name: "login" });
           this.$message({
               type: 'success',
               message: '已退出登录!'
             });
-          this.$router.push({ name: "login" });
           // showSuccessMsg("已退出登录");
         }, 500);
       });
     },
     handleCommand(command) {
-      this.activeIndex = 'aaa';
-      console.log(this.activeIndex);
+      this.activeIndex = '-1';
       switch (command) {
         case "myInfo":
-          this.$emit("personal", command);
+          // this.$emit("personal", command);
           break;
         case "upPwd":
-          this.$emit("personal", command);
+          // this.$emit("personal", command);
           break;
         case "exit":
           this.exit();

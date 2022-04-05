@@ -24,7 +24,8 @@ export default {
       imgshow: "el-icon-s-unfold",
       imgsq: "el-icon-s-fold",
       isCollapse: true,
-      userName: ""
+      userName: "",
+      topIndex: 'index'
     };
   },
   // 注册组件
@@ -35,7 +36,7 @@ export default {
   methods: {
     routerJump(pathName) {
       console.log(pathName);
-      // this.$router.push({ name: pathName });
+      this.$router.push({ name: pathName });
     },
     personalJump(command) {
       switch (command) {

@@ -26,8 +26,7 @@ router.post(api.login, (req, res) => {
     if (err) {
       console.log("失败" + err);
     }
-    if (result) {
-      // console.log(result[0].password);
+    if (result.length > 0) {
       const flag = bcrypt.decrypt(params.password, result[0].password);
       if (flag) {
         let data = JSON.parse(JSON.stringify(result[0]));
