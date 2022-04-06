@@ -17,10 +17,12 @@ export default {
       data: [],
       column:[{
         prop: 'bdname',
-        label: '所在楼'
+        label: '所在楼',
+        sortable: true
       },{
         prop: 'name',
-        label: '房名'
+        label: '房名',
+        sortable: true
       },{
         prop: 'living',
         label: '居住中'

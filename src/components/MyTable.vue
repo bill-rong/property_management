@@ -9,7 +9,7 @@
 
       <el-table-column
       v-for="(item, index) in tableColumn"
-      sortable
+      :sortable=item.sortable
       :type=item.type
       :prop=item.prop
       :label=item.label
@@ -20,6 +20,7 @@
       <el-table-column prop="id" label="操作">
         <template slot-scope="scope">
           <el-button
+            v-if="editShow"
             size="mini"
             @click="handleEdit(scope.$index, scope.row)">修改
           </el-button>
@@ -61,6 +62,10 @@ export default {
     currentPage: {
       type: Number,
       default: 1
+    },
+    editShow: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
