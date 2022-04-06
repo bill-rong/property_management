@@ -8,11 +8,11 @@ export function getCommunity() {
   })
 }
 
-// 获更新小区信息
+// 更新小区信息
 export function updateCommunity(data) {
   return request({
     url: '/api/community/update/community',
-    method: 'post',
+    method: 'put',
     data: data
   })
 }

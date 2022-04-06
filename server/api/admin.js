@@ -21,6 +21,11 @@ const api = {
  */
 router.post(api.login, (req, res) => {
   let params = req.body;
+  if (Object.keys(params).length == 0) {
+    res.status(400);
+    jsonWrite(res, { msg: '参数为空'});
+    return
+  }
   let sql = SQL.admin.login;
   sqlRun(sql, params.tel, (err, result) => {
     if (err) {

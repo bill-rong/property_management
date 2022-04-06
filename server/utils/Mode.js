@@ -7,6 +7,7 @@ const mode = {
   IDCARD_INCORRECT: 5,  // 身份证号不正确
   UPDATE_PWD_SUCCESS: 6,  // 密码修改成功
   UPDATE_INFO_SUCCESS: 7, // 修改信息成功
+  UPDATE_SUCCESS: 8       // 修改成功
 };
 
 module.exports = mode;

@@ -25,10 +25,9 @@ const api = {
 router.get(api.getUser, (req, res) => {
   let tel = req.query.tel;
   let sql = SQL.user.selectByTel;
-  console.log(tel);
   sqlRun(sql, tel, (err, result) => {
     if (err) {
-      console.log("失败" + err);
+      console.log("失败", err);
     }
     if (result) {
       let data = JSON.parse(JSON.stringify(result[0]));
@@ -48,6 +47,11 @@ router.get(api.getUser, (req, res) => {
  */
 router.post(api.login, (req, res) => {
   let params = req.body;
+  if (Object.keys(params).length == 0) {
+    res.status(400);
+    jsonWrite(res, { msg: '参数为空'});
+    return
+  }
   let sql = SQL.user.login;
   console.log("params", params);
   sqlRun(sql, params.tel, (err, result) => {

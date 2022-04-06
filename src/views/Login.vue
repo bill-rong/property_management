@@ -49,7 +49,6 @@ import { showSuccessMsg, showErrorMsg } from "../utils/msg";
 import { setToken, setUserInfo } from "../utils/auth";
 import MODE from "@/utils/Mode";
 export default {
-  created() {},
   data() {
     var validateUser = (rule, value, callback) => {
       if (value === "") {

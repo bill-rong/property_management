@@ -27,22 +27,31 @@ const sqlMap = {
   admin: {
     // 物业管理员登录
     login: "SELECT tel, name, password, permission FROM admin WHERE tel=?;",
-    // 查询所有管理员
-    selectAll: "SELECT * from admin;",
+    // 查询管理员
+    selectAll: "SELECT * FROM admin;",
+    selectByTel: "SELECT * FROM admin WHERE tel=?;",
     // 添加管理员
     add: "INSERT INTO admin(tel, name, sex, email, permission, password) VALUES (?, ?, ?, ?, ?, ?);",
     // 修改密码
     updatePwd: "UPDATE admin SET password=? WHERE tel=?;",
     // 修改管理员信息
-    updateInfo: "UPDATE admin SET name=?, SET sex=?, SET email=? WHERE tel=?",
+    updateInfo: "UPDATE admin SET name=?, sex=?, email=? WHERE tel=?",
     // 删除管理员
     delete: "DELETE FROM admin WHERE tel=?;"
   },
   community: {
     select: "SELECT * FROM community;",
     update: "UPDATE community SET `name`=?, created=?, `describe`=?, phone=?, address=?;",
+
     selectBuilding: "SELECT * FROM building;",
-    selectRoom: "SELECT rm.*, bd.name bdname, ri.name riname FROM room rm LEFT JOIN building bd ON rm.building_id=bd.id LEFT JOIN resident ri ON ri.id=rm.resident_id;"
+    updateBuilding: "UPDATE building SET name=? WHERE id=?;",
+    addBuilding: "INSERT INTO building(name) VALUES(?);",
+    deleteBuilding: "DELETE FROM building WHERE id=?;",
+
+    selectRoom: "SELECT rm.*, bd.name bdname, ri.name riname FROM room rm LEFT JOIN building bd ON rm.building_id=bd.id LEFT JOIN resident ri ON ri.id=rm.resident_id;",
+    updateRoom: "UPDATE room SET building_id=?, name=?, living=?, resident_id=? WHERE id=?;",
+    addRoom: "INSERT INTO room(building_id, name) VALUES(?);",
+    deleteRoom: "DELETE FROM room WHERE id=?;"
   }
 }
 

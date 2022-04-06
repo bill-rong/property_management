@@ -115,8 +115,8 @@ service.interceptors.response.use(
         } else if (message.includes("Request failed with status code")) {
             if (error.response.status == 401) {
               message = "登录异常或登录超时";
-            } else if (error.response.status == 401) {
-              message = "还没有登录";
+            } else if (error.response.status == 400) {
+              message = "账号或密码有误！";
             } else {
                 message = "后端接口" + message.substr(message.length - 3) + "异常";
             }
