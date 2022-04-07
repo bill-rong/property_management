@@ -59,7 +59,7 @@ CREATE TABLE `announcement` (
   `title` varchar(45) DEFAULT NULL,
   `content` text,
   `date` datetime DEFAULT NULL,
-  `admin_id` int(11) NOT NULL,
+  `admin_tel` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='公告';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -70,7 +70,7 @@ CREATE TABLE `announcement` (
 
 LOCK TABLES `announcement` WRITE;
 /*!40000 ALTER TABLE `announcement` DISABLE KEYS */;
-INSERT INTO `announcement` VALUES (1,'公告标题1','公告内容公告内容','2022-04-04 15:00:44',1);
+INSERT INTO `announcement` VALUES (1,'公告标题1','公告内容公告内容','2022-04-04 15:00:44',134);
 /*!40000 ALTER TABLE `announcement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -354,7 +354,7 @@ CREATE TABLE `resident` (
 
 LOCK TABLES `resident` WRITE;
 /*!40000 ALTER TABLE `resident` DISABLE KEYS */;
-INSERT INTO `resident` VALUES (1,'133','441621199901012323','bill','1','lbr@qq.com','1999-01-01','$2a$12$/Qs3nXDWh403VRJ8FukJ4ewTbY1Z12EBwEmPzYXPrtG0sVEmFcZFe','1','2020-04-04'),(2,'144','441621199901012345','马3','1','lbr@qq.com','1999-01-01','$2a$12$BWyRDE69V/Tf23zHBP4aluJZ6LWxBavMUuCvHtjyPscDat5GEIr7.','1','2020-04-04');
+INSERT INTO `resident` VALUES (1,'133','441621200012124321','bill','1','lbr_jsj@163.com','2000-12-12','$2a$12$0IK747dI8Ph0a16m9Hp17uyOUBdEtxi9ETVuo3YOfqyeEzJxtPhR.','1','2020-04-04'),(2,'144','441621199901012345','马3','1','lbr@qq.com','1999-01-01','$2a$12$BWyRDE69V/Tf23zHBP4aluJZ6LWxBavMUuCvHtjyPscDat5GEIr7.','1','2020-04-04');
 /*!40000 ALTER TABLE `resident` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -397,4 +397,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-06 19:15:12
+-- Dump completed on 2022-04-07 18:34:37
