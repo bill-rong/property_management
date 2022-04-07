@@ -7,8 +7,6 @@
         <el-form-item label="真实姓名：">
           <el-input  placeholder="" v-model="residentInfo.name"></el-input>
         </el-form-item>
-        
-        </el-form-item>
         <el-form-item label="身份证号：">
           <el-input  placeholder="" v-model="residentInfo.idcard"></el-input>
         </el-form-item>
@@ -129,7 +127,7 @@ export default {
 }
 
 .el-tabs__content {
-  height: 500px !important; 
+  /* height: 500px !important;  */
 }
 
 

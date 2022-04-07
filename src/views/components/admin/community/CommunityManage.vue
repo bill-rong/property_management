@@ -1,7 +1,7 @@
 <template>
-  <el-tabs type="border-card">
+  <el-tabs type="border-card" style="height: 100% !important;">
     <el-tab-pane label="小区基本信息" class="tab-pane" style="padding: 30px">
-      <el-form label-position="right" label-width="100px" style="width:400px">
+      <el-form label-position="right" label-width="100px" style="width:400px; height: 96% !important;">
         <el-form-item label="小区名：">
           <el-input  placeholder="" v-model="community.name"></el-input>
         </el-form-item>

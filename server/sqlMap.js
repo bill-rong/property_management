@@ -44,12 +44,15 @@ const sqlMap = {
     update: "UPDATE community SET `name`=?, created=?, `describe`=?, phone=?, address=?;",
 
     selectBuilding: "SELECT * FROM building;",
+    selectBuildingByName: "SELECT * FROM building;",
     updateBuilding: "UPDATE building SET name=? WHERE id=?;",
     addBuilding: "INSERT INTO building(name) VALUES(?);",
     deleteBuilding: "DELETE FROM building WHERE id=?;",
 
     selectRoom: "SELECT rm.*, bd.name bdname, ri.name riname FROM room rm LEFT JOIN building bd ON rm.building_id=bd.id LEFT JOIN resident ri ON ri.id=rm.resident_id;",
-    updateRoom: "UPDATE room SET building_id=?, name=?, living=?, resident_id=? WHERE id=?;",
+    selectRoomByName: "SELECT name FROM room WHERE name=?;",
+    updateRoomUnLiving: "UPDATE room SET living='0', resident_id=null WHERE `name`=?;",
+    updateRoomLiving: "UPDATE room SET living='1', resident_id=? WHERE `name`=?;",
     addRoom: "INSERT INTO room(building_id, name) VALUES(?);",
     deleteRoom: "DELETE FROM room WHERE id=?;"
   }

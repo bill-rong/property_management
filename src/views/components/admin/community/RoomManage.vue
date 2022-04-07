@@ -1,8 +1,8 @@
 <template>
-  <div>
-    <el-tabs type="border-card">
-      <el-tab-pane label="楼"><building></building></el-tab-pane>
-      <el-tab-pane label="房"><room></room></el-tab-pane>
+  <div style="height: 100% !important;">
+    <el-tabs type="border-card" style="height: 97% !important;">
+      <el-tab-pane label="楼"><Building></Building></el-tab-pane>
+      <el-tab-pane label="房"><Room></Room></el-tab-pane>
     </el-tabs>
   </div>
 </template>

@@ -12,7 +12,6 @@
     <el-dialog
       title="提示"
       :visible.sync="centerDialogVisible"
-      
       width="30%"
       center>
       <el-form :rules="rules" ref="ruleForm" :model="add">
@@ -25,7 +24,6 @@
         <el-form-item label="房数/层" label-width="40%" style="width: 80%;">
           <el-input-number v-model="add.roomNum" :min="1" :max="10"></el-input-number>
         </el-form-item>
-        
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="centerDialogVisible = false">取 消</el-button>

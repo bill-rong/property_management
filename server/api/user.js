@@ -131,7 +131,7 @@ router.post(api.forgetPwd, (req, res) => {
 /**
  * 修改密码接口
  * url: /api/user/update/password
- * params: {tel, idcard, passwords}
+ * params: {tel, oldPwd, newPwd}
  */
 router.post(api.updatePwd, (req, res) => {
   let params = req.body;
