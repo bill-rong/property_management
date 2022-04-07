@@ -12,8 +12,8 @@
       :src="imgSrc"
       fit="cover">
     </el-image>
-    <div class="park-name"><span>粤A aada</span></div>
-    <div class="park-name"><span>aaa</span></div>
+    <div class="park-name"><span>{{this.parkingInfo.license}}</span></div>
+    <div class="park-name"><span>{{this.parkingInfo.riName}}</span></div>
     <el-button type="danger" round size="small" v-if="isBing">解绑</el-button>
     <el-button type="success" round size="small" v-if="!isBing">绑定</el-button>
   </el-card>
@@ -24,7 +24,13 @@ export default {
   props: {
     parkingInfo: {
       type: Object,
-      default: {}
+      default: {
+        id: 1,
+        name: 'P1001',
+        riId: 1,
+        riName: 'Bill',
+        license: '粤P 53F25'
+      }
     }
   },
   data() {

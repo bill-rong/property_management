@@ -40,10 +40,10 @@ export default {
     personalJump(command) {
       switch (command) {
         case "myInfo":
-          this.$router.push({ name: 'personal' });
+          this.$router.push({ name: 'adminPersonal' });
           break;
         case "upPwd":
-          this.$router.push({ name: 'personal' });
+          this.$router.push({ name: 'adminPersonal' });
           break;
       }
     }

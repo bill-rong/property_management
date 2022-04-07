@@ -1,9 +1,11 @@
-<template>
-  <div style="height: 100% !important;">
-    <el-tabs type="border-card" style="height: 97% !important;">
-      <Parking></Parking>
-    </el-tabs>
-  </div>
+<template>  
+  <el-tabs type="border-card">
+    <el-tab-pane label="停车位管理" class="tab-pane" >
+      <el-scrollbar style="height: 100% !important;">
+        <Parking v-for="count in 28"></Parking>
+      </el-scrollbar>
+    </el-tab-pane>
+  </el-tabs>
 </template>
 
 <script>

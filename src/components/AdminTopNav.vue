@@ -103,7 +103,7 @@ export default {
       this.activeIndex = '-1';
       switch (command) {
         case "myInfo":
-          // this.$emit("personal", command);
+          this.$emit("personal", command);
           break;
         case "upPwd":
           // this.$emit("personal", command);

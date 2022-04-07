@@ -4,6 +4,7 @@ import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import AdminHome from '../views/AdminHome.vue'
 import Personal from '../views/components/user/personal/PersonalCenter.vue'
+import AdminPersonal from '../views/components/admin/personal/PersonalCenter.vue'
 import index from '../views/components/user/index.vue'
 import ReportRepair from '../views/components/user/repair/Report.vue'
 import RepairInfo from '../views/components/user/repair/Info.vue'
@@ -93,6 +94,11 @@ const routes = [
         path: '',
         name: 'adminIndex',
         component: AdminIndex
+      },
+      {
+        path: 'adminPersonal',
+        name: 'adminPersonal',
+        component: AdminPersonal
       },
       {
         path: 'communityManage',

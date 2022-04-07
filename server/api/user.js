@@ -29,12 +29,17 @@ router.get(api.getUser, (req, res) => {
     if (err) {
       console.log("失败", err);
     }
-    if (result) {
+    if (result.length > 0) {
       let data = JSON.parse(JSON.stringify(result[0]));
       delete data.password;
       delete data.living
       jsonWrite(res, data);
       // res.json(result)
+    } else {
+      jsonWrite(res, {
+        mode: MODE.USER_NOT_EXIST,
+        msg: "用户不存在"
+      });
     }
   });
 });

@@ -16,7 +16,7 @@
       center>
       <el-form :rules="rules" ref="ruleForm" :model="add">
         <el-form-item label="楼名" prop="name" label-width="30%" style="width: 80%;">
-          <el-input placeholder="输入房号（如101）" v-model="add.name" class="input-with-select">
+          <el-input placeholder="输入房号（如101）" v-model="add.name">
             <el-select v-model="add.building_id" slot="prepend" placeholder="所在楼" style="width:80px">
               <el-option
                 v-for="item in buildingList"
