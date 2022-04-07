@@ -16,7 +16,6 @@
       :width=item.width
       :key=index>
       </el-table-column>
-<!-- sortable 排序 -->
       <el-table-column prop="id" label="操作">
         <template slot-scope="scope">
           <el-button
