@@ -62,7 +62,6 @@ export default {
 }
 .park-card {
   width: 170px;
-  height: 220px;
   display: inline-block;
   background-color: #fafafa;
   border: 1px solid #409EFF;
