@@ -11,7 +11,8 @@
           <el-submenu
             v-for="bditem in bdList"
             :key="bditem.id"
-            :index="bditem.id">
+            :index="bditem.id"
+            style="border: 1px solid rgb(211, 209, 209); margin: 2px; background-color: #fafafa;">
             <template slot="title">
               <i class="el-icon-location"></i>
               <span>{{bditem.name}}楼</span>
@@ -36,7 +37,7 @@
       :title="drawerData.id"
       :visible.sync="drawer"
       direction="ltr">
-      <p style="word-break:break-word; text-align: left; text-indent:2em; margin: 0 7px">{{this.drawerData.id + ''}}</p>
+      <p style="word-break:break-word; text-align: left; text-indent:2em; margin: 0 7px">{{this.drawerData.id}}</p>
       
     </el-drawer>
   </div>

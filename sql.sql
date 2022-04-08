@@ -278,7 +278,7 @@ DROP TABLE IF EXISTS `pet`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pet` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `resident` int(11) NOT NULL,
+  `room` varchar(20) NOT NULL,
   `variety` varchar(45) DEFAULT NULL COMMENT '品种',
   `name` varchar(45) DEFAULT NULL,
   `documents` enum('0','1') DEFAULT '0' COMMENT '证件',
@@ -397,4 +397,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-07 18:34:37
+-- Dump completed on 2022-04-08 17:39:25
