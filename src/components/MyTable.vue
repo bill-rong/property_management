@@ -19,6 +19,11 @@
       <el-table-column prop="id" label="操作">
         <template slot-scope="scope">
           <el-button
+            v-if="checkShow"
+            size="mini"
+            @click="handleCheck(scope.$index, scope.row)">查看
+          </el-button>
+          <el-button
             v-if="editShow"
             size="mini"
             @click="handleEdit(scope.$index, scope.row)">修改
@@ -65,6 +70,10 @@ export default {
     editShow: {
       type: Boolean,
       default: true
+    },
+    checkShow: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -81,6 +90,9 @@ export default {
   methods: {
     changePage(page) {
       this.currentPage = page
+    },
+    handleCheck(index, row) {
+      this.$emit("check", index, row);
     },
     handleEdit(index, row) {
       this.$emit("edit", index, row);
