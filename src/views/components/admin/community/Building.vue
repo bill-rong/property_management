@@ -1,5 +1,11 @@
 <template>
   <div>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item :to="{ path: '/adminHome/' }">大厅</el-breadcrumb-item>
+      <el-breadcrumb-item>小区信息管理</el-breadcrumb-item>
+      <el-breadcrumb-item>房屋管理</el-breadcrumb-item>
+      <el-breadcrumb-item>楼</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-button 
       type="primary" 
       @click="centerDialogVisible = true"

@@ -3,7 +3,7 @@
     <!-- <el-empty :image-size="100">
       <el-button type="primary">按钮</el-button>
     </el-empty> -->
-    <div class="park-name">A1111
+    <div class="park-name">{{this.parkingInfo.name}}
       <hr color="#409EFF">
     </div>
     
@@ -12,8 +12,8 @@
       :src="imgSrc"
       fit="cover">
     </el-image>
-    <div class="park-name"><span>{{this.parkingInfo.license}}</span></div>
-    <div class="park-name"><span>{{this.parkingInfo.riName}}</span></div>
+    <div class="park-name" style="height: 16px"><span>{{this.parkingInfo.license}}</span></div>
+    <div class="park-name" style="height: 16px"><span>{{this.parkingInfo.riName}}</span></div>
     <el-button type="danger" round size="small" v-if="isBing">解绑</el-button>
     <el-button type="success" round size="small" v-if="!isBing">绑定</el-button>
   </el-card>
@@ -40,7 +40,8 @@ export default {
   },
   computed: {
     isBing() {
-      return Object.keys(this.parkingInfo).length > 0
+
+      return this.parkingInfo.license != ''
     },
     imgSrc() {
       if (this.isBing) {

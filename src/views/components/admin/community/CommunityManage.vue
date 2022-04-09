@@ -1,7 +1,12 @@
 <template>
   <el-tabs type="border-card" style="height: 100% !important;">
-    <el-tab-pane label="小区基本信息" class="tab-pane" style="padding: 30px">
-      <el-form label-position="right" label-width="100px" style="width:400px; height: 96% !important;">
+    <el-breadcrumb separator-class="el-icon-arrow-right" 
+    style="margin-bottom: 30px;">
+      <el-breadcrumb-item :to="{ path: '/adminHome/' }">大厅</el-breadcrumb-item>
+      <el-breadcrumb-item>小区信息管理</el-breadcrumb-item>
+    </el-breadcrumb>
+    <!-- <el-tab-pane label="小区基本信息" class="tab-pane" style="padding: 30px"> -->
+      <el-form label-position="right" label-width="100px" style="width:400px; height: 96% !important;margin:0 auto;">
         <el-form-item label="小区名：">
           <el-input  placeholder="" v-model="community.name"></el-input>
         </el-form-item>
@@ -31,7 +36,7 @@
           <el-button type="primary" :plain="true" @click="submit()">确认修改</el-button>
         </el-form-item>
       </el-form>
-    </el-tab-pane>
+    <!-- </el-tab-pane> -->
   </el-tabs>
 </template>
 
@@ -68,8 +73,8 @@ export default {
 </script>
 
 <style>
-.tab-pane, .el-tabs__nav-scroll {
+/* .tab-pane, .el-tabs__nav-scroll {
   display: flex;
   justify-content: center;
-}
+} */
 </style>
