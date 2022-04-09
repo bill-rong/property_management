@@ -126,7 +126,8 @@ export default {
     // getUser().then(res => {
     //   this.data = res.data;
     // })
-    console.log('super:', this.super);
+
+    console.log('super:', this.super);            // super是传入的权限
     if (this.super === false) {
       this.$message.error('不好意思哦，您不配用这个功能呢');
     }else {

@@ -98,7 +98,7 @@ export default {
       this.$emit("edit", index, row);
     },
     handleDelete(index, row) {
-      this.$emit("delete", index, row);
+      this.$emit("handleDelete", index, row);
     },
     handleSelectionChange(selection) {
       console.log(selection);
