@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `property_management` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `property_management`;
--- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
 --
 -- Host: localhost    Database: property_management
 -- ------------------------------------------------------
@@ -59,9 +59,9 @@ CREATE TABLE `announcement` (
   `title` varchar(45) DEFAULT NULL,
   `content` text,
   `date` datetime DEFAULT NULL,
-  `admin_tel` int(11) NOT NULL,
+  `admin_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='公告';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='公告';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `announcement` (
 
 LOCK TABLES `announcement` WRITE;
 /*!40000 ALTER TABLE `announcement` DISABLE KEYS */;
-INSERT INTO `announcement` VALUES (1,'公告标题1','公告内容公告内容','2022-04-04 15:00:44',134);
+INSERT INTO `announcement` VALUES (1,'公告标题1','公告内容公告内容','2022-04-04 15:00:00',1),(2,'公告标题2','公告内容公告内容','2022-04-09 14:35:00',1),(3,'公告标题3','公告内容公告内容','2022-04-10 09:53:00',1),(4,'公告标题4','公告内容公告内容','2022-04-10 14:37:00',1),(5,'公告标题5','公告内容公告内容','2022-04-10 14:37:00',1),(6,'公告标题6','公告内容公告内容','2022-04-10 14:51:00',1),(7,'公告标题6','公告内容公告内容','2022-04-10 14:51:00',1);
 /*!40000 ALTER TABLE `announcement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -247,17 +247,17 @@ DROP TABLE IF EXISTS `payment`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `payment` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(45) DEFAULT NULL,
-  `describe` text COMMENT '描述',
+  `room` varchar(20) DEFAULT NULL COMMENT '描述',
   `current` double DEFAULT NULL COMMENT '水/电当月数值',
   `curryear` int(11) DEFAULT NULL COMMENT '当月日期',
   `currmonth` int(11) DEFAULT NULL,
   `amount` double DEFAULT NULL COMMENT '金额',
-  `handler` varchar(45) DEFAULT NULL COMMENT '处理人',
+  `handler` varchar(45) DEFAULT '0' COMMENT '处理人',
   `paydate` datetime DEFAULT NULL COMMENT '支付日期',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='缴费信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='缴费信息表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -266,6 +266,7 @@ CREATE TABLE `payment` (
 
 LOCK TABLES `payment` WRITE;
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
+INSERT INTO `payment` VALUES (1,'水','A1102',6,2022,2,30,'bill','2022-04-10 13:07:00'),(2,'水','A1102',5,2022,3,25,'bill','2022-04-10 17:04:00'),(3,'电','A1102',100,2022,2,67,'bill','2022-04-10 17:04:00'),(4,'电','A1102',90,2022,3,60.3,'bill','2022-04-10 18:04:00'),(5,'电','A1102',90,2022,4,60.3,'0',NULL);
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -278,7 +279,7 @@ DROP TABLE IF EXISTS `pet`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pet` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `room` varchar(20) NOT NULL,
+  `resident` int(11) NOT NULL,
   `variety` varchar(45) DEFAULT NULL COMMENT '品种',
   `name` varchar(45) DEFAULT NULL,
   `documents` enum('0','1') DEFAULT '0' COMMENT '证件',
@@ -304,7 +305,7 @@ DROP TABLE IF EXISTS `repair`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `repair` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `contacts` varchar(45) NOT NULL,
   `tel` varchar(45) NOT NULL,
   `room` varchar(45) NOT NULL,
@@ -313,7 +314,7 @@ CREATE TABLE `repair` (
   `date` datetime NOT NULL,
   `status` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报修信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='报修信息表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -322,6 +323,7 @@ CREATE TABLE `repair` (
 
 LOCK TABLES `repair` WRITE;
 /*!40000 ALTER TABLE `repair` DISABLE KEYS */;
+INSERT INTO `repair` VALUES (1,'廖弼镕','13376774751','A1101','水电维修','水龙头不紧密，一直滴水','2022-04-10 20:04:00',NULL),(2,'廖弼镕','13376774751','A1101','家具门窗','房间门锁坏了，打不开了','2022-04-10 20:04:00',NULL);
 /*!40000 ALTER TABLE `repair` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -354,7 +356,7 @@ CREATE TABLE `resident` (
 
 LOCK TABLES `resident` WRITE;
 /*!40000 ALTER TABLE `resident` DISABLE KEYS */;
-INSERT INTO `resident` VALUES (1,'133','441621200012124321','bill','1','lbr_jsj@163.com','2000-12-12','$2a$12$0IK747dI8Ph0a16m9Hp17uyOUBdEtxi9ETVuo3YOfqyeEzJxtPhR.','1','2020-04-04'),(2,'144','441621199901012345','马3','1','lbr@qq.com','1999-01-01','$2a$12$BWyRDE69V/Tf23zHBP4aluJZ6LWxBavMUuCvHtjyPscDat5GEIr7.','1','2020-04-04');
+INSERT INTO `resident` VALUES (1,'133','441621199901012323','bill','1','lbr@qq.com','1999-01-01','$2a$12$/Qs3nXDWh403VRJ8FukJ4ewTbY1Z12EBwEmPzYXPrtG0sVEmFcZFe','1','2020-04-04'),(2,'144','441621199901012345','马3','1','lbr@qq.com','1999-01-01','$2a$12$BWyRDE69V/Tf23zHBP4aluJZ6LWxBavMUuCvHtjyPscDat5GEIr7.','1','2020-04-04');
 /*!40000 ALTER TABLE `resident` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -372,7 +374,6 @@ CREATE TABLE `room` (
   `living` enum('0','1') DEFAULT '0',
   `resident_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name_UNIQUE` (`name`),
   KEY `FK_room_building_idx` (`building_id`),
   CONSTRAINT `FK_room_building` FOREIGN KEY (`building_id`) REFERENCES `building` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
@@ -387,6 +388,41 @@ LOCK TABLES `room` WRITE;
 INSERT INTO `room` VALUES (1,1,'A1101','0',NULL),(2,1,'A1102','1',1),(3,2,'A2101','0',NULL),(4,3,'B1101','1',2);
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `visitor`
+--
+
+DROP TABLE IF EXISTS `visitor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `visitor` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) DEFAULT NULL,
+  `room` varchar(45) DEFAULT NULL,
+  `resident` varchar(45) DEFAULT NULL,
+  `purpose` varchar(45) DEFAULT NULL,
+  `date` date DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `visitor`
+--
+
+LOCK TABLES `visitor` WRITE;
+/*!40000 ALTER TABLE `visitor` DISABLE KEYS */;
+/*!40000 ALTER TABLE `visitor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping events for database 'property_management'
+--
+
+--
+-- Dumping routines for database 'property_management'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -397,4 +433,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-08 17:39:25
+-- Dump completed on 2022-04-11  0:55:59

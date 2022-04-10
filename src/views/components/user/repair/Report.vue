@@ -9,13 +9,13 @@
     </el-breadcrumb>
     <el-form label-position="right" label-width="100px" style="width:400px; height: 96% !important;margin:0 auto;">
       <el-form-item label="联系人：">
-        <el-input  placeholder="" v-model="data.num"></el-input>
+        <el-input  placeholder="" v-model="data.contacts"></el-input>
       </el-form-item>
       <el-form-item label="联系方式：">
-        <el-input  placeholder="" v-model="data.num"></el-input>
+        <el-input  placeholder="" v-model="data.tel"></el-input>
       </el-form-item>
       <el-form-item label="房号：">
-        <el-input  placeholder="" v-model="data.num"></el-input>
+        <el-input  placeholder="" v-model="data.room"></el-input>
       </el-form-item>
       <el-form-item label="类别：">
         <el-select v-model="data.type" placeholder="请选择" style="width:100%">
@@ -28,7 +28,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="描述：">
-        <el-input type="textarea" placeholder="" v-model="data.num"></el-input>
+        <el-input type="textarea" placeholder="" v-model="data.describe"></el-input>
       </el-form-item>
       <el-form-item label="">
         <el-button type="primary" :plain="true" @click="submit()">上 报</el-button>
@@ -39,65 +39,61 @@
 
 <script>
 import {getRoomName} from '@/api/communityApi'
+import {addRepair} from '@/api/repairApi'
 export default {
   data() {
     return {
       water: 5,
       elec: 0.67,
       options: [{
-        value: '水',
-        label: '水'
-      }, {
-        value: '电',
-        label: '电'
+        value: '水电维修',
+        label: '水电维修'
+      },{
+        value: '堵塞',
+        label: '堵塞'
+      },{
+        value: '家具门窗',
+        label: '家具门窗'
+      },{
+        value: '消防设备',
+        label: '消防设备'
+      },{
+        value: '清洁消毒',
+        label: '清洁消毒'
       }],
       data: {
         contacts: '',
         tel: '',
         room: '',
-        type: '水',
+        type: '',
         describe: ''
       },
       restaurants: [],
     }
   },
   updated() {
-    let flag = this.data.type == '水'?5:(this.data.type == '电'?0.67:0);
-    this.data.amount = this.data.num * flag;
-    this.data.amount.toFixed(2)
   },
   
   methods: {
     submit() {
-      console.log(this.data.room);
+      addRepair(this.data).then(res => {
+        this.$message({
+          message: res.data.msg,
+          type: 'success'
+        });
+      })
+
     },
-    querySearch(queryString, cb) {
-        var restaurants = this.restaurants;
-        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
-        // 调用 callback 返回建议列表的数据
-        cb(results);
-      },
-      createFilter(queryString) {
-        return (restaurant) => {
-          return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
-        };
-      },
-      loadAll() {
-        let list = [];
-        getRoomName().then(res => {
-          list = res.data;
-        })
-        return list;
-      },
+    
   },
   created() {
-      getRoomName().then(res => {
-        this.restaurants = res.data;
-        // for (let item in res.data) {
-        //   let name = item.name;
-        //   this.restaurants.push({"name": name});
-        // }
-      });
+      // getRoomName().then(res => {
+      //   this.restaurants = res.data;
+      //   // for (let item in res.data) {
+      //   //   let name = item.name;
+      //   //   this.restaurants.push({"name": name});
+      //   // }
+      // });
     }
 }
 </script>

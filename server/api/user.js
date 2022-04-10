@@ -51,6 +51,8 @@ router.get(api.getUser, (req, res) => {
  * res: {mode, [data,] msg}
  */
 router.post(api.login, (req, res) => {
+  jsonWrite(res, { msg: '登录成功' });
+  return
   let params = req.body;
   if (Object.keys(params).length == 0) {
     res.status(400);
@@ -168,6 +170,23 @@ router.post(api.updatePwd, (req, res) => {
           }
         })
       }
+    }
+  });
+});
+
+router.post(api.updatePwd, (req, res) => {
+  let params = req.body;
+  let resetPwdSql = SQL.user.updatePwd;
+  let newPwd = bcrypt.encrypt("12345678");
+  sqlRun(resetPwdSql, [newPwd, params.tel], (err, result) => {
+    if (err) {
+      console.log("重置密码失败", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.UPDATE_PWD_SUCCESS,
+        msg: "密码重置成功"
+      })
     }
   });
 });

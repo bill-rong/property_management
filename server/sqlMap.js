@@ -22,7 +22,7 @@ const sqlMap = {
     // 注销用户
     unRegister: "UPDATE resident SET living='0' WHERE tel=?;",
     // 删除用户
-    delete: "DELETE FROM resident WHERE tel=?;"
+    delete: "DELETE FROM resident WHERE tel=?;",
   },
   admin: {
     // 物业管理员登录
@@ -68,6 +68,9 @@ const sqlMap = {
     add: "",
     get: "SELECT announcement.*,admin.name name FROM announcement LEFT JOIN admin on announcement.admin_id=admin.id order by date DESC;"
     
+  },
+  repair: {
+    add: "INSERT INTO repair(contacts,tel,room,`type`,`describe`,`date`) VALUES(?,?,?,?,?,?);"
   }
   
 }
