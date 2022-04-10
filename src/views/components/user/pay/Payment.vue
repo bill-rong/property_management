@@ -7,15 +7,27 @@
       <el-breadcrumb-item>缴费</el-breadcrumb-item>
     </el-breadcrumb>
     <div>
-      <MyTabel :tableColumn="column" :tableData="data" :deleteShow="false" :editShow="false" :payShow="true"></MyTabel>
+      <MyTabel :tableColumn="column" :tableData="data" 
+      :deleteShow="false" :editShow="false" 
+      :payShow="true" @pay="payBtn"></MyTabel>
     </div>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirm">确 定</el-button>
+      </span>
+    </el-dialog>
   </el-tabs>
 </template>
 
 <script>
 import MyTabel from '@/components/MyTable.vue'
-import {getUnPayByRoom} from '@/api/paymentApi'
-import {getUser} from '@/api/userApi'
+import { getUnPayByRoom, pay } from '@/api/paymentApi'
+import { getUser } from '@/api/userApi'
 import { getUserInfo } from '@/utils/auth'
 export default {
   components: {
@@ -49,7 +61,9 @@ export default {
       data: [{
 
       }],
-      room: ''
+      room: '',
+      dialogVisible: false,
+      payData: { }
     }
   },
   created() {
@@ -62,6 +76,23 @@ export default {
       })
     })
     
+  },
+  methods: {
+    payBtn(index, row) {
+      this.dialogVisible = true;
+      this.payData.id = row.id;
+      this.payData.handler = getUserInfo().name;
+    },
+    confirm() {
+      this.dialogVisible = false;
+      pay(this.payData).then( res => {
+        this.$message({
+          message: res.data.msg,
+          type: 'success'
+        });
+      })
+      location.reload();
+    }
   }
   
 }

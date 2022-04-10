@@ -62,6 +62,7 @@ const sqlMap = {
     selectPay: "SELECT * FROM property_management.payment WHERE handler!='0';",
     selectUnPayByRoom: "SELECT * FROM property_management.payment WHERE handler='0' and room=?;",
     selectPayByRoom: "SELECT * FROM property_management.payment WHERE handler!='0' and room=?;",
+    pay: "UPDATE payment SET handler=?, paydate=? WHERE id=?;"
   },
   announcement: {
     add: "",

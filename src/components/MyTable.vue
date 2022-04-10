@@ -38,7 +38,7 @@
             v-if="payShow"
             size="mini"
             type="success"
-            @click="handleDelete(scope.$index, scope.row)">支付
+            @click="handlePay(scope.$index, scope.row)">支付
           </el-button>
         </template>
       </el-table-column>
@@ -117,7 +117,11 @@ export default {
     },
     handleSelectionChange(selection) {
       console.log(selection);
-    }
+    },
+    handlePay(index, row) {
+      this.$emit("pay", index, row);
+    },
+    
   }
 }
 </script>

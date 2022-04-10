@@ -14,7 +14,7 @@ const api = {
   getPay: '/get/pay',
   getUnPayByRoom: '/get/unPay/byRoom',
   getPayByRoom: '/get/pay/byRoom',
-  
+  pay: '/pay'
 }
 
 router.get(api.getUnPay, (req, res) => {
@@ -68,8 +68,7 @@ router.get(api.getUnPayByRoom, (req, res) => {
 })
 
 router.get(api.getPayByRoom, (req, res) => {
-  let param = req.query.room
-  console.log(param);
+  let param = req.query.room;
   let sql = SQL.payment.selectPayByRoom;
   sqlRun(sql, param, (err, result) => {
     if (err) {
@@ -83,6 +82,24 @@ router.get(api.getPayByRoom, (req, res) => {
       jsonWrite(res, data);
     } else {
       jsonWrite(res, []);
+    }
+  })
+})
+
+router.post(api.pay, (req, res) => {
+  delete req.body.tel;
+  let { handler, id } = req.body;
+  let date = moment(new Date()).format("YYYY-MM-DD HH:MM");
+  let sql = SQL.payment.pay;
+  console.log(handler, id);
+  sqlRun(sql, [handler, date, id], (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {;
+      jsonWrite(res, {
+        msg: '支付成功'
+      });
     }
   })
 })

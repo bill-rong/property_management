@@ -27,3 +27,11 @@ export function getPayByRoom(data) {
     method: 'get'
   })
 }
+
+export function pay(data) {
+  return request({
+    url: '/api/payment/pay',
+    method: 'post',
+    data: data
+  })
+}
