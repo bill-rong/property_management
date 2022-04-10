@@ -29,9 +29,16 @@
             @click="handleEdit(scope.$index, scope.row)">修改
           </el-button>
           <el-button
+            v-if="deleteShow"
             size="mini"
             type="danger"
             @click="handleDelete(scope.$index, scope.row)">删除
+          </el-button>
+          <el-button
+            v-if="payShow"
+            size="mini"
+            type="success"
+            @click="handleDelete(scope.$index, scope.row)">支付
           </el-button>
         </template>
       </el-table-column>
@@ -74,7 +81,15 @@ export default {
     checkShow: {
       type: Boolean,
       default: false
-    }
+    },
+    payShow: {
+      type: Boolean,
+      default: false
+    },
+    deleteShow: {
+      type: Boolean,
+      default: true
+    },
   },
   data() {
     return {

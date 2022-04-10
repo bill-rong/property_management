@@ -32,3 +32,10 @@ export function getRoom() {
     method: 'get'
   })
 }
+
+export function getRoomName() {
+  return request({
+    url: '/api/community/get/room/name',
+    method: 'get'
+  })
+}

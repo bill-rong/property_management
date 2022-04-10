@@ -57,7 +57,7 @@ export default {
     return {
       editDialogVisible: false,   // 编辑弹窗按钮
       row:{},                     // 存储点击行的信息
-      super: '',                  // 身份权限
+      super: false,                  // 身份权限
 
       data: [
       {
@@ -129,7 +129,7 @@ export default {
 
     console.log('super:', this.super);            // super是传入的权限
     if (this.super === false) {
-      this.$message.error('不好意思哦，您不配用这个功能呢');
+      this.$message.error('不好意思哦，您不是super管理员，无法使用此功能');
     }else {
       this.super = true
     } 

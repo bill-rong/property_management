@@ -114,8 +114,8 @@ export default {
 }
 
 .info-div {
-  width: 40%;
-  height: 100%;
+  width: 43%;
+  height: 80%;
   float: left;
   padding-left: 50px;
 }

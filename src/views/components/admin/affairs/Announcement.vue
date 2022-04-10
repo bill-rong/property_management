@@ -85,17 +85,17 @@ export default {
     return {
       tableData: [{
         id: 1,
-        title: "title",
-        content: "还没有提交第1版给我的赶紧发我，我这个周看，下周我们开个会议。还没有提交第1版给我的赶紧发我，我这个周看，下周我们开个会议。",
+        title: "交论文二稿",
+        content: "大家把第二稿交上了，我们周一晚上开视频会议，大家带上纸和笔记录自己的问题。",
         date: "2022-12-12 12:12:12",
         adname: "sofia",
         adtel: "134"
       },{
         id: 2,
-        title: "title",
+        title: "疫情提醒",
         content: "content",
         date: "2022-12-12 12:12:12",
-        adname: "sofia2",
+        adname: "bill",
         adtel: "135"
       }],
       centerDialogVisible: false,

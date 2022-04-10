@@ -50,12 +50,25 @@ const sqlMap = {
     deleteBuilding: "DELETE FROM building WHERE id=?;",
 
     selectRoom: "SELECT rm.*, bd.name bdname, ri.name riname FROM room rm LEFT JOIN building bd ON rm.building_id=bd.id LEFT JOIN resident ri ON ri.id=rm.resident_id;",
+    selectRoomName: "SELECT name value from room;",
     selectRoomByName: "SELECT name FROM room WHERE name=?;",
     updateRoomUnLiving: "UPDATE room SET living='0', resident_id=null WHERE `name`=?;",
     updateRoomLiving: "UPDATE room SET living='1', resident_id=? WHERE `name`=?;",
     addRoom: "INSERT INTO room(building_id, name) VALUES(?);",
     deleteRoom: "DELETE FROM room WHERE id=?;"
+  },
+  payment: {
+    selectUnPay: "SELECT * FROM property_management.payment WHERE handler='0';",
+    selectPay: "SELECT * FROM property_management.payment WHERE handler!='0';",
+    selectUnPayByRoom: "SELECT * FROM property_management.payment WHERE handler='0' and room=?;",
+    selectPayByRoom: "SELECT * FROM property_management.payment WHERE handler!='0' and room=?;",
+  },
+  announcement: {
+    add: "",
+    get: "SELECT announcement.*,admin.name name FROM announcement LEFT JOIN admin on announcement.admin_id=admin.id order by date DESC;"
+    
   }
+  
 }
 
 module.exports = sqlMap;

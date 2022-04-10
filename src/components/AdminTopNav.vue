@@ -23,11 +23,7 @@
           <template slot="title">物业业务</template>
           <el-menu-item index="repairManage">报修</el-menu-item>
           <el-menu-item index="complaintManage">投诉</el-menu-item>
-          <el-submenu index="pay">
-            <template slot="title">物业缴费管理</template>
-            <el-menu-item index="toll">收取费用</el-menu-item>
-            <el-menu-item index="paymentList">缴费信息列表</el-menu-item>
-          </el-submenu>
+          <el-menu-item index="paymentManage">缴费管理</el-menu-item>
         </el-submenu>
         <el-submenu index="resident">
           <template slot="title">住户管理</template>

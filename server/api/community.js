@@ -16,6 +16,7 @@ const api = {
   getBuilding: '/get/building',
   updateBuilding: '/update/building',
   getRoom: '/get/room',
+  getRoomName: '/get/room/name',
   updateRoom: '/update/room'
 }
 
@@ -104,6 +105,19 @@ router.put(api.updateBuilding, (req, res) => {
  */
 router.get(api.getRoom, (req, res) => {
   let sql = SQL.community.selectRoom;
+  sqlRun(sql, (err, result) => {
+    if (err) {
+      console.log("失败" + err);
+    }
+    if (result) {
+      let data = JSON.parse(JSON.stringify(result));
+      jsonWrite(res, data);
+    }
+  });
+});
+
+router.get(api.getRoomName, (req, res) => {
+  let sql = SQL.community.selectRoomName;
   sqlRun(sql, (err, result) => {
     if (err) {
       console.log("失败" + err);

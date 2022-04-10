@@ -57,6 +57,12 @@ app.use('/api/admin', admin)
 const community = require('./api/community')
 app.use('/api/community', community)
 
+const payment = require('./api/payment')
+app.use('/api/payment', payment)
+
+const affairs = require('./api/affairs')
+app.use('/api/affairs', affairs)
+
 
 
 // 监听3000端口

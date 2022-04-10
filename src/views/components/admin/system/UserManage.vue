@@ -21,9 +21,10 @@
         <el-form-item label="性别" prop="sex" label-width="40%" style="width: 80%;">
           <el-input v-model="row.sex" maxlength="10" show-word-limit></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password" label-width="40%" style="width: 80%;">
-          <el-input v-model="row.password" maxlength="10" show-word-limit></el-input>
-        </el-form-item>
+        <!-- <el-form-item label="密码" prop="password" label-width="40%" style="width: 80%;"> -->
+          <!-- <el-input v-model="row.password" maxlength="10" show-word-limit></el-input> -->
+          
+        <!-- </el-form-item> -->
         <el-form-item label="居住状态" prop="living" label-width="40%" style="width: 80%;">
           <el-input v-model="row.living" maxlength="10" show-word-limit></el-input>
         </el-form-item>
@@ -33,6 +34,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="centerDialogVisible = false">取 消</el-button>
+        <el-button type="warning">重置密码</el-button>
         <el-button type="primary" @click="dialogSubmit">确 定</el-button>
       </span>
     </el-dialog>
@@ -62,25 +64,25 @@ export default {
       data: [
       {
         id: 1,
-        name: 'test1',
+        name: '廖弼镕',
         sex: '男',
         password: 321,
         living: '居住中',
-        date: '4/9',
+        date: '2022-4-9',
       },{
         id: 2,
-        name: 'test2',
+        name: 'sofia',
         sex: '女',
         password: 321,
         living: '居住中',
-        date: '4/8',
+        date: '2022-4-9',
       },{
         id: 3,
-        name: 'test3',
+        name: 'bill',
         sex: '男',
         password: 321,
         living: '居住中',
-        date: '4/7',
+        date: '2022-4-7',
       },],
 
       column:[{
@@ -107,7 +109,7 @@ export default {
         prop: 'date',
         label: '日期',
         sortable: true
-      },],
+      }],
 
       centerDialogVisible: false,
       add: {

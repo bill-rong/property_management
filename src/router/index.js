@@ -18,8 +18,7 @@ import RoomManage from '../views/components/admin/community/RoomManage.vue'
 import ParkingManage from '../views/components/admin/community/ParkingManage.vue'
 import RepairManage from '../views/components/admin/business/RepairManage.vue'
 import ComplaintManage from '../views/components/admin/business/ComplaintManage.vue'
-import Toll from '../views/components/admin/pay/Toll.vue'
-import PaymentList from '../views/components/admin/pay/PaymentList.vue'
+import PaymentManage from '../views/components/admin/business/payment.vue'
 import ResidentList from '../views/components/admin/resident/ResidentList.vue'
 import PetList from '../views/components/admin/resident/PetList.vue'
 import Announcement from '../views/components/admin/affairs/Announcement.vue'
@@ -126,15 +125,15 @@ const routes = [
         component: ComplaintManage
       },
       {
-        path: 'toll',
-        name: 'toll',
-        component: Toll
+        path: 'paymentManage',
+        name: 'paymentManage',
+        component: PaymentManage
       },
-      {
-        path: 'paymentList',
-        name: 'paymentList',
-        component: PaymentList
-      },
+      // {
+      //   path: 'paymentList',
+      //   name: 'paymentList',
+      //   component: PaymentList
+      // },
       {
         path: 'residentList',
         name: 'residentList',

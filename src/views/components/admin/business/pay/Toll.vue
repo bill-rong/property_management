@@ -1,40 +1,40 @@
 <template>
-
-  <el-tabs type="border-card" style="height: 97% !important;">
-    <el-breadcrumb separator-class="el-icon-arrow-right" 
-      style="margin-bottom: 30px;">
-      <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
-      <el-breadcrumb-item>报修</el-breadcrumb-item>
-      <el-breadcrumb-item>上报</el-breadcrumb-item>
-    </el-breadcrumb>
+  <div>
     <el-form label-position="right" label-width="100px" style="width:400px; height: 96% !important;margin:0 auto;">
-      <el-form-item label="联系人：">
-        <el-input  placeholder="" v-model="data.num"></el-input>
-      </el-form-item>
-      <el-form-item label="联系方式：">
-        <el-input  placeholder="" v-model="data.num"></el-input>
-      </el-form-item>
-      <el-form-item label="房号：">
-        <el-input  placeholder="" v-model="data.num"></el-input>
-      </el-form-item>
-      <el-form-item label="类别：">
-        <el-select v-model="data.type" placeholder="请选择" style="width:100%">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="描述：">
-        <el-input type="textarea" placeholder="" v-model="data.num"></el-input>
-      </el-form-item>
-      <el-form-item label="">
-        <el-button type="primary" :plain="true" @click="submit()">上 报</el-button>
-      </el-form-item>
-    </el-form>
-  </el-tabs>
+        <el-form-item label="类别：">
+          <el-select v-model="data.type" placeholder="请选择" style="width:100%">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="房号：">
+          <el-autocomplete
+            class="inline-input"
+            v-model="data.room"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入房号"
+            style="width:100%"
+          ></el-autocomplete>
+        </el-form-item>
+        <el-form-item label="数值：">
+          <el-input  placeholder="" v-model="data.num"></el-input>
+        </el-form-item>
+        <el-form-item label="年-月：">
+          <el-input placeholder="年" v-model="data.year" style="width:40%;float:left"></el-input>
+          <el-input  placeholder="月" v-model="data.month" style="width:40%;float:left;margin-left:20px"></el-input>
+        </el-form-item>
+        <el-form-item label="金额：">
+          <el-input  placeholder="" v-model="data.amount" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="">
+          <el-button type="primary" :plain="true" @click="submit()">确认</el-button>
+        </el-form-item>
+      </el-form>
+  </div>
 </template>
 
 <script>
@@ -52,11 +52,12 @@ export default {
         label: '电'
       }],
       data: {
-        contacts: '',
-        tel: '',
-        room: '',
         type: '水',
-        describe: ''
+        room: '',
+        num: 0,
+        year: '',
+        month: '',
+        amount: 0
       },
       restaurants: [],
     }
