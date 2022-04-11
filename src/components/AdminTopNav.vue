@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { getUserInfo } from '../utils/auth'
+import { getUserInfo, removeToken, removeUserInfo } from '../utils/auth'
 export default {
   name: "TopNav",
   data() {
@@ -86,11 +86,11 @@ export default {
         setTimeout(() => {
           removeToken();
           removeUserInfo();
-          this.$router.push({ name: "login" });
           this.$message({
               type: 'success',
               message: '已退出登录!'
             });
+          this.$router.push({ name: "login" });
           // showSuccessMsg("已退出登录");
         }, 500);
       });
