@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `property_management` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `property_management`;
--- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
 -- Host: localhost    Database: property_management
 -- ------------------------------------------------------
@@ -59,9 +59,9 @@ CREATE TABLE `announcement` (
   `title` varchar(45) DEFAULT NULL,
   `content` text,
   `date` datetime DEFAULT NULL,
-  `admin_id` int(11) NOT NULL,
+  `admin_tel` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='公告';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='公告';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `announcement` (
 
 LOCK TABLES `announcement` WRITE;
 /*!40000 ALTER TABLE `announcement` DISABLE KEYS */;
-INSERT INTO `announcement` VALUES (1,'公告标题1','公告内容公告内容','2022-04-04 15:00:00',1),(2,'公告标题2','公告内容公告内容','2022-04-09 14:35:00',1),(3,'公告标题3','公告内容公告内容','2022-04-10 09:53:00',1),(4,'公告标题4','公告内容公告内容','2022-04-10 14:37:00',1),(5,'公告标题5','公告内容公告内容','2022-04-10 14:37:00',1),(6,'公告标题6','公告内容公告内容','2022-04-10 14:51:00',1),(7,'公告标题6','公告内容公告内容','2022-04-10 14:51:00',1);
+INSERT INTO `announcement` VALUES (1,'公告标题1','公告内容公告内容','2022-04-04 15:00:00',134),(2,'公告标题2','公告内容公告内容','2022-04-09 14:35:00',134),(3,'公告标题3','公告内容公告内容','2022-04-10 09:53:00',134),(4,'公告标题4','公告内容公告内容','2022-04-10 14:37:00',134),(5,'公告标题5','公告内容公告内容','2022-04-10 14:37:00',134),(6,'公告标题6','公告内容公告内容','2022-04-10 14:51:00',134),(7,'公告标题6','公告内容公告内容','2022-04-10 14:51:00',134),(8,'请自觉做核酸','请各位居民自觉到核酸点测核酸','2022-04-11 11:04:00',134),(9,'请自觉做核酸','请各位居民自觉到核酸点测核酸','2022-04-11 11:20:00',134);
 /*!40000 ALTER TABLE `announcement` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,7 +85,7 @@ CREATE TABLE `building` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='楼';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='楼';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +94,7 @@ CREATE TABLE `building` (
 
 LOCK TABLES `building` WRITE;
 /*!40000 ALTER TABLE `building` DISABLE KEYS */;
-INSERT INTO `building` VALUES (1,'A1'),(2,'A2'),(3,'B1');
+INSERT INTO `building` VALUES (1,'A1'),(2,'A2'),(3,'B1'),(15,'A4');
 /*!40000 ALTER TABLE `building` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -133,14 +133,14 @@ DROP TABLE IF EXISTS `complaint`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `complaint` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `contacts` varchar(45) NOT NULL,
   `tel` varchar(45) NOT NULL,
   `describe` text NOT NULL,
   `date` datetime NOT NULL,
-  `status` varchar(45) DEFAULT NULL,
+  `status` varchar(45) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='投诉信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='投诉信息表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,6 +149,7 @@ CREATE TABLE `complaint` (
 
 LOCK TABLES `complaint` WRITE;
 /*!40000 ALTER TABLE `complaint` DISABLE KEYS */;
+INSERT INTO `complaint` VALUES (1,'bill','133','昨晚A1201大晚上的咚咚咚，有点影响到人休息了。','2022-04-09 12:12:00','1'),(2,'马','144','保安态度太差了','2022-04-09 12:12:00','0');
 /*!40000 ALTER TABLE `complaint` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -257,7 +258,7 @@ CREATE TABLE `payment` (
   `handler` varchar(45) DEFAULT '0' COMMENT '处理人',
   `paydate` datetime DEFAULT NULL COMMENT '支付日期',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='缴费信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='缴费信息表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -266,7 +267,7 @@ CREATE TABLE `payment` (
 
 LOCK TABLES `payment` WRITE;
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
-INSERT INTO `payment` VALUES (1,'水','A1102',6,2022,2,30,'bill','2022-04-10 13:07:00'),(2,'水','A1102',5,2022,3,25,'bill','2022-04-10 17:04:00'),(3,'电','A1102',100,2022,2,67,'bill','2022-04-10 17:04:00'),(4,'电','A1102',90,2022,3,60.3,'bill','2022-04-10 18:04:00'),(5,'电','A1102',90,2022,4,60.3,'0',NULL);
+INSERT INTO `payment` VALUES (1,'水','A1102',6,2022,2,30,'bill','2022-04-10 13:07:00'),(2,'水','A1102',5,2022,3,25,'bill','2022-04-10 17:04:00'),(3,'电','A1102',100,2022,2,67,'bill','2022-04-10 17:04:00'),(4,'电','A1102',90,2022,3,60.3,'bill','2022-04-10 18:04:00'),(5,'电','A1102',90,2022,4,60.3,'0',NULL),(6,'水','A1102',7,2022,4,35,'0',NULL),(7,'水','A1102',9,2022,1,45,'0',NULL),(8,'水','A1102',6,2021,12,30,'0',NULL),(9,'电','A1102',100,2022,1,67,'0',NULL),(10,'电','A1102',110,2021,12,70,'0',NULL);
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -323,7 +324,7 @@ CREATE TABLE `repair` (
 
 LOCK TABLES `repair` WRITE;
 /*!40000 ALTER TABLE `repair` DISABLE KEYS */;
-INSERT INTO `repair` VALUES (1,'廖弼镕','13376774751','A1101','水电维修','水龙头不紧密，一直滴水','2022-04-10 20:04:00',NULL),(2,'廖弼镕','13376774751','A1101','家具门窗','房间门锁坏了，打不开了','2022-04-10 20:04:00',NULL);
+INSERT INTO `repair` VALUES (1,'廖弼镕','13376774751','A1101','水电维修','水龙头不紧密，一直滴水','2022-04-10 20:04:00',0),(2,'廖弼镕','13376774751','A1101','家具门窗','房间门锁坏了，打不开了','2022-04-10 20:04:00',0);
 /*!40000 ALTER TABLE `repair` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -376,7 +377,7 @@ CREATE TABLE `room` (
   PRIMARY KEY (`id`),
   KEY `FK_room_building_idx` (`building_id`),
   CONSTRAINT `FK_room_building` FOREIGN KEY (`building_id`) REFERENCES `building` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -385,7 +386,7 @@ CREATE TABLE `room` (
 
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
-INSERT INTO `room` VALUES (1,1,'A1101','0',NULL),(2,1,'A1102','1',1),(3,2,'A2101','0',NULL),(4,3,'B1101','1',2);
+INSERT INTO `room` VALUES (1,1,'A1101','0',NULL),(2,1,'A1102','1',1),(3,2,'A2101','0',NULL),(4,3,'B1101','1',2),(11,15,'A4101','0',NULL),(12,15,'A4102','0',NULL),(13,15,'A4103','0',NULL),(14,15,'A4201','0',NULL),(15,15,'A4202','0',NULL),(16,15,'A4203','0',NULL);
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -415,14 +416,6 @@ LOCK TABLES `visitor` WRITE;
 /*!40000 ALTER TABLE `visitor` DISABLE KEYS */;
 /*!40000 ALTER TABLE `visitor` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'property_management'
---
-
---
--- Dumping routines for database 'property_management'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -433,4 +426,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-11  0:55:59
+-- Dump completed on 2022-04-11 18:48:06
