@@ -1,8 +1,6 @@
 <template>
 <el-tabs type="border-card" style="height: 97% !important;">
   <div class="container">
-    
-    
     <div class="row">
       <div class="col-md-7">
         <div class="panel panel-default"  style="height:500px">
@@ -21,6 +19,7 @@
             <a href="#"
               class="list-group-item"
               v-for="item in annData"
+              :key="item"
               >{{item.title}}</a>
           </div>
         </div>
