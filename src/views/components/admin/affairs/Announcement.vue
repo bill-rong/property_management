@@ -14,7 +14,7 @@
         style="width: 100%">
 
         <el-table-column prop="title" label="标题"></el-table-column>
-        <el-table-column prop="adname" label="发布者"></el-table-column>
+        <el-table-column prop="name" label="发布者"></el-table-column>
         <el-table-column prop="date" label="发布时间"></el-table-column>
         <el-table-column prop="id" label="操作">
           <template slot-scope="scope">
@@ -22,12 +22,12 @@
               size="mini"
               @click="handleView(scope.$index, scope.row)">查看
             </el-button>
-            <el-tooltip class="item" effect="dark" content="不是你发布的，无法删除" placement="right" :disabled="(scope.row.adtel==currentAdtel || isSuper)">
+            <el-tooltip class="item" effect="dark" content="不是你发布的，无法删除" placement="right" :disabled="(scope.row.admin_tel==currentAdtel || isSuper)">
               <div style="display: inline-block; margin-left: 6px">
                 <el-button
                   size="mini"
                   type="danger"
-                  :disabled="!(scope.row.adtel==currentAdtel || isSuper)"
+                  :disabled="!(scope.row.admin_tel==currentAdtel || isSuper)"
                   @click="handleDelete(scope.$index, scope.row)">删除
                 </el-button>
               </div>
@@ -53,10 +53,10 @@
       center>
       <el-form ref="annForm">
         <el-form-item label="标题" prop="name" label-width="30%" style="width: 80%;">
-          <el-input placeholder=""></el-input>
+          <el-input placeholder="请输入标题" v-model="addData.title"></el-input>
         </el-form-item>
         <el-form-item label="内容" prop="name" label-width="30%" style="width: 80%;">
-          <el-input placeholder=""></el-input>
+          <el-input placeholder="请输入内容" v-model="addData.content"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -80,24 +80,11 @@
 
 <script>
 import { getUserInfo } from '@/utils/auth'
+import { getAnnouncement, addAnnouncement } from '@/api/affairsApi'
 export default {
   data() {
     return {
-      tableData: [{
-        id: 1,
-        title: "交论文二稿",
-        content: "大家把第二稿交上了，我们周一晚上开视频会议，大家带上纸和笔记录自己的问题。",
-        date: "2022-12-12 12:12:12",
-        adname: "sofia",
-        adtel: "134"
-      },{
-        id: 2,
-        title: "疫情提醒",
-        content: "content",
-        date: "2022-12-12 12:12:12",
-        adname: "bill",
-        adtel: "135"
-      }],
+      tableData: [],
       centerDialogVisible: false,
       drawer: false,
       drawerData: {
@@ -105,6 +92,10 @@ export default {
         content: '',
         adname: '',
         date: ''
+      },
+      addData: {
+        title: '',
+        content: ''
       },
       currentPage: 1,
       pageSize: 7,
@@ -115,6 +106,9 @@ export default {
   created() {
     this.currentAdtel = getUserInfo().tel;
     this.isSuper = getUserInfo().permission == "super";
+    getAnnouncement().then(res => {
+      this.tableData = res.data;
+    })
   },
   methods: {
     changePage(page) {
@@ -129,7 +123,14 @@ export default {
       this.drawer = true;
     },
     dialogSubmit() {
-
+      this.addData.tel = getUserInfo().tel;
+      addAnnouncement(addData).then(res => {
+        this.$message({
+          type: 'success',
+          message: res.data.msg
+        });
+        location.reload();
+      })
     }
   }
 

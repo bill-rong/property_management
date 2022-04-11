@@ -65,12 +65,25 @@ const sqlMap = {
     pay: "UPDATE payment SET handler=?, paydate=? WHERE id=?;"
   },
   announcement: {
-    add: "",
-    get: "SELECT announcement.*,admin.name name FROM announcement LEFT JOIN admin on announcement.admin_id=admin.id order by date DESC;"
+    add: "INSERT INTO announcement(title,content,admin_tel,`date`) VALUES(?,?,?,?);",
+    get: "SELECT announcement.*,admin.name name FROM announcement LEFT JOIN admin on announcement.admin_tel=admin.tel order by date DESC;"
     
   },
   repair: {
-    add: "INSERT INTO repair(contacts,tel,room,`type`,`describe`,`date`) VALUES(?,?,?,?,?,?);"
+    add: "INSERT INTO repair(contacts,tel,room,`type`,`describe`,`date`,status) VALUES(?,?,?,?,?,?,'0');",
+    handle: "UPDATE repair SET status='1' WHERE id=?;",
+    selectUnHandle: "SELECT * FROM repair WHERE status='0';",
+    selectUnHandleByRoom: "SELECT * FROM repair WHERE status='0' and room=?;",
+    selectHandle: "SELECT * FROM repair WHERE status='1';",
+    selectHandleByRoom: "SELECT * FROM repair WHERE status='1' and room=?;",
+  },
+  complaint: {
+    add: "INSERT INTO complaint(contacts,tel,`describe`,`date`,status) VALUES(?,?,?,?,'0');",
+    handle: "UPDATE complaint SET status='1', WHERE id=?;",
+    selectUnHandle: "SELECT * FROM complaint WHERE status='0';",
+    selectUnHandleByRoom: "SELECT * FROM complaint WHERE status='0' and room=?;",
+    selectHandle: "SELECT * FROM complaint WHERE status='1';",
+    selectHandleByRoom: "SELECT * FROM complaint WHERE status='1' and room=?;",
   }
   
 }

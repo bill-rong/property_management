@@ -51,8 +51,6 @@ router.get(api.getUser, (req, res) => {
  * res: {mode, [data,] msg}
  */
 router.post(api.login, (req, res) => {
-  jsonWrite(res, { msg: '登录成功' });
-  return
   let params = req.body;
   if (Object.keys(params).length == 0) {
     res.status(400);

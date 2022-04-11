@@ -41,7 +41,7 @@ router.get(api.getPay, (req, res) => {
     if (result.length > 0) {
       let data = JSON.parse(JSON.stringify(result));
       for (let i=0; i<data.length; i++) {
-        data[i].paydate = moment(data[i].paydate).format("YYYY-MM-DD HH:MM");
+        data[i].paydate = moment(data[i].paydate).format("YYYY-MM-DD HH:mm");
       }
       jsonWrite(res, data);
     } else {
@@ -77,7 +77,7 @@ router.get(api.getPayByRoom, (req, res) => {
     if (result.length > 0) {
       let data = JSON.parse(JSON.stringify(result));
       for (let i=0; i<data.length; i++) {
-        data[i].paydate = moment(data[i].paydate).format("YYYY-MM-DD HH:MM");
+        data[i].paydate = moment(data[i].paydate).format("YYYY-MM-DD HH:mm");
       }
       jsonWrite(res, data);
     } else {
@@ -89,7 +89,7 @@ router.get(api.getPayByRoom, (req, res) => {
 router.post(api.pay, (req, res) => {
   delete req.body.tel;
   let { handler, id } = req.body;
-  let date = moment(new Date()).format("YYYY-MM-DD HH:MM");
+  let date = moment(new Date()).format("YYYY-MM-DD HH:mm");
   let sql = SQL.payment.pay;
   console.log(handler, id);
   sqlRun(sql, [handler, date, id], (err, result) => {

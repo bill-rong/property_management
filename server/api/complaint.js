@@ -19,7 +19,7 @@ const api = {
 router.post(api.report, (req, res) => {
   let param = req.body;
   param.date = moment(new Date()).format("YYYY-MM-DD HH:mm");
-  let sql = SQL.repair.add;
+  let sql = SQL.complaint.add;
   let arr = Object.values(param);
   sqlRun(sql, arr, (err, result) => {
     if (err) {
@@ -37,9 +37,9 @@ router.post(api.report, (req, res) => {
   })
 })
 
-// 未处理的维修
+// 未处理的投诉
 router.get(api.getUnHandle, (req, res) => {
-  let sql = SQL.repair.selectUnHandle;
+  let sql = SQL.complaint.selectUnHandle;
   sqlRun(sql, (err, result) => {
     if (err) {
       console.log("err", err);
@@ -49,16 +49,20 @@ router.get(api.getUnHandle, (req, res) => {
       })
     }
     if (result.length > 0) {
-      jsonWrite(res, result);
+      let data = JSON.parse(JSON.stringify(result));
+      for (let i=0; i<data.length; i++) {
+        data[i].date = moment(data[i].date).format("YYYY-MM-DD HH:mm");
+      }
+      jsonWrite(res, data);
     } else {
       jsonWrite(res, []);
     }
   })
 })
 
-// 已处理的维修
+// 已处理的投诉
 router.get(api.getHandle, (req, res) => {
-  let sql = SQL.repair.selectHandle;
+  let sql = SQL.complaint.selectHandle;
   sqlRun(sql, (err, result) => {
     if (err) {
       console.log("err", err);
@@ -68,16 +72,21 @@ router.get(api.getHandle, (req, res) => {
       })
     }
     if (result.length > 0) {
-      jsonWrite(res, result);
+      let data = JSON.parse(JSON.stringify(result));
+      for (let i=0; i<data.length; i++) {
+        data[i].date = moment(data[i].date).format("YYYY-MM-DD HH:mm");
+      }
+      jsonWrite(res, data);
     } else {
       jsonWrite(res, []);
     }
   })
 })
 
+// 处理投诉
 router.put(api.handle, (req, res) => {
   let id = req.body.id;
-  let sql = SQL.repair.handle;
+  let sql = SQL.complaint.handle;
   sqlRun(sql, id, (err, result) => {
     if (err) {
       console.log("err", err);
@@ -86,13 +95,9 @@ router.put(api.handle, (req, res) => {
         msg: "后端异常"
       })
     }
-    if (result.length > 0) {
+    if (result) {
       jsonWrite(res, {
         msg: '处理成功'
-      });
-    } else {
-      jsonWrite(res, {
-        msg: '处理失败'
       });
     }
   })

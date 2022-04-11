@@ -66,6 +66,9 @@ app.use('/api/affairs', affairs)
 const repair = require('./api/repair')
 app.use('/api/repair', repair)
 
+const complaint = require('./api/complaint')
+app.use('/api/complaint', complaint)
+
 
 
 // 监听3000端口

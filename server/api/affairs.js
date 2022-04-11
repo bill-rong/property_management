@@ -15,7 +15,8 @@ const api = {
 }
 
 router.post(api.annouAdd, (req, res) => {
-  let params = req.body;
+  let params = Object.values(req.body);
+  params.push(moment(new Date()).format("YYYY-MM-DD HH:mm"));
   let sql = SQL.announcement.add;
   sqlRun(sql, params, (err, result) => {
     if (err) {
@@ -40,7 +41,7 @@ router.get(api.annouGet, (req, res) => {
     if (result) {
       let data = JSON.parse(JSON.stringify(result));
       for (let i=0; i<data.length; i++) {
-        data[i].date = moment(data[i].date).format("YYYY-MM-DD HH:MM");
+        data[i].date = moment(data[i].date).format("YYYY-MM-DD HH:mm");
       }
       jsonWrite(res, data);
     }
