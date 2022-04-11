@@ -25,6 +25,15 @@ export function getBuilding() {
   })
 }
 
+// 添加楼层
+export function addBuilding(data) {
+  return request({
+    url: '/api/community/add/building',
+    method: 'post',
+    data: data
+  })
+}
+
 // 获取房信息
 export function getRoom() {
   return request({
@@ -33,9 +42,34 @@ export function getRoom() {
   })
 }
 
+// 获取所有房名
 export function getRoomName() {
   return request({
     url: '/api/community/get/room/name',
+    method: 'get'
+  })
+}
+
+// 获取已入住
+export function getRoomLiving() {
+  return request({
+    url: '/api/community/get/room/living',
+    method: 'get'
+  })
+}
+
+// 
+export function getParking() {
+  return request({
+    url: '/api/community/get/parking',
+    method: 'get'
+  })
+}
+
+// 
+export function getParkingBind() {
+  return request({
+    url: '/api/community/get/parking/bind',
     method: 'get'
   })
 }

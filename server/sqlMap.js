@@ -44,18 +44,22 @@ const sqlMap = {
     update: "UPDATE community SET `name`=?, created=?, `describe`=?, phone=?, address=?;",
 
     selectBuilding: "SELECT * FROM building;",
-    selectBuildingByName: "SELECT * FROM building;",
+    selectBuildingByName: "SELECT * FROM building WHERE name=?;",
     updateBuilding: "UPDATE building SET name=? WHERE id=?;",
     addBuilding: "INSERT INTO building(name) VALUES(?);",
     deleteBuilding: "DELETE FROM building WHERE id=?;",
 
     selectRoom: "SELECT rm.*, bd.name bdname, ri.name riname FROM room rm LEFT JOIN building bd ON rm.building_id=bd.id LEFT JOIN resident ri ON ri.id=rm.resident_id;",
     selectRoomName: "SELECT name value from room;",
+    selectRoomLiving: "SELECT name value from room WHERE living='1';",
     selectRoomByName: "SELECT name FROM room WHERE name=?;",
-    updateRoomUnLiving: "UPDATE room SET living='0', resident_id=null WHERE `name`=?;",
+    updateRoomUnLiving: "UPDATE room SET living='0', resident_id is null WHERE `name`=?;",
     updateRoomLiving: "UPDATE room SET living='1', resident_id=? WHERE `name`=?;",
-    addRoom: "INSERT INTO room(building_id, name) VALUES(?);",
-    deleteRoom: "DELETE FROM room WHERE id=?;"
+    addRoom: "INSERT INTO room(building_id, name) VALUES?;",
+    deleteRoom: "DELETE FROM room WHERE id=?;",
+
+    getParking: "SELECT * FROM parking;",
+    getParkingBind: "SELECT * FROM parking where resident_id is not null;",
   },
   payment: {
     selectUnPay: "SELECT * FROM property_management.payment WHERE handler='0';",

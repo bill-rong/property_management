@@ -6,8 +6,8 @@
           <div class="icon"><i class="el-icon-c-scale-to-original"></i></div>
           <div class="title"><span>车位统计</span></div>
           <br><br><br>
-          <div style="font-size: 40px;float: left;margin-left: 20px"><span>0</span></div>
-          <div style="font-size: 40px;float: right;margin-right: 20px"><span>0</span></div>
+          <div style="font-size: 40px;float: left;margin-left: 20px"><span>{{this.parkingTotal}}</span></div>
+          <div style="font-size: 40px;float: right;margin-right: 20px"><span>{{this.parkingCurrent}}</span></div>
           <br><br><br>
           <div style="font-size: 20px;float: left;margin-left: 10px"><span>总车位数</span></div>
           <div style="font-size: 20px;float: right;margin-left: 10px"><span>已绑车位数</span></div>
@@ -18,8 +18,8 @@
           <div class="icon"><i class="el-icon-s-home"></i></div>
           <div class="title"><span>房屋统计</span></div>
           <br><br><br>
-          <div style="font-size: 40px;float: left;margin-left: 20px"><span>0</span></div>
-          <div style="font-size: 40px;float: right;margin-right: 20px"><span>0</span></div>
+          <div style="font-size: 40px;float: left;margin-left: 20px"><span>{{this.roomTotal}}</span></div>
+          <div style="font-size: 40px;float: right;margin-right: 20px"><span>{{this.roomCurrent}}</span></div>
           <br><br><br>
           <div style="font-size: 20px;float: left;margin-left: 10px"><span>总房间数</span></div>
           <div style="font-size: 20px;float: right;margin-left: 10px"><span>已入住房数</span></div>
@@ -30,7 +30,7 @@
           <div class="icon"><i class="el-icon-user-solid"></i></div>
           <div class="title"><span>人数统计</span></div>
           <br><br><br>
-          <div style="font-size: 40px;float: left;margin-left: 20px"><span>0</span></div>
+          <div style="font-size: 40px;float: left;margin-left: 20px"><span>10</span></div>
           <!-- <div style="font-size: 40px;float: right;margin-right: 20px"><span>0</span></div> -->
           <br><br><br>
           <div style="font-size: 20px;float: left;margin-left: 10px"><span>住户数量</span></div>
@@ -42,7 +42,7 @@
           <div class="icon"><i class="el-icon-s-opportunity"></i></div>
           <div class="title"><span>宠物统计</span></div>
           <br><br><br>
-          <div style="font-size: 40px;float: left;margin-left: 20px"><span>0</span></div>
+          <div style="font-size: 40px;float: left;margin-left: 20px"><span>1</span></div>
           <!-- <div style="font-size: 40px;float: right;margin-right: 20px"><span>0</span></div> -->
           <br><br><br>
           <div style="font-size: 20px;float: left;margin-left: 10px"><span>宠物数量</span></div>
@@ -56,7 +56,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">近半年水使用状况</div>
           <div class="panel-body">
-            <ve-line :data="chartData" :settings="chartSettings"></ve-line>
+            <ve-line :data="waterData" :settings="chartSettings"></ve-line>
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">近半年电使用状况</div>
           <div class="panel-body">
-            <ve-line :data="chartData" :settings="chartSettings"></ve-line>
+            <ve-line :data="elecData" :settings="chartSettings"></ve-line>
           </div>
         </div>
       </div>
@@ -74,21 +74,57 @@
 </template>
 
 <script>
+import { getRoomName, getRoomLiving, getParking, getParkingBind } from '@/api/communityApi'
 export default {
   data() {
+    this.chartSettings = {}
     return {
-      chartData: {
-        columns: ['日期', '水', '电'],
+      waterData: {
+        columns: ['日期', '水'],
         rows: [
-          { '日期': '2021/11', '水': 11, '电': 99 },
-          { '日期': '2021/12', '水': 14, '电': 90 },
-          { '日期': '2022/01', '水': 18, '电': 96 },
-          { '日期': '2022/02', '水': 12, '电': 95 },
-          { '日期': '2022/03', '水': 14, '电': 88 },
-          { '日期': '2022/04', '水': 13, '电': 100 }
+          { '日期': '2021/11', '水': 11 },
+          { '日期': '2021/12', '水': 14 },
+          { '日期': '2022/01', '水': 18 },
+          { '日期': '2022/02', '水': 12 },
+          { '日期': '2022/03', '水': 14 },
+          { '日期': '2022/04', '水': 13 }
         ]
       },
+      elecData: {
+        columns: ['日期', '电'],
+        rows: [
+          { '日期': '2021/11', '电': 99 },
+          { '日期': '2021/12', '电': 90 },
+          { '日期': '2022/01', '电': 96 },
+          { '日期': '2022/02', '电': 95 },
+          { '日期': '2022/03', '电': 88 },
+          { '日期': '2022/04', '电': 100 }
+        ]
+      },
+      roomTotal: 0,
+      roomCurrent: 0,
+      petTotal: 0,
+      petCurrent: 0,
+      parkingTotal: 0,
+      parkingCurrent: 0,
+      peopleTotal: 0,
+      peopleCurrent: 0
     }
+  },
+  created() {
+    getRoomName().then(res => {
+      this.roomTotal = res.data.length
+    })
+    getRoomLiving().then(res => {
+      this.roomCurrent = res.data.length
+    })
+    getParking().then(res => {
+      this.parkingTotal = res.data.length
+    })
+    getParkingBind().then(res => {
+      this.parkingCurrent = res.data.length
+    })
+    
   }
 
 }

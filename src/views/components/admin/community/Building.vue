@@ -41,7 +41,7 @@
 
 <script>
 import MyTabel from '@/components/MyTable.vue'
-import { getBuilding } from '@/api/communityApi'
+import { getBuilding, addBuilding } from '@/api/communityApi'
 export default {
   components: {
     MyTabel
@@ -85,12 +85,14 @@ export default {
   methods: {
     dialogSubmit() {
       if (!this.checkForm()) { return }
-      this.$notify({
+      addBuilding(this.add).then(res => {
+        this.$notify({
           title: '成功',
           message: `添加"${this.add.name}"楼成功`,
           type: 'success',
           duration: 2000
         });
+      })
       this.centerDialogVisible = false;
     },
     checkForm() {
