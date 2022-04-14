@@ -26,6 +26,9 @@ import Healthy from '../views/components/admin/affairs/Healthy.vue'
 import Visitor from '../views/components/admin/affairs/Visitor.vue'
 import UserManage from '../views/components/admin/system/UserManage.vue'
 import AdminManage from '../views/components/admin/system/AdminManage.vue'
+import PetCommit from '../views/components/user/PersonalBusiness/PetCommit.vue'
+import VisitorCommit from '../views/components/user/PersonalBusiness/VisitorCommit.vue'
+import HealthCommit from '../views/components/user/PersonalBusiness/HealthCommit.vue'
 
 
 Vue.use(VueRouter)
@@ -81,6 +84,21 @@ const routes = [
         path: 'personal',
         name: 'personal',
         component: Personal
+      },
+      {
+        path: 'petCommit',
+        name: 'petCommit',
+        component: PetCommit
+      },
+      {
+        path: 'healthCommit',
+        name: 'healthCommit',
+        component: HealthCommit
+      },
+      {
+        path: 'visitorCommit',
+        name: 'visitorCommit',
+        component: VisitorCommit
       }
     ]
   },

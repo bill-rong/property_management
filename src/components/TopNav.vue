@@ -23,6 +23,12 @@
           <el-menu-item index="payment">缴纳费用</el-menu-item>
           <el-menu-item index="paymentInfo">历史缴费记录</el-menu-item>
         </el-submenu>
+        <el-submenu index="personalBusiness">
+          <template slot="title">个人业务</template>
+          <el-menu-item index="healthCommit">健康上报</el-menu-item>
+          <el-menu-item index="petCommit">宠物上报</el-menu-item>
+          <el-menu-item index="visitorCommit">访客登记</el-menu-item>
+        </el-submenu>
         <el-submenu index="complaint">
           <template slot="title">投诉</template>
           <el-menu-item index="initiate">发起投诉</el-menu-item>
