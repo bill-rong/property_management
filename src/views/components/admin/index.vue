@@ -42,7 +42,7 @@
           <div class="icon"><i class="el-icon-s-opportunity"></i></div>
           <div class="title"><span>宠物统计</span></div>
           <br><br><br>
-          <div style="font-size: 40px;float: left;margin-left: 20px"><span>1</span></div>
+          <div style="font-size: 40px;float: left;margin-left: 20px"><span>{{this.petTotal}}</span></div>
           <!-- <div style="font-size: 40px;float: right;margin-right: 20px"><span>0</span></div> -->
           <br><br><br>
           <div style="font-size: 20px;float: left;margin-left: 10px"><span>宠物数量</span></div>
@@ -75,6 +75,7 @@
 
 <script>
 import { getRoomName, getRoomLiving, getParking, getParkingBind } from '@/api/communityApi'
+import { getPet } from '@/api/affairsApi'
 export default {
   data() {
     this.chartSettings = {}
@@ -124,7 +125,9 @@ export default {
     getParkingBind().then(res => {
       this.parkingCurrent = res.data.length
     })
-    
+    getPet().then(res => {
+      this.petTotal = res.data.length
+    })
   }
 
 }

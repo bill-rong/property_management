@@ -85,7 +85,7 @@ router.get(api.getHandle, (req, res) => {
 
 // 处理投诉
 router.put(api.handle, (req, res) => {
-  let id = req.body.id;
+  let id = req.body.id + '';
   let sql = SQL.complaint.handle;
   sqlRun(sql, id, (err, result) => {
     if (err) {

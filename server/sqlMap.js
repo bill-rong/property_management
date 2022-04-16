@@ -83,11 +83,19 @@ const sqlMap = {
   },
   complaint: {
     add: "INSERT INTO complaint(contacts,tel,`describe`,`date`,status) VALUES(?,?,?,?,'0');",
-    handle: "UPDATE complaint SET status='1', WHERE id=?;",
+    handle: "UPDATE complaint SET status='1' WHERE id=?;",
     selectUnHandle: "SELECT * FROM complaint WHERE status='0';",
     selectUnHandleByRoom: "SELECT * FROM complaint WHERE status='0' and room=?;",
     selectHandle: "SELECT * FROM complaint WHERE status='1';",
     selectHandleByRoom: "SELECT * FROM complaint WHERE status='1' and room=?;",
+  },
+  pet: {
+    selectAll: 'SELECT * FROM pet;',
+    add: 'INSERT INTO pet(resident,variety,name,documents,path) VALUES(?,?,?,?,?);'
+  },
+  visitor: {
+    selectAll: 'SELECT * FROM visitor;',
+    add: 'INSERT INTO visitor(name,room,resident,purposr,date) VALUES(?,?,?,?,?);'
   }
   
 }

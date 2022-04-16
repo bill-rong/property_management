@@ -16,3 +16,11 @@ export function addAnnouncement(data) {
     data: data
   })
 }
+
+// 获取所有宠物
+export function getPet() {
+  return request({
+    url: '/api/affairs/pet/get',
+    method: 'get'
+  })
+}
