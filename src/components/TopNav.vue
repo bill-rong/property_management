@@ -42,8 +42,8 @@
           <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item icon="el-icon-files" command="myInfo">我的信息</el-dropdown-item>
-          <el-dropdown-item icon="el-icon-lock" command="upPwd">修改密码</el-dropdown-item>
+          <el-dropdown-item icon="el-icon-files" command="myInfo">个人中心</el-dropdown-item>
+          <!-- <el-dropdown-item icon="el-icon-lock" command="upPwd">修改密码</el-dropdown-item> -->
           <el-dropdown-item icon="el-icon-circle-close" command="exit" @click="exit()">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

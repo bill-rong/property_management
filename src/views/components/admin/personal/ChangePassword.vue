@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { updatePassword } from '@/api/userApi';
+import { updatePwd } from '@/api/adminApi';
 import { getUserInfo, setToken } from '@/utils/auth'
 import Mode from '@/utils/Mode'
 export default {
@@ -63,7 +63,7 @@ export default {
       if(cpwd === newPwd) {
         console.log('submit!');
         let params = { oldPwd, newPwd };
-        updatePassword(params).then(res => {
+        updatePwd(params).then(res => {
           if (res.data.mode == Mode.UPDATE_PWD_SUCCESS) {
             this.$message({
               message: res.data.msg,

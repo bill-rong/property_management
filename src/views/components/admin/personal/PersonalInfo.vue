@@ -2,16 +2,16 @@
 <el-container class="info-con">
   <el-row>
     <el-descriptions title="" style="padding-left: 50px"></el-descriptions>
-    <div class="info-div" style="border-right: 1px solid rgba(0, 0, 0, .12)">
+    <div style="display: flex; justify-content: center;">
       <el-form label-position="right" label-width="100px" style="width:400px">
         <el-form-item label="真实姓名：">
-          <el-input  placeholder="" v-model="residentInfo.name"></el-input>
+          <el-input  placeholder="" v-model="adminInfo.name"></el-input>
         </el-form-item>
-        <el-form-item label="身份证号：">
-          <el-input  placeholder="" v-model="residentInfo.idcard"></el-input>
+        <el-form-item label="手机号：">
+          <el-input placeholder="" v-model="adminInfo.tel" disabled></el-input>
         </el-form-item>
         <el-form-item label="性别：">
-          <el-select v-model="residentInfo.sex" placeholder="请选择" style="width:100%">
+          <el-select v-model="adminInfo.sex" placeholder="请选择" style="width:100%">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -21,61 +21,27 @@
           </el-select>
         </el-form-item>
         <el-form-item label="邮箱：">
-          <el-input  placeholder="" v-model="residentInfo.email"></el-input>
+          <el-input  placeholder="" v-model="adminInfo.email"></el-input>
         </el-form-item>
+        <el-form-item label="权限：">
+          <el-input placeholder="" v-model="adminInfo.permission" disabled></el-input>
+        </el-form-item>
+        <el-button type="primary" :plain="true" @click="submit()">确认修改</el-button>
       </el-form>
     </div>
-    <div class="info-div">
-      <el-form label-position="right" label-width="100px" style="width:400px">
-        <el-form-item label="手机号：">
-          <el-input placeholder="" v-model="residentInfo.tel" disabled></el-input>
-        </el-form-item>
-        <el-form-item label="生日：">
-          <el-date-picker
-            v-model="residentInfo.birthday"
-            type="date"
-            placeholder="选择日期"
-             style="width:100%">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="入住时间：">
-          <el-date-picker
-            v-model="residentInfo.date"
-            type="date"
-            disabled
-            placeholder="选择日期"
-            style="width:100%">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="房号：">
-          <el-input  placeholder="" v-model="residentInfo.room" disabled></el-input>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div class="btn-div"><el-button type="primary" :plain="true" @click="submit()">确认修改</el-button></div>
   </el-row>
 </el-container>
 
 </template>
 
 <script>
-import {getUser, updateInfo} from '@/api/userApi'
+import { getInfo, updateInfo } from '@/api/adminApi'
 import { getUserInfo, setToken } from '@/utils/auth'
 import Mode from '@/utils/Mode'
 export default {
   data() {
     return {
-      residentInfo: {
-        id: 0,
-        tel: '',
-        idcard: '',
-        name: '',
-        sex: '1',
-        email: '',
-        birthday: '',
-        date: '',
-        room: ''
-        
+      adminInfo: {
       },
       options: [{
         value: '1',
@@ -88,20 +54,21 @@ export default {
   },
   created() {
     let tel = getUserInfo().tel;
-    getUser(tel).then(res => {
-      this.residentInfo = res.data;
+    getInfo(tel).then(res => {
+      this.adminInfo = res.data;
+      console.log(this.adminInfo);
     });
   },
   methods: {
     submit() {
-      // updateInfo(this.residentInfo).then(res => {
-      //   if (res.data.mode == Mode.UPDATE_INFO_SUCCESS) {
-      //     this.$message({
-      //       message: res.data.msg,
-      //       type: 'success'
-      //     });
-      //   }
-      // })
+      updateInfo(this.adminInfo).then(res => {
+        if (res.data.mode == Mode.UPDATE_INFO_SUCCESS) {
+          this.$message({
+            message: res.data.msg,
+            type: 'success'
+          });
+        }
+      })
     }
   }
 }
@@ -124,10 +91,6 @@ export default {
     float: left;
     width: 88%;
     margin-top: 20px;
-}
-
-.el-tabs__content {
-  /* height: 500px !important;  */
 }
 
 

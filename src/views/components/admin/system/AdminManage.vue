@@ -129,7 +129,9 @@ export default {
 
     console.log('super:', this.super);            // super是传入的权限
     if (this.super === false) {
-      this.$message.error('不好意思哦，您不是super管理员，无法使用此功能');
+      this.$message.error({
+        message:'不好意思哦，您不是super管理员，无法使用此功能',
+        duration: 1000});
     }else {
       this.super = true
     } 

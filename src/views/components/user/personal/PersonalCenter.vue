@@ -17,13 +17,11 @@
 <script>
 import ChangePassword from './ChangePassword.vue' 
 import PersonalInfo from './PersonalInfo.vue'
-import ChangeMessage from './ChangeMessage.vue'
 
 
 export default {
   components: {
     ChangePassword,
-    ChangeMessage,
     PersonalInfo
   },
   props: {

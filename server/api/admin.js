@@ -11,6 +11,8 @@ const JWT = require('../utils/Token');
 const api = {
   login: '/login',
   updatePwd: '/update/password',
+  getInfo: '/get/info',
+  updateInfo: '/update/info',
 }
 
 /**
@@ -58,24 +60,84 @@ router.post(api.login, (req, res) => {
   });
 });
 
+
 /**
- * 修改管理员密码
- * params: {tel, password}
+ * 获取个人信息
  */
-router.put(api.updatePwd, (req, res) => {
-  let params = req.body;
-  let sql = "";
-  sqlRun(sql, [params.password, params.tel], (err, result) => {
+router.get(api.getInfo, (req, res) => {
+  let sql = SQL.admin.selectByTel;
+  let tel = req.query.tel;
+  console.log(tel);
+  sqlRun(sql, tel, (err, result) => {
     if (err) {
-      console.log("修改管理员密码失败", err);
+      console.log("err", err);
     }
     if (result) {
-      jsonWrite(res, {
-        mode: MODE.UPDATE_PWD_SUCCESS,
-        msg: "密码修改成功"
-      });
+      let data = JSON.parse(JSON.stringify(result[0]));
+      delete data.password;
+      jsonWrite(res, data);
     }
   })
 })
+
+/**
+ * 修改个人信息
+ */
+ router.post(api.updateInfo, (req, res) => {
+  let params = req.body;
+  let updateInfoSql = SQL.admin.updateInfo;
+  let arrInfo = [params.name, params.sex, params.email, params.tel];
+  sqlRun(updateInfoSql, arrInfo, (err, result) => {
+    if (err) {
+      console.log("修改个人信息", err);
+    }
+    if (result) {
+      console.log("result", result);
+      jsonWrite(res, {
+        mode: MODE.UPDATE_INFO_SUCCESS,
+        msg: "修改成功"
+      });
+    }
+  })
+ })
+
+ /**
+ * 修改密码接口
+ * url: /api/admin/update/password
+ * params: {tel, oldPwd, newPwd}
+ */
+router.post(api.updatePwd, (req, res) => {
+  let params = req.body;
+  let checkPwdSql = SQL.admin.selectByTel;
+  sqlRun(checkPwdSql, params.tel, (err, result) => {
+    if (err) {
+      console.log("查询密码失败", err);
+    }
+    if (result) {
+      result = JSON.parse(JSON.stringify(result[0]));
+      if (!bcrypt.decrypt(params.oldPwd, result.password)) {
+        jsonWrite(res, {
+          mode: MODE.PASSWORD_INCORRECT,
+          msg: "原密码错误"
+        });
+      } else {
+        let updatePwdSql = SQL.admin.updatePwd;
+        let newPwd = bcrypt.encrypt(params.newPwd);
+        let tel = params.tel;
+        sqlRun(updatePwdSql, [newPwd, tel], (err, result) => {
+          if (err) {
+            console.log("修改密码失败", err);
+          }
+          if (result) {
+            jsonWrite(res, {
+              mode: MODE.UPDATE_PWD_SUCCESS,
+              msg: "密码修改成功"
+            });
+          }
+        })
+      }
+    }
+  });
+});
 
 module.exports = router;
