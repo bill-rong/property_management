@@ -48,6 +48,8 @@ const sqlMap = {
     updateBuilding: "UPDATE building SET name=? WHERE id=?;",
     addBuilding: "INSERT INTO building(name) VALUES(?);",
     deleteBuilding: "DELETE FROM building WHERE id=?;",
+    deleteBuilding: "DELETE FROM building WHERE id=?;",
+    deleteRoomInBuilding: "DELETE FROM room WHERE building_id=?;",
 
     selectRoom: "SELECT rm.*, bd.name bdname, ri.name riname FROM room rm LEFT JOIN building bd ON rm.building_id=bd.id LEFT JOIN resident ri ON ri.id=rm.resident_id;",
     selectRoomName: "SELECT name value from room;",
@@ -55,11 +57,14 @@ const sqlMap = {
     selectRoomByName: "SELECT name FROM room WHERE name=?;",
     updateRoomUnLiving: "UPDATE room SET living='0', resident_id is null WHERE `name`=?;",
     updateRoomLiving: "UPDATE room SET living='1', resident_id=? WHERE `name`=?;",
-    addRoom: "INSERT INTO room(building_id, name) VALUES?;",
+    addRoom: "INSERT INTO room(building_id, name) VALUES(?,?);",
     deleteRoom: "DELETE FROM room WHERE id=?;",
 
-    getParking: "SELECT * FROM parking;",
-    getParkingBind: "SELECT * FROM parking where resident_id is not null;",
+    getParking: "SELECT parking.id,parking.name,resident_tel,ri.name riName,license FROM parking LEFT JOIN resident ri ON ri.tel=parking.resident_tel;",
+    getParkingBind: "SELECT * FROM parking where resident_tel is not null;",
+    addParking: "INSERT INTO parking(name) VALUES(?);",
+    bindParking: "UPDATE parking SET resident_tel=?, license=?, date=? WHERE id=?;",
+    unbindParking: "UPDATE parking SET resident_tel=null, license=null, date=null WHERE id=?;"
   },
   payment: {
     selectUnPay: "SELECT * FROM property_management.payment WHERE handler='0';",

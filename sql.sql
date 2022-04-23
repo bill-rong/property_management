@@ -1,6 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `property_management` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `property_management`;
--- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
 --
 -- Host: localhost    Database: property_management
 -- ------------------------------------------------------
@@ -85,7 +85,7 @@ CREATE TABLE `building` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='楼';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='楼';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -94,7 +94,7 @@ CREATE TABLE `building` (
 
 LOCK TABLES `building` WRITE;
 /*!40000 ALTER TABLE `building` DISABLE KEYS */;
-INSERT INTO `building` VALUES (1,'A1'),(2,'A2'),(3,'B1'),(15,'A4');
+INSERT INTO `building` VALUES (1,'A1'),(15,'A4'),(16,'B2'),(17,'B3');
 /*!40000 ALTER TABLE `building` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -222,12 +222,12 @@ DROP TABLE IF EXISTS `parking`;
 CREATE TABLE `parking` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
-  `resident_id` int(11) DEFAULT NULL,
+  `resident_tel` varchar(11) DEFAULT NULL,
   `license` varchar(45) DEFAULT NULL,
   `date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `number_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='车位';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='车位';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -236,7 +236,7 @@ CREATE TABLE `parking` (
 
 LOCK TABLES `parking` WRITE;
 /*!40000 ALTER TABLE `parking` DISABLE KEYS */;
-INSERT INTO `parking` VALUES (1,'P1001',1,'粤A23qw4','2022-04-04'),(2,'P1002',NULL,NULL,NULL),(3,'P1003',NULL,NULL,NULL);
+INSERT INTO `parking` VALUES (1,'P1001','133','粤P 53F25','2022-04-04'),(2,'P1002',NULL,NULL,NULL),(3,'P1003',NULL,NULL,NULL),(4,'P2001',NULL,NULL,NULL),(5,'P2002',NULL,NULL,NULL),(6,'P2003',NULL,NULL,NULL),(7,'P2004',NULL,NULL,NULL),(8,'P2005',NULL,NULL,NULL),(9,'P2006',NULL,NULL,NULL),(10,'P2007',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `parking` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,7 +267,7 @@ CREATE TABLE `payment` (
 
 LOCK TABLES `payment` WRITE;
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
-INSERT INTO `payment` VALUES (1,'水','A1102',6,2022,2,30,'bill','2022-04-10 13:07:00'),(2,'水','A1102',5,2022,3,25,'bill','2022-04-10 17:04:00'),(3,'电','A1102',100,2022,2,67,'bill','2022-04-10 17:04:00'),(4,'电','A1102',90,2022,3,60.3,'bill','2022-04-10 18:04:00'),(5,'电','A1102',90,2022,4,60.3,'0',NULL),(6,'水','A1102',7,2022,4,35,'0',NULL),(7,'水','A1102',9,2022,1,45,'0',NULL),(8,'水','A1102',6,2021,12,30,'0',NULL),(9,'电','A1102',100,2022,1,67,'0',NULL),(10,'电','A1102',110,2021,12,70,'0',NULL);
+INSERT INTO `payment` VALUES (1,'水','A1102',6,2022,2,30,'bill','2022-04-10 13:07:00'),(2,'水','A1102',5,2022,3,25,'bill','2022-04-10 17:04:00'),(3,'电','A1102',100,2022,2,67,'bill','2022-04-10 17:04:00'),(4,'电','A1102',90,2022,3,60.3,'bill','2022-04-10 18:04:00'),(5,'电','A1102',90,2022,4,60.3,'bill','2022-04-11 22:31:00'),(6,'水','A1102',7,2022,4,35,'0',NULL),(7,'水','A1102',9,2022,1,45,'0',NULL),(8,'水','A1102',6,2021,12,30,'0',NULL),(9,'电','A1102',100,2022,1,67,'0',NULL),(10,'电','A1102',110,2021,12,70,'0',NULL);
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -357,7 +357,7 @@ CREATE TABLE `resident` (
 
 LOCK TABLES `resident` WRITE;
 /*!40000 ALTER TABLE `resident` DISABLE KEYS */;
-INSERT INTO `resident` VALUES (1,'133','441621199901012323','bill','1','lbr@qq.com','1999-01-01','$2a$12$/Qs3nXDWh403VRJ8FukJ4ewTbY1Z12EBwEmPzYXPrtG0sVEmFcZFe','1','2020-04-04'),(2,'144','441621199901012345','马3','1','lbr@qq.com','1999-01-01','$2a$12$BWyRDE69V/Tf23zHBP4aluJZ6LWxBavMUuCvHtjyPscDat5GEIr7.','1','2020-04-04');
+INSERT INTO `resident` VALUES (1,'133','441621199901012323','bill','0','lbr@163.com','1999-01-01','$2a$12$/Qs3nXDWh403VRJ8FukJ4ewTbY1Z12EBwEmPzYXPrtG0sVEmFcZFe','1','2020-04-04'),(2,'144','441621199901012345','马3','1','lbr@qq.com','1999-01-01','$2a$12$BWyRDE69V/Tf23zHBP4aluJZ6LWxBavMUuCvHtjyPscDat5GEIr7.','1','2020-04-04');
 /*!40000 ALTER TABLE `resident` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -377,7 +377,7 @@ CREATE TABLE `room` (
   PRIMARY KEY (`id`),
   KEY `FK_room_building_idx` (`building_id`),
   CONSTRAINT `FK_room_building` FOREIGN KEY (`building_id`) REFERENCES `building` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -386,7 +386,7 @@ CREATE TABLE `room` (
 
 LOCK TABLES `room` WRITE;
 /*!40000 ALTER TABLE `room` DISABLE KEYS */;
-INSERT INTO `room` VALUES (1,1,'A1101','0',NULL),(2,1,'A1102','1',1),(3,2,'A2101','0',NULL),(4,3,'B1101','1',2),(11,15,'A4101','0',NULL),(12,15,'A4102','0',NULL),(13,15,'A4103','0',NULL),(14,15,'A4201','0',NULL),(15,15,'A4202','0',NULL),(16,15,'A4203','0',NULL);
+INSERT INTO `room` VALUES (1,1,'A1101','0',NULL),(2,1,'A1102','1',1),(11,15,'A4101','1',2),(12,15,'A4102','0',NULL),(13,15,'A4103','0',NULL),(14,15,'A4201','0',NULL),(15,15,'A4202','0',NULL),(16,15,'A4203','0',NULL),(17,16,'B2101','0',NULL),(18,16,'B2102','0',NULL),(19,16,'B2103','0',NULL),(20,16,'B2201','0',NULL),(21,16,'B2202','0',NULL),(22,16,'B2203','0',NULL),(23,16,'B2301','0',NULL),(24,16,'B2302','0',NULL);
 /*!40000 ALTER TABLE `room` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -416,6 +416,14 @@ LOCK TABLES `visitor` WRITE;
 /*!40000 ALTER TABLE `visitor` DISABLE KEYS */;
 /*!40000 ALTER TABLE `visitor` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'property_management'
+--
+
+--
+-- Dumping routines for database 'property_management'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -426,4 +434,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-11 18:48:06
+-- Dump completed on 2022-04-23 23:40:52

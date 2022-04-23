@@ -10,6 +10,8 @@ const mode = {
   UPDATE_SUCCESS: 8,       // 修改成功
   ADD_SUCCESS: 9,         // 添加成功
   ADD_FAILURE: 10,        // 修改失败
+  DELETE_SUCCES: 11,       // 删除成功
+  DELETE_FAILURE:12,      // 删除失败
 };
 
 module.exports = mode;

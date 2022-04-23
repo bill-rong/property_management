@@ -15,13 +15,19 @@ const api = {
   updateCommunity: '/update/community',
   getBuilding: '/get/building',
   updateBuilding: '/update/building',
+  deleteBuilding: '/delete/building',
   getRoom: '/get/room',
+  addRoom: '/add/room', 
+  deleteRoom: '/delete/room',
   getRoomName: '/get/room/name',
   updateRoom: '/update/room',
   addBuilding: '/add/building',
   getRoomLiving: '/get/room/living',
   getParking: '/get/parking',
-  getParkingBind: '/get/parking/bind'
+  getParkingBind: '/get/parking/bind',
+  bindParking: '/bind/parking',
+  unBindParking: '/unBing/parking',
+  addParking: '/add/parking'
 }
 
 /**
@@ -81,6 +87,43 @@ router.get(api.getBuilding, (req, res) => {
   });
 });
 
+// 删除楼信息
+router.delete(api.deleteBuilding, (req, res) => {
+  let id = req.query.id;
+  let sqlBuilding = SQL.community.deleteBuilding;
+  let sqlRoom = SQL.community.deleteRoomInBuilding;
+  sqlRun(sqlRoom, id, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      sqlRun(sqlBuilding, id, (err, result) => {
+        if (err) {
+          console.log("err", err);
+        }
+        if (result) {
+          jsonWrite(res, {
+            mode: MODE.DELETE_SUCCES,
+            msg: "删除成功"
+          })
+        } else {
+          jsonWrite(res, {
+            mode: MODE.DELETE_FAILURE,
+            msg: "删除失败"
+          })
+        }
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.DELETE_FAILURE,
+        msg: "删除失败"
+      })
+    }
+  })
+
+  
+})
+
  /**
  * 更新楼信息
  */
@@ -120,6 +163,54 @@ router.get(api.getRoom, (req, res) => {
   });
 });
 
+// 添加房信息
+router.post(api.addRoom, (req, res) => {
+  let building_id = req.body.building_id;
+  let name = req.body.name;
+  let sql = SQL.community.addRoom;
+  sqlRun(sql, [building_id, name], (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.ADD_SUCCESS,
+        msg: "添加成功"
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.ADD_FAILURE,
+        msg: "添加失败"
+      })
+    }
+  })
+})
+
+
+// 删除房信息
+router.delete(api.deleteRoom, (req, res) => {
+  // console.log(req.query.id);
+  let id = req.query.id;
+  let sql = SQL.community.deleteRoom;
+  sqlRun(sql, id, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.DELETE_SUCCES,
+        msg: "删除成功"
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.DELETE_FAILURE,
+        msg: "删除失败"
+      })
+    }
+  })
+})
+
+
 router.get(api.getRoomName, (req, res) => {
   let sql = SQL.community.selectRoomName;
   sqlRun(sql, (err, result) => {
@@ -150,7 +241,6 @@ router.post(api.addBuilding, (req, res) => {
   let {name, layerNum, roomNum} = req.body;
   let addBSql = SQL.community.addBuilding;
   let selectBuildingByName = SQL.community.selectBuildingByName;
-  let addRSql = SQL.community.addRoom;
   let bId = 0;
   sqlRun(addBSql, name, (err, result) => {
     if (result) {
@@ -239,6 +329,73 @@ router.get(api.getParkingBind, (req, res) => {
     }
   })
 })
+
+router.post(api.addParking, (req, res) => {
+  let name = req.body.name;
+  let sql = SQL.community.addParking;
+  sqlRun(sql, name, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.ADD_SUCCESS,
+        msg: "添加成功"
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.ADD_FAILURE,
+        msg: "添加成功"
+      })
+    }
+  })
+})
+
+/**
+ * 车位绑定
+ */
+router.post(api.bindParking, (req, res) => {
+  let { id, resident_tel, license } = req.body;
+  let sql = SQL.community.bindParking;
+  let date = moment(new Date()).format("YYYY-MM-DD");
+  sqlRun(sql, [resident_tel, license, date, id], (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        msg: "绑定成功"
+      })
+    } else {
+      jsonWrite(res, {
+        msg: "绑定失败"
+      })
+    }
+  })
+})
+
+/**
+ * 车位解绑
+ */
+router.post(api.unBindParking, (req, res) => {
+  let id = req.body.id;
+  let sql = SQL.community.unbindParking;
+  sqlRun(sql, id, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        msg: "解绑成功"
+      })
+    } else {
+      jsonWrite(res, {
+        msg: "绑定失败"
+      })
+    }
+  })
+})
+
 
 
 module.exports = router;
