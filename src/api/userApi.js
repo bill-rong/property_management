@@ -8,6 +8,14 @@ export function getUser(tel) {
     })
 }
 
+// 获取所有用户信息
+export function getAllUser() {
+  return request({
+      url: '/api/user/get/all/user',
+      method: 'get'
+  })
+}
+
 // 登录
 export function login(loginForm, ident) {
   let url = ident == '1' ? '/api/user/login/' : ident == '2' ? '/api/admin/login/' : '';
@@ -22,6 +30,15 @@ export function login(loginForm, ident) {
 export function updatePassword(data) {
   return request({
     url: '/api/user/update/password',
+    method: 'post',
+    data: data
+  })
+}
+
+// 重置密码
+export function resetPassword(data) {
+  return request({
+    url: '/api/user/reset/password',
     method: 'post',
     data: data
   })

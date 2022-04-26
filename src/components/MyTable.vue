@@ -24,6 +24,12 @@
             @click="handleCheck(scope.$index, scope.row)">查看
           </el-button>
           <el-button
+            v-if="resetShow"
+            size="mini"
+            type="warning"
+            @click="handleReset(scope.$index, scope.row)">重置密码
+          </el-button>
+          <el-button
             v-if="editShow"
             size="mini"
             @click="handleEdit(scope.$index, scope.row)">修改
@@ -90,6 +96,10 @@ export default {
       type: Boolean,
       default: true
     },
+    resetShow: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {
@@ -121,6 +131,9 @@ export default {
     handlePay(index, row) {
       this.$emit("pay", index, row);
     },
+    handleReset(index, row) {
+      this.$emit("reset", index, row);
+    }
     
   }
 }

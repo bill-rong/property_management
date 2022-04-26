@@ -12,7 +12,9 @@ const moment = require('moment');
 const api = {
   login: '/login',
   getUser: '/get/user',
+  getAllUser: '/get/all/user',
   updatePwd: '/update/password',
+  resetPwd: '/reset/password',
   forgetPwd: '/forget/password',
   uodateInfo: '/update/info'
 }
@@ -40,6 +42,30 @@ router.get(api.getUser, (req, res) => {
         mode: MODE.USER_NOT_EXIST,
         msg: "用户不存在"
       });
+    }
+  });
+});
+
+/**
+ * 获取所有用户信息接口
+ * url: /api/user/get/all/user
+ */
+ router.get(api.getAllUser, (req, res) => {
+  let sql = SQL.user.selectAll;
+  sqlRun(sql, (err, result) => {
+    if (err) {
+      console.log("失败", err);
+    }
+    if (result) {
+      let data = JSON.parse(JSON.stringify(result));
+      data = data.map((item) => {
+        delete item.password;
+        item.date = moment(item.date).format("YYYY-MM-DD");
+        return item
+      })
+      jsonWrite(res, data);
+    } else {
+      jsonWrite(res, {});
     }
   });
 });
@@ -172,11 +198,11 @@ router.post(api.updatePwd, (req, res) => {
   });
 });
 
-router.post(api.updatePwd, (req, res) => {
+router.post(api.resetPwd, (req, res) => {
   let params = req.body;
   let resetPwdSql = SQL.user.updatePwd;
   let newPwd = bcrypt.encrypt("12345678");
-  sqlRun(resetPwdSql, [newPwd, params.tel], (err, result) => {
+  sqlRun(resetPwdSql, [newPwd, params.resTel], (err, result) => {
     if (err) {
       console.log("重置密码失败", err);
     }

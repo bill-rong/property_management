@@ -6,36 +6,23 @@
       <el-button class="sbtn" type="primary">查询</el-button>
     </div>
 
-    <MyTabel :tableColumn="column" :tableData="data" @edit="edit" @handleDelete="handleDelete">
+    <MyTabel :tableColumn="column" :tableData="data" 
+      :editShow="false" :resetShow="true" 
+      @handleDelete="handleDelete" @reset="reset">
     </MyTabel>
 
     <el-dialog
       title="提示"
-      :visible.sync="editDialogVisible"
+      :visible.sync="resetDialogVisible"
       width="30%"
       center>
-      <el-form :rules="rules" ref="ruleForm" :model="add">
-        <el-form-item label="姓名" prop="name" label-width="40%" style="width: 80%;">
-          <el-input v-model="row.name" maxlength="10" show-word-limit></el-input>
-        </el-form-item>
-        <el-form-item label="性别" prop="sex" label-width="40%" style="width: 80%;">
-          <el-input v-model="row.sex" maxlength="10" show-word-limit></el-input>
-        </el-form-item>
-        <!-- <el-form-item label="密码" prop="password" label-width="40%" style="width: 80%;"> -->
-          <!-- <el-input v-model="row.password" maxlength="10" show-word-limit></el-input> -->
-          
-        <!-- </el-form-item> -->
-        <el-form-item label="居住状态" prop="living" label-width="40%" style="width: 80%;">
-          <el-input v-model="row.living" maxlength="10" show-word-limit></el-input>
-        </el-form-item>
-        <el-form-item label="日期" prop="date" label-width="40%" style="width: 80%;">
-          <el-input v-model="row.date" maxlength="10" show-word-limit></el-input>
-        </el-form-item>
-      </el-form>
+      <label style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
+        <span>确定重置密码吗？</span>
+        <span>重置后密码为：12345678</span>
+      </label>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
-        <el-button type="warning">重置密码</el-button>
-        <el-button type="primary" @click="dialogSubmit">确 定</el-button>
+        <el-button @click="resetDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogSubmit()">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -43,7 +30,7 @@
 
 <script>
 import MyTabel from '@/components/MyTable.vue'
-import { getUser } from '@/api/userApi'
+import { getAllUser, resetPassword } from '@/api/userApi'
 export default {
   components: {
     MyTabel
@@ -57,33 +44,10 @@ export default {
       }
     };
     return {
-      editDialogVisible: false,   // 编辑弹窗按钮
+      resetDialogVisible: false,
       row:{},                     // 存储点击行的信息
       input: '',
-
-      data: [
-      {
-        id: 1,
-        name: '廖弼镕',
-        sex: '男',
-        password: 321,
-        living: '居住中',
-        date: '2022-4-9',
-      },{
-        id: 2,
-        name: 'sofia',
-        sex: '女',
-        password: 321,
-        living: '居住中',
-        date: '2022-4-9',
-      },{
-        id: 3,
-        name: 'bill',
-        sex: '男',
-        password: 321,
-        living: '居住中',
-        date: '2022-4-7',
-      },],
+      data: [],
 
       column:[{
         prop: 'id',
@@ -94,20 +58,21 @@ export default {
         label: '姓名',
         sortable: true
       },{
+        prop: 'tel',
+        label: '手机号'
+      },{
+        prop: 'idcard',
+        label: '身份证号',
+        sortable: true
+      },{
+        prop: 'email',
+        label: '邮箱'
+      },{
         prop: 'sex',
-        label: '性别',
-        sortable: true
-      },{
-        prop: 'password',
-        label: '密码',
-        sortable: true
-      },{
-        prop: 'living',
-        label: '居住状态',
-        sortable: true
+        label: '性别'
       },{
         prop: 'date',
-        label: '日期',
+        label: '入住时间',
         sortable: true
       }],
 
@@ -124,14 +89,17 @@ export default {
     }
   },
   created() {
-    // getUser().then(res => {
-    //   this.data = res.data;
-    // })
+    getAllUser().then(res => {
+      this.data = res.data.map(item => {
+        item.sex = item.sex == '0' ? '女' : item.sex == '1' ? '男' : '';
+        return item
+      })
+    })
   },
   methods: {
-    edit(index, row) {
-      console.log('编辑按钮点击', index, row);
-      this.editDialogVisible = true;
+    reset(index, row) {
+      console.log('重置按钮点击', index, row);
+      this.resetDialogVisible = true;
       this.row = row
     },
 
@@ -185,17 +153,19 @@ export default {
         });          
       });
     },
-
+    // dialog确定按钮
     dialogSubmit() {
-      if (!this.checkForm()) { return }
-      this.$notify({
+      resetPassword({resTel: this.row.tel}).then(res => {
+        this.$notify({
           title: '成功',
-          message: `添加"${this.add.name}"楼成功`,
+          message: res.data.msg,
           type: 'success',
           duration: 2000
         });
-      this.centerDialogVisible = false;
+        this.resetDialogVisible = false;
+      })
     },
+
     checkForm() {
       let isNormal = false;
       this.$refs["ruleForm"].validate((valid) => {
