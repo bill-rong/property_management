@@ -10,7 +10,7 @@ const sqlMap = {
     // 用户登录
     login: "SELECT tel, name, password FROM resident WHERE tel=? and living='1';",
     // 添加用户
-    add: 'INSERT INTO resident(tel, idcard, name, sex, email, birthday, password, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?);',
+    add: 'INSERT INTO resident(tel, idcard, name, sex, email, birthday, password, living, date) VALUES (?, ?, ?, ?, ?, ?, ?, \'1\', ?);',
     // 查询所有用户
     selectAll: 'SELECT * FROM resident;',
     // 查询单个用户

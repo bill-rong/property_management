@@ -12,6 +12,8 @@ const moment = require('moment');
 const api = {
   login: '/login',
   getUser: '/get/user',
+  userIsExist: '/exist',
+  addUser: '/add',
   getAllUser: '/get/all/user',
   updatePwd: '/update/password',
   resetPwd: '/reset/password',
@@ -42,6 +44,50 @@ router.get(api.getUser, (req, res) => {
         mode: MODE.USER_NOT_EXIST,
         msg: "用户不存在"
       });
+    }
+  });
+});
+
+// 判断用户是否存在
+router.get(api.userIsExist, (req, res) => {
+  let tel = req.query.tel;
+  let sql = SQL.user.selectByTel;
+  sqlRun(sql, tel, (err, result) => {
+    if (err) {
+      console.log("失败", err);
+    }
+    if (result.length > 0) {
+      jsonWrite(res, { mode: MODE.USER_IS_EXIST });
+      // res.json(result)
+    } else {
+      jsonWrite(res, {
+        mode: MODE.USER_NOT_EXIST,
+        msg: "用户不存在"
+      });
+    }
+  });
+});
+
+// 添加
+router.post(api.addUser, (req, res) => {
+  let { tel, idcard, name, sex, email } = req.body;
+  let password = bcrypt.encrypt("12345678");
+  let date = moment(new Date()).format("YYYY-MM-DD");
+  let sql = SQL.user.add;
+  sqlRun(sql, [tel, idcard, name, sex, email, '', password, date], (err, result) => {
+    if (err) {
+      console.log("失败", err);
+    }
+    if (result) {
+      jsonWrite(res, { 
+        mode: MODE.ADD_SUCCESS,
+        msg: '添加成功'
+       });
+    } else {
+      jsonWrite(res, { 
+        mode: MODE.ADD_FAILURE,
+        msg: '添加成功'
+       });
     }
   });
 });

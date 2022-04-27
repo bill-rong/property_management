@@ -8,6 +8,24 @@ export function getUser(tel) {
     })
 }
 
+// 判断用户是否存在
+export function userIsExist(tel) {
+  return request({
+      url: '/api/user/exist',
+      method: 'get',
+      params: tel
+  })
+}
+
+// 添加用户
+export function addUser(data) {
+  return request({
+      url: '/api/user/add',
+      method: 'post',
+      data: data
+  })
+}
+
 // 获取所有用户信息
 export function getAllUser() {
   return request({
