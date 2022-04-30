@@ -74,7 +74,7 @@ router.post(api.addUser, (req, res) => {
   let password = bcrypt.encrypt("12345678");
   let date = moment(new Date()).format("YYYY-MM-DD");
   let sql = SQL.user.add;
-  sqlRun(sql, [tel, idcard, name, sex, email, '', password, date], (err, result) => {
+  sqlRun(sql, [tel, idcard, name, sex, email, password, date], (err, result) => {
     if (err) {
       console.log("失败", err);
     }

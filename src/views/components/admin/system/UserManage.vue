@@ -161,12 +161,7 @@ export default {
     }
   },
   created() {
-    getAllUser().then(res => {
-      this.data = res.data.map(item => {
-        item.sex = item.sex == '0' ? '女' : item.sex == '1' ? '男' : '';
-        return item
-      })
-    })
+    this.bindData();
   },
   methods: {
     reset(index, row) {
@@ -239,14 +234,15 @@ export default {
         }
       }).then(res => {
         console.log(3);
-        // addUser(this.addUserData).then(aRes => {
-        //   if (aRes.data.mode == MODE.ADD_SUCCESS) {
-        //     this.$message({
-        //       message: aRes.data.msg,
-        //       type: 'success'
-        //     });
-        //   }
-        // })
+        addUser(this.addUserData).then(aRes => {
+          if (aRes.data.mode == MODE.ADD_SUCCESS) {
+            this.$message({
+              message: aRes.data.msg,
+              type: 'success'
+            });
+            this.bindData();
+          }
+        })
         this.addDialogVisible = false;
       }).catch(err => {
         console.log(2);
@@ -280,6 +276,14 @@ export default {
         }
       });
       return isNormal;
+    },
+    bindData() {
+      getAllUser().then(res => {
+        this.data = res.data.map(item => {
+          item.sex = item.sex == '0' ? '女' : item.sex == '1' ? '男' : '';
+          return item
+        })
+      })
     }
 
   }
