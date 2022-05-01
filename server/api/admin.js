@@ -10,6 +10,7 @@ const JWT = require('../utils/Token');
 
 const api = {
   login: '/login',
+  getAll: '/get/all',
   updatePwd: '/update/password',
   getInfo: '/get/info',
   updateInfo: '/update/info',
@@ -74,6 +75,23 @@ router.get(api.getInfo, (req, res) => {
     }
     if (result) {
       let data = JSON.parse(JSON.stringify(result[0]));
+      delete data.password;
+      jsonWrite(res, data);
+    }
+  })
+})
+
+/**
+ * 获取所有管理员
+ */
+ router.get(api.getAll, (req, res) => {
+  let sql = SQL.admin.selectAll;
+  sqlRun(sql, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      let data = JSON.parse(JSON.stringify(result));
       delete data.password;
       jsonWrite(res, data);
     }

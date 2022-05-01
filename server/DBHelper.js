@@ -7,6 +7,8 @@ const conn = mysql.createConnection(DB.mysql);
 conn.connect(err => {
   if (err) {
     console.log("数据库连接失败");
+  } else {
+    console.log("success connect MySQL");
   }
 });
 

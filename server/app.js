@@ -73,7 +73,8 @@ app.use('/api/complaint', complaint)
 
 // 监听3000端口
 app.listen(3000, () => {
-    console.log('success listen at port:3000......');
+  console.log("property management");
+  console.log('success listen at port: 3000......');
 })
 
 

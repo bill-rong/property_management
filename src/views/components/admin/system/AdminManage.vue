@@ -6,7 +6,7 @@
       style="float: right; width: 100px">
       添加
     </el-button>
-    <MyTabel :tableColumn="column" :tableData="data" @edit="edit">
+    <MyTabel :tableColumn="column" :tableData="data" @edit="edit" @handleDelete="handleDelete">
     </MyTabel>
 
     <el-dialog
@@ -19,7 +19,14 @@
           <el-input v-model="row.name" maxlength="10" show-word-limit></el-input>
         </el-form-item>
         <el-form-item label="性别" prop="sex" label-width="40%" style="width: 80%;">
-          <el-input v-model="row.sex" maxlength="10" show-word-limit></el-input>
+          <el-select v-model="row.sex" placeholder="请选择" style="width:100%">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="电话" prop="tel" label-width="40%" style="width: 80%;">
           <el-input v-model="row.tel" maxlength="10" show-word-limit></el-input>
@@ -27,8 +34,15 @@
         <el-form-item label="邮箱" prop="email" label-width="40%" style="width: 80%;">
           <el-input v-model="row.email" maxlength="10" show-word-limit></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="permission" label-width="40%" style="width: 80%;">
-          <el-input v-model="row.permission" maxlength="10" show-word-limit></el-input>
+        <el-form-item label="权限" prop="permission" label-width="40%" style="width: 80%;">
+          <el-select v-model="row.permission" placeholder="请选择" style="width:100%">
+            <el-option
+              v-for="item in perOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -41,7 +55,7 @@
 
 <script>
 import MyTabel from '@/components/MyTable.vue'
-import { getUser } from '@/api/userApi'
+import { getAll } from '@/api/adminApi'
 import { getUserInfo } from '@/utils/auth'
 export default {
   components: {
@@ -103,6 +117,20 @@ export default {
         sortable: true
       },],
 
+      options: [{
+        value: '1',
+        label: '男'
+      }, {
+        value: '0',
+        label: '女'
+      }],
+      perOptions: [{
+        value: 'super',
+        label: 'super'
+      }, {
+        value: 'normal',
+        label: 'normal'
+      }],
       centerDialogVisible: false,
       
       add: {
@@ -117,6 +145,9 @@ export default {
   created() {
     this.super = getUserInfo().permission == 'super';
     if (this.super) {
+      getAll().then(res => {
+        this.data = res.data
+      })
 
     } else {
       const loading = this.$loading({
@@ -144,16 +175,21 @@ export default {
       this.editDialogVisible = true;
       this.row = row
     },
-
-
+    handleDelete(index, row) {
+      this.$confirm(`确定删除 '${row.name}' 管理员吗`, '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        console.log("确认");
+      }).catch(() => {
+        console.log("取消");
+      })
+    },
     dialogSubmit() {
-      this.$notify({
-          title: '成功',
-          message: `添加"${this.add.name}"楼成功`,
-          type: 'success',
-          duration: 2000
-        });
-      this.centerDialogVisible = false;
+      console.log(this.row);
+      this.editDialogVisible = false;
     }
   }
 }

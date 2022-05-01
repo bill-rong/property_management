@@ -17,6 +17,14 @@ export function getInfo(data) {
   })
 }
 
+// 获取所有管理员信息
+export function getAll() {
+  return request({
+    url: '/api/admin/get/all',
+    method: 'get'
+  })
+}
+
 // 修改个人信息
 export function updateInfo(data) {
   return request({
