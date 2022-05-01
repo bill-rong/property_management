@@ -37,7 +37,9 @@ const sqlMap = {
     // 修改管理员信息
     updateInfo: "UPDATE admin SET name=?, sex=?, email=? WHERE tel=?",
     // 删除管理员
-    delete: "DELETE FROM admin WHERE tel=?;"
+    delete: "DELETE FROM admin WHERE tel=?;",
+    // 修改权限
+    updatePermission: "UPDATE admin SET permission=? WHERE tel=?;"
   },
   community: {
     select: "SELECT * FROM community;",

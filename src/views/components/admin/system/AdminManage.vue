@@ -29,20 +29,27 @@
           </el-select>
         </el-form-item>
         <el-form-item label="电话" prop="tel" label-width="40%" style="width: 80%;">
-          <el-input v-model="row.tel" maxlength="10" show-word-limit></el-input>
+          <el-input v-model="row.tel" maxlength="11" show-word-limit></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email" label-width="40%" style="width: 80%;">
-          <el-input v-model="row.email" maxlength="10" show-word-limit></el-input>
+          <el-input v-model="row.email" show-word-limit></el-input>
         </el-form-item>
         <el-form-item label="权限" prop="permission" label-width="40%" style="width: 80%;">
-          <el-select v-model="row.permission" placeholder="请选择" style="width:100%">
+          <el-switch
+            v-model="rowPermission"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="normal"
+            inactive-text="super">
+          </el-switch>
+          <!-- <el-select v-model="row.permission" placeholder="请选择" style="width:100%">
             <el-option
               v-for="item in perOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
-          </el-select>
+          </el-select> -->
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -65,6 +72,7 @@ export default {
     return {
       editDialogVisible: false,   // 编辑弹窗按钮
       row:{},                     // 存储点击行的信息
+      rowPermission: false,
       super: false,                  // 身份权限
 
       data: [
@@ -173,7 +181,8 @@ export default {
     edit(index, row) {
       console.log('编辑按钮点击', index, row);
       this.editDialogVisible = true;
-      this.row = row
+      this.row = row;
+      this.rowPermission = row.permission == 'super'
     },
     handleDelete(index, row) {
       this.$confirm(`确定删除 '${row.name}' 管理员吗`, '提示', {

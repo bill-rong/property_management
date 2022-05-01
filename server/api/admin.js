@@ -14,6 +14,7 @@ const api = {
   updatePwd: '/update/password',
   getInfo: '/get/info',
   updateInfo: '/update/info',
+  delete: '/delete'
 }
 
 /**
@@ -101,7 +102,7 @@ router.get(api.getInfo, (req, res) => {
 /**
  * 修改个人信息
  */
- router.post(api.updateInfo, (req, res) => {
+router.post(api.updateInfo, (req, res) => {
   let params = req.body;
   let updateInfoSql = SQL.admin.updateInfo;
   let arrInfo = [params.name, params.sex, params.email, params.tel];
@@ -117,7 +118,51 @@ router.get(api.getInfo, (req, res) => {
       });
     }
   })
- })
+})
+
+ // 删除管理员
+router.delete(api.delete, (req, res) => {
+  let tel = req.query.tel;
+  let sql = SQL.admin.delete;
+  sqlRun(sql, tel, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.DELETE_SUCCES,
+        msg: '删除成功'
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.DELETE_FAILURE,
+        msg: '删除失败'
+      })
+    }
+  })
+})
+
+// 修改权限
+router.put(api.updatePermission, (req, res) => {
+  let { permission, tel } = req.body;
+  let sql = SQL.admin.updatePermission;
+  sqlRun(sql, [permission, tel], (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.UPDATE_SUCCESS,
+        msg: '修改成功'
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.UPDATE_FAILURE,
+        msg: '修改失败'
+      })
+    }
+  })
+})
 
  /**
  * 修改密码接口

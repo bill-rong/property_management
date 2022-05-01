@@ -13,7 +13,6 @@ conn.connect(err => {
 });
 
 function sqlRun(sql, arr, callback) {
-
   // 执行sql语句
   conn.query(sql, arr, callback);
 

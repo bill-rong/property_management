@@ -8,6 +8,7 @@ const mode = {
   UPDATE_PWD_SUCCESS: 6,  // 密码修改成功
   UPDATE_INFO_SUCCESS: 7, // 修改信息成功
   UPDATE_SUCCESS: 8,       // 修改成功
+  UPDATE_FAILURE: 14,     // 修改失败
   ADD_SUCCESS: 9,         // 添加成功
   ADD_FAILURE: 10,        // 修改失败
   DELETE_SUCCES: 11,       // 删除成功
