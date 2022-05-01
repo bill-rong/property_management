@@ -71,6 +71,11 @@ export default {
     this.userName = getUserInfo().name;
     this.activeIndex = this.$router.currentRoute.name;
   },
+  watch: {
+    $route(to, from) {
+      this.activeIndex = to.name;
+    }
+  },
   methods: {
     handleSelect(key, keyPath) {
       this.activeIndex = key;

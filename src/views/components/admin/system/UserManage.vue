@@ -3,11 +3,11 @@
     <div class="header">
       <el-button class="sbtn" type="success" @click="addDialogVisible = true">添加住户</el-button>
       <el-input placeholder="请输入您所要查询的记录" 
-      @change="searchInput" v-model="input" clearable style="margin: 0 10px;"></el-input>
-      <el-button class="sbtn" type="primary">查询</el-button>
+       @clear="searchClear" v-model="input" clearable style="margin: 0 10px; width: 20%"></el-input>
+      <el-button class="sbtn" type="primary" @click="searchInput()">查询</el-button>
     </div>
 
-    <MyTabel :tableColumn="column" :tableData="data" 
+    <MyTabel :tableColumn="column" :tableData="showData" 
       :editShow="false" :resetShow="true" 
       @handleDelete="handleDelete" @reset="reset">
     </MyTabel>
@@ -157,7 +157,7 @@ export default {
         idcard: [{ validator: validateIdcard, trigger: "blur" }],
         name: [{ validator: validateName, trigger: "blur"}],
       },
-      
+      showData: []
     }
   },
   created() {
@@ -171,28 +171,18 @@ export default {
     },
 
     // 通过输入查询
-      searchInput(val){
-       if (!val) {
-        this.showOrders(1, this.type);
-        this.currentPage = 1;
-        return;
-      }
-      this.$api.searchOrder({
-          search: val,
-        })
-        .then((res) => {
-          console.log("搜索---", res.data);
-          this.currentPage = 1;
-          if (res.data.status === 200) {
-            this.tableData = res.data.data
-            this.total = res.data.total;
-            this.pageSize = res.data.pageSize;;
-          } else {
-            this.total = 1;
-            this.pageSize = 1;
-          }
-        });
-      },
+    searchInput(){
+      this.showData = this.data.filter(item => {
+        return item.tel.search(this.input) != -1;
+      })
+      console.log(this.showData);
+    },
+
+    // 取消搜索
+    searchClear() {
+      // console.log("searchClear");
+      this.showData = this.data
+    },
 
     // 删除操作
     handleDelete(index, row){
@@ -220,6 +210,7 @@ export default {
         });          
       });
     },
+    // 添加住户
     addDialogSubmit() {
       if (!this.checkForm()) return;
       userIsExist({tel: this.addUserData.tel}).then(res => {
@@ -283,6 +274,7 @@ export default {
           item.sex = item.sex == '0' ? '女' : item.sex == '1' ? '男' : '';
           return item
         })
+        this.showData = this.data;
       })
     }
 

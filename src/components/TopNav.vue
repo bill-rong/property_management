@@ -66,6 +66,11 @@ export default {
     this.activeIndex = this.$router.currentRoute.name;
     console.log(this.activeIndex);
   },
+  watch: {
+    $route(to, from) {
+      this.activeIndex = to.name;
+    }
+  },
   methods: {
     handleSelect(key, keyPath) {
       this.activeIndex = key;

@@ -14,7 +14,7 @@
       :visible.sync="editDialogVisible"
       width="30%"
       center>
-      <el-form :rules="rules" ref="ruleForm" :model="add">
+      <el-form ref="ruleForm" :model="add">
         <el-form-item label="姓名" prop="name" label-width="40%" style="width: 80%;">
           <el-input v-model="row.name" maxlength="10" show-word-limit></el-input>
         </el-form-item>
@@ -27,8 +27,8 @@
         <el-form-item label="邮箱" prop="email" label-width="40%" style="width: 80%;">
           <el-input v-model="row.email" maxlength="10" show-word-limit></el-input>
         </el-form-item>
-        <el-form-item label="密码" prop="password" label-width="40%" style="width: 80%;">
-          <el-input v-model="row.password" maxlength="10" show-word-limit></el-input>
+        <el-form-item label="密码" prop="permission" label-width="40%" style="width: 80%;">
+          <el-input v-model="row.permission" maxlength="10" show-word-limit></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -42,18 +42,12 @@
 <script>
 import MyTabel from '@/components/MyTable.vue'
 import { getUser } from '@/api/userApi'
+import { getUserInfo } from '@/utils/auth'
 export default {
   components: {
     MyTabel
   },
   data() {
-    var validateName = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入楼名"));
-      } else {
-        callback();
-      }
-    };
     return {
       editDialogVisible: false,   // 编辑弹窗按钮
       row:{},                     // 存储点击行的信息
@@ -64,21 +58,21 @@ export default {
         id: 1,
         name: 'test1',
         sex: '男',
-        password: 321,
+        permission: 321,
         tel: 1999911,
         email: '邮箱',
       },{
         id: 2,
         name: 'test2',
         sex: '男',
-        password: 321,
+        permission: 321,
         tel: 1230120,
         email: '邮箱',
       },{
         id: 3,
         name: 'test3',
         sex: '男',
-        password: 321,
+        permission: 321,
         tel: 1830090,
         email: '邮箱',
       },],
@@ -104,8 +98,8 @@ export default {
         label: '邮箱',
         sortable: true
       },{
-        prop: 'password',
-        label: '密码',
+        prop: 'permission',
+        label: '权限',
         sortable: true
       },],
 
@@ -116,25 +110,33 @@ export default {
         layerNum: 1,
         roomNum: 1
       },
-      rules: {
-        name: [{ validator: validateName, trigger: "blur" }]
-      },
+      
       
     }
   },
   created() {
-    // getUser().then(res => {
-    //   this.data = res.data;
-    // })
+    this.super = getUserInfo().permission == 'super';
+    if (this.super) {
 
-    console.log('super:', this.super);            // super是传入的权限
-    if (this.super === false) {
-      this.$message.error({
-        message:'不好意思哦，您不是super管理员，无法使用此功能',
-        duration: 1000});
-    }else {
-      this.super = true
-    } 
+    } else {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+      this.$confirm('你的权限不足无法访问！', '提示', {
+        confirmButtonText: '返回',
+        showClose: false,
+        showCancelButton: false,
+        type: 'warning',
+        center: true
+      }).then(() => {
+        this.$router.back();
+        loading.close();
+      });
+      
+    }
   },
   methods: {
     edit(index, row) {
@@ -145,7 +147,6 @@ export default {
 
 
     dialogSubmit() {
-      if (!this.checkForm()) { return }
       this.$notify({
           title: '成功',
           message: `添加"${this.add.name}"楼成功`,
@@ -153,17 +154,6 @@ export default {
           duration: 2000
         });
       this.centerDialogVisible = false;
-    },
-    checkForm() {
-      let isNormal = false;
-      this.$refs["ruleForm"].validate((valid) => {
-        if (valid) {
-          isNormal = true;
-        } else {
-          isNormal = false;
-        }
-      });
-      return isNormal;
     }
   }
 }
