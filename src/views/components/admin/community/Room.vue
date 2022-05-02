@@ -101,7 +101,8 @@ export default {
       rules: {
         name: [{ validator: validateName, trigger: "blur" }]
       },
-      clickId: ''
+      clickId: '',
+      clickResId: ''
     }
   },
   created() {
@@ -178,12 +179,11 @@ export default {
     },
     handleDelete(index, row) {
       this.clickId = row.id;
+      this.clickResId = row.resident_id
       this.deleteVisible = true;
     },
     roomDelete(index, row) {
-      if (this.data.find( item => {
-        return item.resident_id != null
-        })) {
+      if (this.clickResId != null) {
         this.$notify({
             title: '失败',
             message: "有人居住中，无法直接删除，请前往系统管理",
@@ -198,9 +198,7 @@ export default {
             message: '删除成功',
             type: 'success'
           });
-          getRoom().then(res => {
-            this.data = res.data;
-          });
+          getRoom().then(res => { this.data = res.data });
         } else {
           this.$message({
             message: '删除失败',

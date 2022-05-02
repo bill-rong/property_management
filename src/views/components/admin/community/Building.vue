@@ -151,7 +151,7 @@ export default {
             title: '失败',
             message: "此楼层有人居住中，无法直接删除，请前往系统管理",
             type: 'error',
-            duration: 2000
+            duration: 3000
           });
         return
       }
