@@ -14,7 +14,9 @@ const api = {
   updatePwd: '/update/password',
   getInfo: '/get/info',
   updateInfo: '/update/info',
-  delete: '/delete'
+  updatePermission: '/update/permission',
+  delete: '/delete',
+  add: '/add'
 }
 
 /**
@@ -97,6 +99,31 @@ router.get(api.getInfo, (req, res) => {
       jsonWrite(res, data);
     }
   })
+ })
+
+/**
+ * 
+ */
+router.post(api.add, (req, res) => {
+  let { tel, name, sex, email, permission } = req.body;
+  let password = bcrypt.encrypt("12345678");
+  let sql = SQL.admin.add;
+  sqlRun(sql, [tel, name, sex, email, permission, password], (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        msg: '添加成功',
+        mode: MODE.ADD_SUCCESS
+      });
+    } else {
+      jsonWrite(res, {
+        msg: '添加失败',
+        mode: MODE.ADD_FAILURE
+      });
+    }
+  })
 })
 
 /**
@@ -111,10 +138,14 @@ router.post(api.updateInfo, (req, res) => {
       console.log("修改个人信息", err);
     }
     if (result) {
-      console.log("result", result);
       jsonWrite(res, {
         mode: MODE.UPDATE_INFO_SUCCESS,
         msg: "修改成功"
+      });
+    } else {
+      jsonWrite(res, {
+        mode: MODE.UPDATE_FAILURE,
+        msg: "修改失败"
       });
     }
   })

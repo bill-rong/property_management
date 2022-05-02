@@ -1,14 +1,15 @@
 <template>
   <div v-if = this.super>
     <el-button 
-      type="primary" 
-      @click="centerDialogVisible = true"
-      style="float: right; width: 100px">
-      添加
+      type="success" 
+      @click="addDialogVisible = true"
+      style="float: left; width: 100px">
+      添加管理员
     </el-button>
     <MyTabel :tableColumn="column" :tableData="data" @edit="edit" @handleDelete="handleDelete">
     </MyTabel>
 
+    <!-- 修改信息dialog -->
     <el-dialog
       title="提示"
       :visible.sync="editDialogVisible"
@@ -29,7 +30,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="电话" prop="tel" label-width="40%" style="width: 80%;">
-          <el-input v-model="row.tel" maxlength="11" show-word-limit></el-input>
+          <el-input v-model="row.tel" maxlength="11" disabled show-word-limit></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="email" label-width="40%" style="width: 80%;">
           <el-input v-model="row.email" show-word-limit></el-input>
@@ -37,24 +38,60 @@
         <el-form-item label="权限" prop="permission" label-width="40%" style="width: 80%;">
           <el-switch
             v-model="rowPermission"
+            @change="switchChange"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            active-text="normal"
-            inactive-text="super">
+            active-text="super"
+            inactive-text="normal">
           </el-switch>
-          <!-- <el-select v-model="row.permission" placeholder="请选择" style="width:100%">
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogSubmit">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <!-- 添加管理员dialog -->
+    <el-dialog
+      title="提示"
+      :visible.sync="addDialogVisible"
+      width="30%"
+      center>
+      <el-form ref="ruleForm" :model="add">
+        <el-form-item label="姓名" prop="name" label-width="40%" style="width: 80%;">
+          <el-input v-model="add.name" maxlength="10" show-word-limit></el-input>
+        </el-form-item>
+        <el-form-item label="性别" prop="sex" label-width="40%" style="width: 80%;">
+          <el-select v-model="add.sex" placeholder="请选择" style="width:100%">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="电话" prop="tel" label-width="40%" style="width: 80%;">
+          <el-input v-model="add.tel" maxlength="11" show-word-limit></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="email" label-width="40%" style="width: 80%;">
+          <el-input v-model="add.email" show-word-limit></el-input>
+        </el-form-item>
+        <el-form-item label="权限" prop="permission" label-width="40%" style="width: 80%;">
+          <el-select v-model="add.permission" placeholder="请选择" style="width:100%">
             <el-option
               v-for="item in perOptions"
               :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
-          </el-select> -->
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogSubmit">确 定</el-button>
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addSubmit">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -62,8 +99,9 @@
 
 <script>
 import MyTabel from '@/components/MyTable.vue'
-import { getAll } from '@/api/adminApi'
+import { getAll, updatePermission, deleteAdmin, updateInfo, addAdmin } from '@/api/adminApi'
 import { getUserInfo } from '@/utils/auth'
+import Mode from '@/utils/Mode'
 export default {
   components: {
     MyTabel
@@ -71,6 +109,7 @@ export default {
   data() {
     return {
       editDialogVisible: false,   // 编辑弹窗按钮
+      addDialogVisible: false,
       row:{},                     // 存储点击行的信息
       rowPermission: false,
       super: false,                  // 身份权限
@@ -133,18 +172,19 @@ export default {
         label: '女'
       }],
       perOptions: [{
-        value: 'super',
-        label: 'super'
-      }, {
         value: 'normal',
         label: 'normal'
+      }, {
+        value: 'super',
+        label: 'super'
       }],
-      centerDialogVisible: false,
       
       add: {
+        tel: '',
         name: '',
-        layerNum: 1,
-        roomNum: 1
+        sex: '1',
+        email: '',
+        permission: 'normal'
       },
       
       
@@ -153,10 +193,7 @@ export default {
   created() {
     this.super = getUserInfo().permission == 'super';
     if (this.super) {
-      getAll().then(res => {
-        this.data = res.data
-      })
-
+      getAll().then(res => { this.data = res.data });
     } else {
       const loading = this.$loading({
         lock: true,
@@ -191,14 +228,87 @@ export default {
         type: 'warning',
         center: true
       }).then(() => {
-        console.log("确认");
+        deleteAdmin(row.tel).then(res => {
+          if (res.data.mode == Mode.DELETE_SUCCES) {
+            this.$message({
+              message: res.data.msg,
+              type: 'success'
+            });
+            getAll().then(res => { this.data = res.data });
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: 'error'
+            });
+          }
+        })
       }).catch(() => {
         console.log("取消");
       })
     },
+    switchChange() {
+      let obj = {};
+      obj.permission = this.rowPermission ? 'super' : 'normal';
+      obj.tel = this.row.tel;
+      console.log(obj);
+      updatePermission(obj).then(res => {
+        if (res.data.mode == Mode.UPDATE_SUCCESS) {
+          this.$message({
+            message: res.data.msg,
+            type: 'success'
+          });
+          getAll().then(res => { this.data = res.data });
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: 'error'
+          });
+        }
+      })
+    },
     dialogSubmit() {
       console.log(this.row);
+      let obj = {};
+      obj.tel = this.row.tel;
+      obj.name = this.row.name;
+      obj.sex = this.row.sex;
+      obj.email = this.row.email;
+      updateInfo(obj).then(res => {
+        if (res.data.mode == Mode.UPDATE_INFO_SUCCESS) {
+          this.$message({
+            message: res.data.msg,
+            type: 'success'
+          });
+          getAll().then(res => { this.data = res.data });
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: 'error'
+          });
+        }
+      })
+
       this.editDialogVisible = false;
+    },
+    // 添加管理员确认
+    addSubmit() {
+      addAdmin(this.add).then(res => {
+        if (res.data.mode == Mode.ADD_SUCCESS) {
+          this.$notify({
+            title: '操作结果',
+            message: res.data.msg + "\n默认密码为'12345678'",
+            type: 'success',
+            duration: 5000
+          });
+          this.addDialogVisible = false;
+          getAll().then(res => { this.data = res.data });
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: 'error'
+          });
+        }
+      })
     }
   }
 }

@@ -42,3 +42,29 @@ export function updatePwd(data) {
     data: data
   })
 }
+
+// 修改密码
+export function addAdmin(data) {
+  return request({
+    url: '/api/admin/add',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改权限
+export function updatePermission(data) {
+  return request({
+    url: '/api/admin/update/permission',
+    method: 'put',
+    data: data
+  })
+}
+
+// 删除管理员
+export function deleteAdmin(tel) {
+  return request({
+    url: '/api/admin/delete?tel=' + tel,
+    method: 'delete'
+  })
+}
