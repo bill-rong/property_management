@@ -104,6 +104,10 @@ const sqlMap = {
     selectAll: 'SELECT * FROM visitor;',
     add: 'INSERT INTO visitor(name,room,resident,purposr,date) VALUES(?,?,?,?,?);',
     delete: "DELETE FROM visitor WHERE id=?;",
+  },
+  healthy: {
+    selectAll: 'SELECT * FROM healthy;',
+    delete: 'DELETE FROM healthy WHERE id=?;'
   }
   
 }

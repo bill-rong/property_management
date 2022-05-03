@@ -55,3 +55,23 @@ export function deleteVisitor(id) {
     params: id
   })
 }
+
+
+//////////////// 健康
+
+// 获取所有健康信息
+export function getHealthy() {
+  return request({
+    url: '/api/affairs/healthy/get',
+    method: 'get'
+  })
+}
+
+// 删除健康信息
+export function deleteHealthy(id) {
+  return request({
+    url: '/api/affairs/healthy/delete',
+    method: 'delete',
+    params: id
+  })
+}

@@ -18,6 +18,8 @@ const api = {
   visitorGet: '/visitor/get',
   visitorAdd: '/visitor/add',
   visitorDelete: '/visitor/delete',
+  healthyGet: '/healthy/get',
+  healthyDelete: '/healthy/delete'
 }
 
 // 发布公告
@@ -171,6 +173,48 @@ router.get(api.visitorAdd, (req, res) => {
 router.delete(api.visitorDelete, (req, res) => {
   let id = req.query.id;
   let sql = SQL.visitor.delete;
+  sqlRun(sql, id, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.DELETE_SUCCES,
+        msg: '删除成功'
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.DELETE_FAILURE,
+        msg: '删除失败'
+      })
+    }
+  })
+})
+
+// 获取健康上报
+router.get(api.healthyGet, (req, res) => {
+  let sql = SQL.healthy.selectAll;
+  sqlRun(sql, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result.length > 0) {
+      let data = JSON.parse(JSON.stringify(result));
+      data = data.map((item) => {
+        item.date = moment(item.date).format("YYYY-MM-DD");
+        return item
+      })
+      jsonWrite(res, data);
+    } else {
+      jsonWrite(res, []);
+    }
+  })
+})
+
+// 删除健康上报
+router.delete(api.healthyDelete, (req, res) => {
+  let id = req.query.id;
+  let sql = SQL.healthy.delete;
   sqlRun(sql, id, (err, result) => {
     if (err) {
       console.log("err", err);

@@ -1,10 +1,5 @@
 <template>
   <div>
-    <div class="header">
-      <el-input placeholder="输入要查询的房号" 
-       @clear="searchClear" v-model="input" clearable style="margin: 0 10px; width: 20%"></el-input>
-      <el-button class="sbtn" type="primary" @click="searchInput()">查询</el-button>
-    </div>
 
     <MyTabel :tableColumn="column" :tableData="data" :editShow = false  @handleDelete="handleDelete">
     </MyTabel>
@@ -14,19 +9,12 @@
 
 <script>
 import MyTabel from '@/components/MyTable.vue'
-import { getUser } from '@/api/userApi'
+import { deleteHealthy, getHealthy } from '@/api/affairsApi'
 export default {
   components: {
     MyTabel
   },
   data() {
-    var validateName = (rule, value, callback) => {
-      if (value === "") {
-        callback(new Error("请输入楼名"));
-      } else {
-        callback();
-      }
-    };
     return {
       input: '',        // search box's value
 
@@ -87,39 +75,23 @@ export default {
     }
   },
   created() {
-
+    getHealthy().then(res => { this.data = res.data })
   },
   methods: {
-     // 通过输入查询
-    searchInput(){
-      this.showData = this.data.filter(item => {
-        return item.room.search(this.input) != -1;
-      })
-      console.log(this.showData);
-    },
-    // 取消搜索
-    searchClear() {
-      this.showData = this.data
-    },
 
     // 删除操作
     handleDelete(index, row){
       console.log('删除', index, row)
-      this.$confirm('此操作将永久删除该订单, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.delOrder({
-          oid: row.oid
-        }).then(res => {
-          if(res.data.status === 200) {
-              this.$message({
-              type: 'success',
-              message: '删除成功'
-            })
-            this.showOrders(1, this.type)                  // 更新视图
-          }
+        deleteHealthy({id: row.id}).then(res => {
+          this.$message({
+            type: 'success',
+            message: res.data.msg
+          });
         })
       }).catch(() => {
         this.$message({
