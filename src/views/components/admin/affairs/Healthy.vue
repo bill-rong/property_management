@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="header">
-      <el-input placeholder="请输入您所要查询的记录" 
-      @change="searchInput" v-model="input" clearable style="margin-right: 10px;"></el-input>
-      <el-button class="sbtn" type="primary">查询</el-button>
+      <el-input placeholder="输入要查询的房号" 
+       @clear="searchClear" v-model="input" clearable style="margin: 0 10px; width: 20%"></el-input>
+      <el-button class="sbtn" type="primary" @click="searchInput()">查询</el-button>
     </div>
 
     <MyTabel :tableColumn="column" :tableData="data" :editShow = false  @handleDelete="handleDelete">
@@ -29,7 +29,6 @@ export default {
     };
     return {
       input: '',        // search box's value
-
 
       data: [
       {
@@ -68,16 +67,13 @@ export default {
         sortable: true
       },{
         prop: 'name',
-        label: '姓名',
-        sortable: true
+        label: '姓名'
       },{
         prop: 'symptom',
-        label: '症状',
-        sortable: true
+        label: '症状'
       },{
         prop: 'temperature',
-        label: '体温',
-        sortable: true
+        label: '体温'
       },{
         prop: 'supplement',
         label: '补充',
@@ -87,16 +83,6 @@ export default {
         label: '上报时间',
         sortable: true
       },],
-
-      
-      add: {
-        name: '',
-        layerNum: 1,
-        roomNum: 1
-      },
-      rules: {
-        name: [{ validator: validateName, trigger: "blur" }]
-      },
       
     }
   },
@@ -104,30 +90,17 @@ export default {
 
   },
   methods: {
-
-      // 通过输入查询
-      searchInput(val){
-       if (!val) {
-        this.showOrders(1, this.type);
-        this.currentPage = 1;
-        return;
-      }
-      this.$api.searchOrder({
-          search: val,
-        })
-        .then((res) => {
-          console.log("搜索---", res.data);
-          this.currentPage = 1;
-          if (res.data.status === 200) {
-            this.tableData = res.data.data
-            this.total = res.data.total;
-            this.pageSize = res.data.pageSize;;
-          } else {
-            this.total = 1;
-            this.pageSize = 1;
-          }
-        });
-      },
+     // 通过输入查询
+    searchInput(){
+      this.showData = this.data.filter(item => {
+        return item.room.search(this.input) != -1;
+      })
+      console.log(this.showData);
+    },
+    // 取消搜索
+    searchClear() {
+      this.showData = this.data
+    },
 
     // 删除操作
     handleDelete(index, row){

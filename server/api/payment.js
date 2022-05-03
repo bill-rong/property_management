@@ -17,6 +17,7 @@ const api = {
   pay: '/pay'
 }
 
+// 获取未支付记录
 router.get(api.getUnPay, (req, res) => {
   let sql = SQL.payment.selectUnPay;
   sqlRun(sql, (err, result) => {
@@ -32,6 +33,7 @@ router.get(api.getUnPay, (req, res) => {
   })
 })
 
+// 获取已支付记录
 router.get(api.getPay, (req, res) => {
   let sql = SQL.payment.selectPay;
   sqlRun(sql, (err, result) => {
@@ -50,6 +52,7 @@ router.get(api.getPay, (req, res) => {
   })
 })
 
+// 获取某房号的未支付记录
 router.get(api.getUnPayByRoom, (req, res) => {
   let param = req.query.room
   console.log(param);
@@ -67,6 +70,7 @@ router.get(api.getUnPayByRoom, (req, res) => {
   })
 })
 
+// 获取某房号的已支付记录
 router.get(api.getPayByRoom, (req, res) => {
   let param = req.query.room;
   let sql = SQL.payment.selectPayByRoom;
@@ -86,6 +90,7 @@ router.get(api.getPayByRoom, (req, res) => {
   })
 })
 
+// 支付
 router.post(api.pay, (req, res) => {
   delete req.body.tel;
   let { handler, id } = req.body;

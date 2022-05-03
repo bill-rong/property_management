@@ -16,6 +16,7 @@ const api = {
   handle: '/handle'
 }
 
+// 报修上报
 router.post(api.report, (req, res) => {
   let param = req.body;
   param.date = moment(new Date()).format("YYYY-MM-DD HH:mm");
@@ -75,6 +76,7 @@ router.get(api.getHandle, (req, res) => {
   })
 })
 
+// 处理维修
 router.put(api.handle, (req, res) => {
   let id = req.body.id;
   let sql = SQL.repair.handle;

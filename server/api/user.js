@@ -244,6 +244,7 @@ router.post(api.updatePwd, (req, res) => {
   });
 });
 
+// 重置密码
 router.post(api.resetPwd, (req, res) => {
   let params = req.body;
   let resetPwdSql = SQL.user.updatePwd;

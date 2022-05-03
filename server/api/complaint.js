@@ -16,6 +16,7 @@ const api = {
   handle: '/handle'
 }
 
+// 投诉上报
 router.post(api.report, (req, res) => {
   let param = req.body;
   param.date = moment(new Date()).format("YYYY-MM-DD HH:mm");

@@ -102,7 +102,7 @@ router.get(api.getInfo, (req, res) => {
  })
 
 /**
- * 
+ * 添加管理员
  */
 router.post(api.add, (req, res) => {
   let { tel, name, sex, email, permission } = req.body;

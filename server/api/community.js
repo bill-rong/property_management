@@ -72,7 +72,7 @@ router.put(api.updateCommunity, (req, res) => {
 });
 
 /**
- * 获取楼信息
+ * 获取所有楼信息
  */
 router.get(api.getBuilding, (req, res) => {
   let sql = SQL.community.selectBuilding;
@@ -87,7 +87,7 @@ router.get(api.getBuilding, (req, res) => {
   });
 });
 
-// 删除楼信息
+// 删除楼信息 同时删除房
 router.delete(api.deleteBuilding, (req, res) => {
   let id = req.query.id;
   let sqlBuilding = SQL.community.deleteBuilding;
@@ -210,7 +210,7 @@ router.delete(api.deleteRoom, (req, res) => {
   })
 })
 
-
+// 获取所有房名
 router.get(api.getRoomName, (req, res) => {
   let sql = SQL.community.selectRoomName;
   sqlRun(sql, (err, result) => {
@@ -224,6 +224,7 @@ router.get(api.getRoomName, (req, res) => {
   });
 });
 
+// 获取居住中的房名
 router.get(api.getRoomLiving, (req, res) => {
   let sql = SQL.community.selectRoomLiving;
   sqlRun(sql, (err, result) => {
@@ -237,6 +238,7 @@ router.get(api.getRoomLiving, (req, res) => {
   });
 });
 
+// 添加楼
 router.post(api.addBuilding, (req, res) => {
   let {name, layerNum, roomNum} = req.body;
   let addBSql = SQL.community.addBuilding;
@@ -302,6 +304,7 @@ router.put(api.updateRoom, (req, res) => {
   });
 });
 
+// 获取停车位、所绑定的住户
 router.get(api.getParking, (req, res) => {
   let sql = SQL.community.getParking
   sqlRun(sql, (err, result) => {
@@ -316,6 +319,7 @@ router.get(api.getParking, (req, res) => {
   })
 })
 
+// 获取已绑定的车位
 router.get(api.getParkingBind, (req, res) => {
   let sql = SQL.community.getParkingBind
   sqlRun(sql, (err, result) => {
@@ -330,6 +334,7 @@ router.get(api.getParkingBind, (req, res) => {
   })
 })
 
+// 添加停车位
 router.post(api.addParking, (req, res) => {
   let name = req.body.name;
   let sql = SQL.community.addParking;
