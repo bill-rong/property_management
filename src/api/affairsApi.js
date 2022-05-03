@@ -26,10 +26,32 @@ export function deleteAnnouncement(id) {
   })
 }
 
+///////////////////////////// 宠物
+
 // 获取所有宠物
 export function getPet() {
   return request({
     url: '/api/affairs/pet/get',
     method: 'get'
+  })
+}
+
+
+/////////////////////////// 访客
+
+// 获取所有访客
+export function getVisitor() {
+  return request({
+    url: '/api/affairs/visitor/get',
+    method: 'get'
+  })
+}
+
+// 删除访客
+export function deleteVisitor(id) {
+  return request({
+    url: '/api/affairs/visitor/delete',
+    method: 'delete',
+    params: id
   })
 }

@@ -1,12 +1,12 @@
 <template>
   <div>
     <div class="header">
-      <el-input placeholder="请输入您所要查询的记录" 
-      @change="searchInput" v-model="input" clearable style="margin-right: 10px;"></el-input>
-      <el-button class="sbtn" type="primary">查询</el-button>
+      <el-input placeholder="输入要查询的房号" 
+       @clear="searchClear" v-model="input" clearable style="margin: 0 10px; width: 20%"></el-input>
+      <el-button class="sbtn" type="primary" @click="searchInput()">查询</el-button>
     </div>
 
-    <MyTabel :tableColumn="column" :tableData="data" :editShow = false  @handleDelete="handleDelete">
+    <MyTabel :tableColumn="column" :tableData="showData" :editShow = false  @handleDelete="handleDelete">
     </MyTabel>
 
   </div>
@@ -14,7 +14,8 @@
 
 <script>
 import MyTabel from '@/components/MyTable.vue'
-import { getUser } from '@/api/userApi'
+import { getVisitor, deleteVisitor } from '@/api/affairsApi'
+import Mode from '@/utils/Mode';
 export default {
   components: {
     MyTabel
@@ -29,32 +30,8 @@ export default {
     };
     return {
       input: '',        // search box's value
-
-
-      data: [
-      {
-        id: 1,
-        name: 'test1',
-        sex: '男',
-        reason: '刚偷完东西，来这躲避警察叔叔的追捕',        // 原因
-        tel: 12301203,
-        date: '4/9',
-      },{
-        id: 2,
-        name: 'test2',
-        sex: '男',
-        reason: '我是警察，例行公事',      
-        tel: 110,
-        date: '4/9',
-      },{
-        id: 3,
-        name: 'test3',
-        sex: '男',
-        reason: '来看警察抓小偷的',
-        tel: 1999911,
-        date: '4/9',
-      },],
-
+      data: [],
+      showData: [],
       column:[{
         prop: 'id',
         label: '#',
@@ -64,29 +41,21 @@ export default {
         label: '姓名',
         sortable: true
       },{
-        prop: 'sex',
-        label: '性别',
+        prop: 'room',
+        label: '房号',
         sortable: true
       },{
-        prop: 'reason',
-        label: '原因',
-        sortable: true
+        prop: 'resident',
+        label: '住户名'
       },{
-        prop: 'tel',
-        label: '电话',
-        sortable: true
+        prop: 'purpose',
+        label: '原因'
       },{
         prop: 'date',
-        label: '日期',
+        label: '到访日期',
         sortable: true
       },],
 
-      
-      add: {
-        name: '',
-        layerNum: 1,
-        roomNum: 1
-      },
       rules: {
         name: [{ validator: validateName, trigger: "blur" }]
       },
@@ -94,51 +63,46 @@ export default {
     }
   },
   created() {
-
+    this.bindData();
   },
   methods: {
-
-      // 通过输入查询
-      searchInput(val){
-       if (!val) {
-        this.showOrders(1, this.type);
-        this.currentPage = 1;
-        return;
-      }
-      this.$api.searchOrder({
-          search: val,
-        })
-        .then((res) => {
-          console.log("搜索---", res.data);
-          this.currentPage = 1;
-          if (res.data.status === 200) {
-            this.tableData = res.data.data
-            this.total = res.data.total;
-            this.pageSize = res.data.pageSize;;
-          } else {
-            this.total = 1;
-            this.pageSize = 1;
-          }
-        });
-      },
+    bindData() {
+      getVisitor().then(res => { 
+        this.data = res.data;
+        this.showData = res.data;
+       })
+    },
+     // 通过输入查询
+    searchInput(){
+      this.showData = this.data.filter(item => {
+        return item.room.search(this.input) != -1;
+      })
+      console.log(this.showData);
+    },
+    // 取消搜索
+    searchClear() {
+      this.showData = this.data
+    },
 
     // 删除操作
     handleDelete(index, row){
-      console.log('删除', index, row)
-      this.$confirm('此操作将永久删除该订单, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该公告, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.delOrder({
-          oid: row.oid
-        }).then(res => {
-          if(res.data.status === 200) {
-              this.$message({
+        deleteVisitor({id: row.id}).then(res => {
+          if (res.data.msg == Mode.DELETE_SUCCES) {
+            this.$message({
               type: 'success',
-              message: '删除成功'
-            })
-            this.showOrders(1, this.type)                  // 更新视图
+              message: res.data.msg
+            }); 
+            this.bindData();
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            }); 
           }
         })
       }).catch(() => {
@@ -148,7 +112,6 @@ export default {
         });          
       });
     },
-
   }
 }
 </script>

@@ -16,7 +16,8 @@ const api = {
   petGet: '/pet/get',
   petAdd: '/pet/add',
   visitorGet: '/visitor/get',
-  visttorAdd: '/visitor/add',
+  visitorAdd: '/visitor/add',
+  visitorDelete: '/visitor/delete',
 }
 
 // 发布公告
@@ -133,6 +134,10 @@ router.get(api.visitorGet, (req, res) => {
     }
     if (result.length > 0) {
       let data = JSON.parse(JSON.stringify(result));
+      data = data.map((item) => {
+        item.date = moment(item.date).format("YYYY-MM-DD");
+        return item
+      })
       jsonWrite(res, data);
     } else {
       jsonWrite(res, []);
@@ -141,8 +146,8 @@ router.get(api.visitorGet, (req, res) => {
 })
 
 // 访客登记
-router.get(api.visttorAdd, (req, res) => {
-  let [name, room, resident, purposr, date] = req.body
+router.get(api.visitorAdd, (req, res) => {
+  let [name, room, resident, purposr, date] = req.body;
   let sql = SQL.visitor.selectAll;
   sqlRun(sql, [name, room, resident, purposr, date], (err, result) => {
     if (err) {
@@ -162,7 +167,27 @@ router.get(api.visttorAdd, (req, res) => {
   })
 })
 
-
+// 删除访客
+router.delete(api.visitorDelete, (req, res) => {
+  let id = req.query.id;
+  let sql = SQL.visitor.delete;
+  sqlRun(sql, id, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.DELETE_SUCCES,
+        msg: '删除成功'
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.DELETE_FAILURE,
+        msg: '删除失败'
+      })
+    }
+  })
+})
 
 
 

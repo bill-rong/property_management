@@ -180,7 +180,6 @@ export default {
 
     // 取消搜索
     searchClear() {
-      // console.log("searchClear");
       this.showData = this.data
     },
 
