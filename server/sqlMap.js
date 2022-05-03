@@ -77,8 +77,8 @@ const sqlMap = {
   },
   announcement: {
     add: "INSERT INTO announcement(title,content,admin_tel,`date`) VALUES(?,?,?,?);",
-    get: "SELECT announcement.*,admin.name name FROM announcement LEFT JOIN admin on announcement.admin_tel=admin.tel order by date DESC;"
-    
+    get: "SELECT announcement.*,admin.name name FROM announcement LEFT JOIN admin on announcement.admin_tel=admin.tel order by date DESC;",
+    delete: "DELETE FROM announcement WHERE id=?;",
   },
   repair: {
     add: "INSERT INTO repair(contacts,tel,room,`type`,`describe`,`date`,status) VALUES(?,?,?,?,?,?,'0');",

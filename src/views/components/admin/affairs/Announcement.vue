@@ -80,7 +80,8 @@
 
 <script>
 import { getUserInfo } from '@/utils/auth'
-import { getAnnouncement, addAnnouncement } from '@/api/affairsApi'
+import { getAnnouncement, addAnnouncement, deleteAnnouncement } from '@/api/affairsApi'
+import Mode from '@/utils/Mode'
 export default {
   data() {
     return {
@@ -98,7 +99,7 @@ export default {
         content: ''
       },
       currentPage: 1,
-      pageSize: 7,
+      pageSize: 10,
       currentAdtel: '123',
       isSuper: false
     }
@@ -106,30 +107,52 @@ export default {
   created() {
     this.currentAdtel = getUserInfo().tel;
     this.isSuper = getUserInfo().permission == "super";
-    getAnnouncement().then(res => {
-      this.tableData = res.data;
-    })
+    getAnnouncement().then(res => { this.tableData = res.data })
   },
   methods: {
     changePage(page) {
       this.currentPage = page
     },
+    // 删除公告
     handleDelete(index, row) {
-      console.log(row);
+      this.$confirm(`确定删除该公告吗`, '提示', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+        center: true
+      }).then(() => {
+        deleteAnnouncement({id: row.id}).then(res => {
+          if (res.data.mode == Mode.DELETE_SUCCES) {
+            this.$message({
+              message: res.data.msg,
+              type: 'success'
+            });
+            getAnnouncement().then(res => { this.tableData = res.data })
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: 'error'
+            });
+          }
+        })
+      }) 
     },
+    // 查看公告
     handleView(index, row) {
       console.log(row);
       this.drawerData = row;
       this.drawer = true;
     },
+    // 发布公告
     dialogSubmit() {
       this.addData.tel = getUserInfo().tel;
-      addAnnouncement(addData).then(res => {
+      addAnnouncement(this.addData).then(res => {
         this.$message({
           type: 'success',
           message: res.data.msg
         });
-        location.reload();
+        this.centerDialogVisible = false;
+        getAnnouncement().then(res => { this.tableData = res.data })
       })
     }
   }

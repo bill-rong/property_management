@@ -17,6 +17,15 @@ export function addAnnouncement(data) {
   })
 }
 
+// 发布公告
+export function deleteAnnouncement(id) {
+  return request({
+    url: '/api/affairs/announcement/delete',
+    method: 'delete',
+    params: id
+  })
+}
+
 // 获取所有宠物
 export function getPet() {
   return request({

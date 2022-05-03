@@ -12,6 +12,7 @@ const moment = require('moment');
 const api = {
   annouAdd: '/announcement/add',
   annouGet: '/announcement/get',
+  annouDelete: '/announcement/delete',
   petGet: '/pet/get',
   petAdd: '/pet/add',
   visitorGet: '/visitor/get',
@@ -34,6 +35,28 @@ router.post(api.annouAdd, (req, res) => {
       jsonWrite(res, {
         mode: MODE.ADD_FAILURE,
         msg: '添加公告成功'
+      })
+    }
+  })
+})
+
+// 删除公告
+router.delete(api.annouDelete, (req, res) => {
+  let id = req.query.id;
+  let sql = SQL.announcement.delete;
+  sqlRun(sql, id, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.DELETE_SUCCES,
+        msg: '删除成功'
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.DELETE_FAILURE,
+        msg: '删除失败'
       })
     }
   })
