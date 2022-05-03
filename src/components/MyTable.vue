@@ -74,7 +74,7 @@ export default {
     },
     pageSize: {
       type: Number,
-      default: 7
+      default: 9
     },
     currentPage: {
       type: Number,

@@ -201,7 +201,7 @@ router.get(api.healthyGet, (req, res) => {
     if (result.length > 0) {
       let data = JSON.parse(JSON.stringify(result));
       data = data.map((item) => {
-        item.date = moment(item.date).format("YYYY-MM-DD");
+        item.report_time = moment(item.report_time).format("YYYY-MM-DD");
         return item
       })
       jsonWrite(res, data);

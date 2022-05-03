@@ -25,16 +25,17 @@
           <el-menu-item index="complaintManage">投诉</el-menu-item>
           <el-menu-item index="paymentManage">缴费管理</el-menu-item>
         </el-submenu>
-        <el-submenu index="resident">
+        <!-- <el-submenu index="resident">
           <template slot="title">住户管理</template>
           <el-menu-item index="residentList">住户列表</el-menu-item>
-          <el-menu-item index="petList">宠物列表</el-menu-item>
-        </el-submenu>
+          
+        </el-submenu> -->
         <el-submenu index="affairs">
           <template slot="title">事务</template>
           <el-menu-item index="announcement">公告</el-menu-item>
           <el-menu-item index="visitor">访客登记</el-menu-item>
           <el-menu-item index="healthy">健康上报</el-menu-item>
+          <el-menu-item index="petList">宠物列表</el-menu-item>
         </el-submenu>
         <el-submenu index="system">
           <template slot="title">系统管理</template>

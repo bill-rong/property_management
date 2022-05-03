@@ -78,7 +78,6 @@ export default {
     getHealthy().then(res => { this.data = res.data })
   },
   methods: {
-
     // 删除操作
     handleDelete(index, row){
       console.log('删除', index, row)
@@ -92,6 +91,7 @@ export default {
             type: 'success',
             message: res.data.msg
           });
+          getHealthy().then(res => { this.data = res.data })
         })
       }).catch(() => {
         this.$message({
