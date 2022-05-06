@@ -46,6 +46,7 @@
       </el-pagination>
     </el-tabs>
 
+    <!-- 发布公告 -->
     <el-dialog
       title="提示"
       :visible.sync="centerDialogVisible"
@@ -56,7 +57,7 @@
           <el-input placeholder="请输入标题" v-model="addData.title"></el-input>
         </el-form-item>
         <el-form-item label="内容" prop="name" label-width="30%" style="width: 80%;">
-          <el-input placeholder="请输入内容" v-model="addData.content"></el-input>
+          <el-input type="textarea" placeholder="请输入内容" v-model="addData.content"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -65,12 +66,13 @@
       </span>
     </el-dialog>
 
+    <!-- 显示公告 -->
     <el-drawer
       :title="drawerData.title"
       :visible.sync="drawer"
       direction="ltr">
-      <p style="word-break:break-word; text-align: left; text-indent:2em; margin: 0 7px">{{this.drawerData.content}}</p>
-      <div style="float: right;;margin: 0 10px">
+      <p style="word-break:break-word;white-space: pre-wrap; text-align: left; text-indent:2em; margin: 0 7px">{{this.drawerData.content}}</p>
+      <div style="float: right;margin: 0 10px">
         <p>{{this.drawerData.adname}}</p>
         <p>{{this.drawerData.date}}</p>
       </div>

@@ -22,7 +22,9 @@ const sqlMap = {
     // 注销用户
     unRegister: "UPDATE resident SET living='0' WHERE tel=?;",
     // 删除用户
-    delete: "DELETE FROM resident WHERE tel=?;",
+    delete: "DELETE FROM resident WHERE id=?;",
+    bindRoom: "UPDATE room SET living='1', resident_id=? where id=?;",
+    unBingRoom: "update property_management.room set living='0', resident_id=null where resident_id=?;"
   },
   admin: {
     // 物业管理员登录
@@ -56,6 +58,7 @@ const sqlMap = {
     selectRoom: "SELECT rm.*, bd.name bdname, ri.name riname FROM room rm LEFT JOIN building bd ON rm.building_id=bd.id LEFT JOIN resident ri ON ri.id=rm.resident_id;",
     selectRoomName: "SELECT name value from room;",
     selectRoomLiving: "SELECT name value from room WHERE living='1';",
+    selectRoomUnLiving: "SELECT * from room WHERE living='0';",
     selectRoomByName: "SELECT name FROM room WHERE name=?;",
     updateRoomUnLiving: "UPDATE room SET living='0', resident_id is null WHERE `name`=?;",
     updateRoomLiving: "UPDATE room SET living='1', resident_id=? WHERE `name`=?;",

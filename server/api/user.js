@@ -8,6 +8,7 @@ const MODE = require('../utils/Mode');
 const jsonWrite = require('../utils/JsonWrite');
 const JWT = require('../utils/Token');
 const moment = require('moment');
+const mode = require('../utils/Mode');
 
 const api = {
   login: '/login',
@@ -18,7 +19,8 @@ const api = {
   updatePwd: '/update/password',
   resetPwd: '/reset/password',
   forgetPwd: '/forget/password',
-  uodateInfo: '/update/info'
+  uodateInfo: '/update/info',
+  delete: '/delete'
 }
 
 /**
@@ -68,17 +70,24 @@ router.get(api.userIsExist, (req, res) => {
   });
 });
 
-// 添加
+// 添加，同时绑定房间
 router.post(api.addUser, (req, res) => {
-  let { tel, idcard, name, sex, email } = req.body;
+  let { tel, idcard, name, sex, email, room } = req.body;
   let password = bcrypt.encrypt("12345678");
   let date = moment(new Date()).format("YYYY-MM-DD");
   let sql = SQL.user.add;
+  console.log("room", room);
   sqlRun(sql, [tel, idcard, name, sex, email, password, date], (err, result) => {
     if (err) {
       console.log("失败", err);
     }
     if (result) {
+      sqlRun(SQL.user.bindRoom, [result.insertId, room], (bErr, bResult) => {
+        if (bErr) { console.log("绑定房间失败", bErr); }
+        if (bResult) {
+          console.log("绑定房间成功");
+        }
+      })
       jsonWrite(res, { 
         mode: MODE.ADD_SUCCESS,
         msg: '添加成功'
@@ -89,8 +98,8 @@ router.post(api.addUser, (req, res) => {
         msg: '添加成功'
        });
     }
-  });
-});
+  })
+})
 
 /**
  * 获取所有用户信息接口
@@ -281,6 +290,31 @@ router.post(api.uodateInfo, (req, res) => {
         mode: MODE.UPDATE_INFO_SUCCESS,
         msg: "修改成功"
       });
+    }
+  })
+})
+
+// 删除住户
+router.delete(api.delete, (req, res) => {
+  let id = req.query.id;
+  let sql = SQL.user.delete;
+  sqlRun(sql, id, (err, result) => {
+    if (err) { console.log("err", err) }
+    if (result) {
+      sqlRun(SQL.user.unBingRoom, id, (uErr, uResult) => {
+        if (uErr) { console.log("err", err) }
+        if (uResult) {
+          jsonWrite(res, {
+            mode: MODE.DELETE_SUCCES,
+            msg: "删除成功"
+          })
+        } else {
+          jsonWrite(res, {
+            mode: MODE.DELETE_FAILURE,
+            msg: "删除失败"
+          })
+        }
+      })
     }
   })
 })

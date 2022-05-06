@@ -85,6 +85,14 @@ export function getRoomLiving() {
   })
 }
 
+// 获取未入住
+export function getRoomUnLiving() {
+  return request({
+    url: '/api/community/get/room/unLiving',
+    method: 'get'
+  })
+}
+
 // 获取所有停车位
 export function getParking() {
   return request({

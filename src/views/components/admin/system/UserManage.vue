@@ -8,8 +8,8 @@
     </div>
 
     <MyTabel :tableColumn="column" :tableData="showData" 
-      :editShow="false" :resetShow="true" 
-      @handleDelete="handleDelete" @reset="reset">
+      :editShow="false" :resetShow="true" :checkShow="true"
+      @handleDelete="handleDelete" @reset="reset" @check="handleCheck">
     </MyTabel>
 
     <el-dialog
@@ -40,6 +40,16 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="房号：" prop="room" label-width="40%" style="width: 80%;">
+            <el-select v-model="addUserData.room" placeholder="请选择" style="width:100%">
+              <el-option
+                v-for="item in roomList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="电子邮箱：" prop="email" label-width="40%" style="width: 80%;">
             <el-input v-model="addUserData.email" placeholder="输入住户电子邮箱" show-word-limit>
             </el-input>
@@ -65,13 +75,34 @@
         <el-button type="primary" @click="dialogSubmit()">确 定</el-button>
       </span>
     </el-dialog>
+
+    <el-dialog
+      title="其他信息"
+      :visible.sync="infoDialogVisible"
+      width="20%">
+      <el-descriptions class="margin-top" title="" :column="1" border>
+        <el-descriptions-item>
+          <template slot="label"> 房 号 </template>
+          {{ infoRoom }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label"> 入住时间 </template>
+          {{ infoDate }}
+        </el-descriptions-item>
+      </el-descriptions>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="infoDialogVisible = false">确 认</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import MyTabel from '@/components/MyTable.vue'
-import { getAllUser, resetPassword, userIsExist, addUser } from '@/api/userApi'
+import { getAllUser, resetPassword, userIsExist, addUser, getUser, deleteUser } from '@/api/userApi'
+import { getRoomUnLiving } from '@/api/communityApi'
 import MODE from "@/utils/Mode"
+import Mode from '@/utils/Mode'
 export default {
   components: {
     MyTabel
@@ -103,6 +134,7 @@ export default {
     return {
       resetDialogVisible: false,
       addDialogVisible: false,
+      infoDialogVisible: false,
       row:{},                     // 存储点击行的信息
       input: '',
       data: [],
@@ -111,7 +143,8 @@ export default {
         idcard: '',
         sex: '1',
         name: '',
-        email: ''
+        email: '',
+        room: ''
       },
       column:[{
         prop: 'id',
@@ -134,10 +167,6 @@ export default {
       },{
         prop: 'sex',
         label: '性别'
-      },{
-        prop: 'date',
-        label: '入住时间',
-        sortable: true
       }],
       options: [{
         value: '1',
@@ -147,17 +176,15 @@ export default {
         label: '女'
       }],
       centerDialogVisible: false,
-      add: {
-        name: '',
-        layerNum: 1,
-        roomNum: 1
-      },
       rules: {
         tel: [{ validator: validateTel, trigger: "blur" }],
         idcard: [{ validator: validateIdcard, trigger: "blur" }],
         name: [{ validator: validateName, trigger: "blur"}],
       },
-      showData: []
+      showData: [],
+      roomList: [],
+      infoRoom: '',
+      infoDate: '',
     }
   },
   created() {
@@ -186,20 +213,24 @@ export default {
     // 删除操作
     handleDelete(index, row){
       console.log('删除', index, row)
-      this.$confirm('此操作将永久删除该订单, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$api.delOrder({
-          oid: row.oid
-        }).then(res => {
-          if(res.data.status === 200) {
-              this.$message({
+        console.log(row.id);
+        deleteUser({id: row.id}).then(res => {
+          if (res.data.mode == MODE.DELETE_SUCCES) {
+            this.$message({
               type: 'success',
-              message: '删除成功'
-            })
-            this.showOrders(1, this.type)                  // 更新视图
+              message: res.data.msg
+            });
+            this.bindData();
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            });
           }
         })
       }).catch(() => {
@@ -208,6 +239,14 @@ export default {
           message: '已取消'
         });          
       });
+    },
+    // 查看
+    handleCheck(index, row) {
+      this.infoDate = row.date;
+      getUser(row.tel).then(res => {
+        this.infoRoom = res.data.room
+      })
+      this.infoDialogVisible = true;
     },
     // 添加住户
     addDialogSubmit() {
@@ -267,6 +306,7 @@ export default {
       });
       return isNormal;
     },
+    // 绑定数据
     bindData() {
       getAllUser().then(res => {
         this.data = res.data.map(item => {
@@ -274,6 +314,10 @@ export default {
           return item
         })
         this.showData = this.data;
+      })
+
+      getRoomUnLiving().then(res => {
+        this.roomList = res.data
       })
     }
 

@@ -70,3 +70,13 @@ export function updateInfo(data) {
     data: data
   })
 }
+
+// 删除用户
+export function deleteUser(data) {
+  return request({
+    url: '/api/user/delete',
+    method: 'delete',
+    params: data
+  })
+}
+

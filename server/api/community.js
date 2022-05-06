@@ -23,6 +23,7 @@ const api = {
   updateRoom: '/update/room',
   addBuilding: '/add/building',
   getRoomLiving: '/get/room/living',
+  getRoomUnLiving: '/get/room/unLiving',
   getParking: '/get/parking',
   getParkingBind: '/get/parking/bind',
   bindParking: '/bind/parking',
@@ -227,6 +228,20 @@ router.get(api.getRoomName, (req, res) => {
 // 获取居住中的房名
 router.get(api.getRoomLiving, (req, res) => {
   let sql = SQL.community.selectRoomLiving;
+  sqlRun(sql, (err, result) => {
+    if (err) {
+      console.log("失败" + err);
+    }
+    if (result) {
+      let data = JSON.parse(JSON.stringify(result));
+      jsonWrite(res, data);
+    }
+  });
+});
+
+// 获取未居住中的房名
+router.get(api.getRoomUnLiving, (req, res) => {
+  let sql = SQL.community.selectRoomUnLiving;
   sqlRun(sql, (err, result) => {
     if (err) {
       console.log("失败" + err);
