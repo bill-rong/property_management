@@ -1,10 +1,13 @@
 <template>
     <div>
       <el-upload
-        action="https://jsonplaceholder.typicode.com/posts/"
+        :action="action"
         list-type="picture-card"
         :on-preview="handlePictureCardPreview"
-        :on-remove="handleRemove">
+        :on-remove="handleRemove"
+        :on-success="handleSuccess"
+        :before-upload="beforeUpload"
+        :limit="1">
         <i class="el-icon-plus"></i>
       </el-upload>
       <el-dialog :visible.sync="dialogVisible">
@@ -17,16 +20,37 @@
     data() {
       return {
         dialogImageUrl: '',
-        dialogVisible: false
+        dialogVisible: false,
+        action: ''
       };
+    },
+    created() {
+      this.action = process.env.VUE_APP_SERVER_URL + '/api/upload/img'
     },
     methods: {
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
+      handleSuccess(res, file, fileList) {
+        console.log("uploadSuccess", res.data.path);
+        this.$emit("uploadSuccess", res.data.path);
+      },
       handlePictureCardPreview(file) {
         this.dialogImageUrl = file.url;
         this.dialogVisible = true;
+      },
+      beforeUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
+        const isLt2M = file.size / 1024 / 1024 <= 1;
+      
+        if (!(isJPG || isPNG)) {
+          this.$message.error('上传头像图片只能是 jpg/png 格式!')
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 1MB!')
+        }
+        return (isPNG || isJPG) && isLt2M
       }
     }
   }

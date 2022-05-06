@@ -14,6 +14,10 @@ const mode = {
   DELETE_SUCCES: 11,       // 删除成功
   DELETE_FAILURE: 12,      // 删除失败
   USER_IS_EXIST: 13,        // 用户存在
+  TOLL_SUCCESS: 15,       // 收费发起成功
+  TOLL_FAILURE: 16,       // 收费发起失败
+  UPLOAD_SUCCESS: 17,     // 上传成功
+  UPLOAD_FAILURE: 18,     // 上传失败
 };
 
 module.exports = mode;

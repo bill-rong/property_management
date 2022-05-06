@@ -36,6 +36,16 @@ export function getPet() {
   })
 }
 
+// 添加宠物
+export function addPet(data) {
+  return request({
+    url: '/api/affairs/pet/add',
+    method: 'post',
+    data: data
+  })
+}
+
+
 
 /////////////////////////// 访客
 
@@ -44,6 +54,15 @@ export function getVisitor() {
   return request({
     url: '/api/affairs/visitor/get',
     method: 'get'
+  })
+}
+
+// 访客登记
+export function addVisitor(data) {
+  return request({
+    url: '/api/affairs/visitor/add',
+    method: 'post',
+    data: data
   })
 }
 
@@ -58,6 +77,15 @@ export function deleteVisitor(id) {
 
 
 //////////////// 健康
+
+// 健康上报
+export function postHealthy(data) {
+  return request({
+    url: '/api/affairs/healthy/post',
+    method: 'post',
+    data: data
+  })
+}
 
 // 获取所有健康信息
 export function getHealthy() {

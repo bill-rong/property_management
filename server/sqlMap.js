@@ -76,7 +76,9 @@ const sqlMap = {
     selectPay: "SELECT * FROM property_management.payment WHERE handler!='0';",
     selectUnPayByRoom: "SELECT * FROM property_management.payment WHERE handler='0' and room=?;",
     selectPayByRoom: "SELECT * FROM property_management.payment WHERE handler!='0' and room=?;",
-    pay: "UPDATE payment SET handler=?, paydate=? WHERE id=?;"
+    pay: "UPDATE payment SET handler=?, paydate=? WHERE id=?;",
+    toll: "INSERT INTO payment(type,room,current,curryear,currmonth,amount) VALUES(?,?,?,?,?,?);",
+    delete: "DELETE FROM payment WHERE id=?;"
   },
   announcement: {
     add: "INSERT INTO announcement(title,content,admin_tel,`date`) VALUES(?,?,?,?);",
@@ -90,6 +92,7 @@ const sqlMap = {
     selectUnHandleByRoom: "SELECT * FROM repair WHERE status='0' and room=?;",
     selectHandle: "SELECT * FROM repair WHERE status='1';",
     selectHandleByRoom: "SELECT * FROM repair WHERE status='1' and room=?;",
+    selectRepairByTel: "SELECT * FROM repair WHERE tel=? order by date DESC;",
   },
   complaint: {
     add: "INSERT INTO complaint(contacts,tel,`describe`,`date`,status) VALUES(?,?,?,?,'0');",
@@ -98,6 +101,7 @@ const sqlMap = {
     selectUnHandleByRoom: "SELECT * FROM complaint WHERE status='0' and room=?;",
     selectHandle: "SELECT * FROM complaint WHERE status='1';",
     selectHandleByRoom: "SELECT * FROM complaint WHERE status='1' and room=?;",
+    selectComplaintByTel: "SELECT * FROM complaint WHERE tel=? order by date DESC;",
   },
   pet: {
     selectAll: 'SELECT * FROM pet;',
@@ -105,12 +109,13 @@ const sqlMap = {
   },
   visitor: {
     selectAll: 'SELECT * FROM visitor;',
-    add: 'INSERT INTO visitor(name,room,resident,purposr,date) VALUES(?,?,?,?,?);',
+    add: 'INSERT INTO visitor(name,room,resident,purpose,date) VALUES(?,?,?,?,?);',
     delete: "DELETE FROM visitor WHERE id=?;",
   },
   healthy: {
     selectAll: 'SELECT * FROM healthy;',
-    delete: 'DELETE FROM healthy WHERE id=?;'
+    delete: 'DELETE FROM healthy WHERE id=?;',
+    add: 'INSERT INTO healthy(name,room,symptom,temperature,supplement,report_time) VALUES(?,?,?,?,?,?);'
   }
   
 }

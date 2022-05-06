@@ -1,28 +1,40 @@
 <template>
+  <el-tabs type="border-card" style="height: 97% !important;">
+    <el-breadcrumb separator-class="el-icon-arrow-right" 
+      style="margin-bottom: 30px;">
+      <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
+      <el-breadcrumb-item>个人业务</el-breadcrumb-item>
+      <el-breadcrumb-item>健康上报</el-breadcrumb-item>
+    </el-breadcrumb>
     <div class="outDiv">
       <el-form :model="ruleForm" 
       :rules="rules" ref="ruleForm" 
       label-width="100px" class="demo-ruleForm">
-        <el-form-item label="宠物名称" prop="name">
+        <el-form-item label="宠物名称" prop="name" label-width="20%">
           <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
 
-        <el-form-item label="所属房号" prop="room">
-          <el-input v-model="ruleForm.room"></el-input>
+        <el-form-item label="所属房号" prop="room" label-width="20%">
+          <el-input v-model="ruleForm.room" disabled></el-input>
         </el-form-item>
 
-        <el-form-item label="品种" prop="variety">
+        <el-form-item label="品种" prop="variety" label-width="20%">
           <el-input v-model="ruleForm.variety"></el-input>
         </el-form-item>
 
-        <el-form-item label="证件" prop="documents">
-          <el-input v-model="ruleForm.documents"></el-input>
+        <el-form-item label="证件是否齐全" prop="documents" label-width="20%">
+          <el-select v-model="ruleForm.documents" placeholder="请选择" style="width:100%">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
+        <el-form-item label="上传图片"  label-width="20%">
 
-
-        <el-form-item label="上传图片">
-
-            <UploadImg @sendImg = 'sendImg'></UploadImg>
+            <UploadImg @uploadSuccess="uploadSuccess"></UploadImg>
             
             <!-- <span slot="footer" class="dialog-footer">
                 <el-button type="primary">确 定</el-button>
@@ -47,126 +59,119 @@
     </el-form>
 
     </div>
+  </el-tabs>
 </template>
 
 <script>
-import UploadImg from '../../../../components/UploadImg.vue'
+import UploadImg from '@/components/UploadImg.vue'
+import { addPet } from '@/api/affairsApi'
+import { getUserInfo } from '@/utils/auth'
+import { getUser } from '@/api/userApi'
+import Mode from '@/utils/Mode'
 
 export default {
   components: {
-      UploadImg,
-    },
+    UploadImg,
+  },
 
-    props: {
-      rowData: {
-        type: Object,
-        default: function() {
-          return {}
-        }
+  props: {
+    rowData: {
+      type: Object,
+      default: function() {
+        return {}
       }
-    },
-
-    data() {
-        return {
-        dialogVisible: false,
-        dialogVisibleImg: false,    // 上传图片弹窗
-        imgUrl: '',
-
-        ruleForm: {
-          name: '',
-          room: '',
-          variety: '',
-          documents: '', 
-        },
-
-        rules: {
-          name: [
-            { required: true, message: '请输入宠物名称', trigger: 'blur' },
-            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          room: [
-            { required: true, message: '请输入房号', trigger: 'blur' },
-            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          variety: [
-            { required: true, message: '请选择宠物品种', trigger: 'blur' },
-            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-          documents: [
-            { required: true, message: '请输入宠物证件号', trigger: 'blur' },
-            // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-          ],
-        }
-      };
-    },
-
-    watch: {
-      rowData(val) {
-        console.log('触发监听器', val)
-        this.ruleForm = val;
-      } 
-    },
-
-    methods: {
-      // 关闭弹窗时发送的事件
-      handleDialogClose() {
-          this.$emit('changeDialog')
-        },
-
-      // 获取图片地址
-      sendImg(val) {
-        console.log('显示图片路径', val)
-        this.imgUrl = val
-      },
-
-
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-        if (valid) {
-          console.log('进入提交阶段')
-          let {gid, name, price, type, parameter, introduction, img} = this.ruleForm;
-          if (this.title === '编辑商品') {
-            if(this.imgUrl != ''){        // 判断是否重新上传图片，若重新上传则重新赋值图片地址
-              img = this.imgUrl;
-            }
-            this.$api.updateGoods({gid, name, price, type, parameter, introduction, img})
-            .then((res) => {
-              if(res.status == 200){
-                this.$message({
-                  type: 'success',
-                  message: '修改成功'
-                })
-              }else {
-                this.$message({
-                  type: 'error',
-                  message: '修改失败'
-                })
-                return false;
-              }
-            })
-          }else{
-            let imgUrl = this.imgUrl;
-            console.log(gid, name, price, type, parameter, introduction, imgUrl)
-            this.$api.addGoods({gid, name, price, type, parameter, introduction, imgUrl})
-            .then((res) => {
-              if(res.status == 200){
-                this.$message({
-                  type: 'success',
-                  message: '添加成功'
-                })
-              }
-            }) 
-          }
-        } else {
-          console.log('添加失败');
-          return false;
-        }
-        });
-        setTimeout(() => {
-          history.go(0)
-        }, 700);
-      },
     }
+  },
+
+  data() {
+      return {
+      dialogVisible: false,
+      dialogVisibleImg: false,    // 上传图片弹窗
+      imgUrl: '',
+
+      ruleForm: {
+        name: '',
+        room: '',
+        variety: '',
+        documents: '', 
+        path: ''
+      },
+      options: [{
+        value: '1',
+        label: '是'
+      }, {
+        value: '0',
+        label: '否'
+      }],
+      rules: {
+        name: [
+          { required: true, message: '请输入宠物名称', trigger: 'blur' },
+          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        room: [
+          { required: true, message: '请输入房号', trigger: 'blur' },
+          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        variety: [
+          { required: true, message: '请选择宠物品种', trigger: 'blur' },
+          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+        documents: [
+          { required: true, message: '请输入宠物证件号', trigger: 'blur' },
+          // { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+        ],
+      }
+    };
+  },
+
+  created() {
+    getUser(getUserInfo().tel).then(res => {
+      this.ruleForm.room = res.data.room;
+    })
+  },
+
+  methods: {
+    // 关闭弹窗时发送的事件
+    handleDialogClose() {
+        this.$emit('changeDialog')
+      },
+
+    // 获取图片地址
+    uploadSuccess(path) {
+      console.log("获取path", path);
+      this.ruleForm.path = path;
+    },
+
+    submitForm(formName) {
+      console.log(this.ruleForm);
+      if (!this.checkForm()) return;
+      addPet(this.ruleForm).then(res => {
+        if (res.data.mode == Mode.ADD_SUCCESS){
+          this.$message({
+            message: res.data.msg,
+            type: 'success'
+          });
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: 'error'
+          });
+        }
+      })
+
+    },
+    checkForm() {
+      let isNormal = false;
+      this.$refs["ruleForm"].validate((valid) => {
+        if (valid) {
+          isNormal = true;
+        } else {
+          isNormal = false;
+        }
+      });
+      return isNormal;
+    }
+  }
 }
 </script>
 

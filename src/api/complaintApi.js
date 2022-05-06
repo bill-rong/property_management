@@ -29,3 +29,12 @@ export function complaintHandle(data) {
     data: data
   })
 }
+
+// 获取住户投诉
+export function getComplaintByTel(tel) {
+  return request({
+    url: '/api/complaint/get/complaint',
+    method: 'get',
+    params: tel
+  })
+}

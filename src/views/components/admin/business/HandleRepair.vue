@@ -1,12 +1,5 @@
 <template>
-  <el-tabs type="border-card" style="height: 97% !important;">
-    <el-breadcrumb separator-class="el-icon-arrow-right" 
-      style="margin-bottom: 30px;">
-      <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
-      <el-breadcrumb-item>报修</el-breadcrumb-item>
-      <el-breadcrumb-item>报修记录</el-breadcrumb-item>
-    </el-breadcrumb>
-    <div>
+  <div>
     <el-table
       ref="table"
       :data="tableData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
@@ -14,7 +7,7 @@
       style="width: 100%">
       <el-table-column prop="contacts" label="投诉者"></el-table-column>
       <el-table-column prop="tel" label="联系方式"></el-table-column>
-      <el-table-column prop="date" label="投诉时间" sortable></el-table-column>
+      <el-table-column prop="date" label="投诉时间"></el-table-column>
       <el-table-column prop="status" label="处理状态"></el-table-column>
       <el-table-column prop="id" label="操作">
             <template slot-scope="scope">
@@ -46,15 +39,24 @@
         <p>{{this.drawerData.contacts}}</p>
         <p>{{this.drawerData.date}}</p>
       </div>
+      <el-timeline style="margin-top:150px;">
+        <el-timeline-item
+          v-for="(activity, index) in activities"
+          :key="index"
+          :icon="activity.icon"
+          :type="activity.type"
+          :color="activity.color"
+          :size="activity.size"
+          :timestamp="activity.timestamp">
+          {{activity.content}}
+        </el-timeline-item>
+      </el-timeline>
     </el-drawer>
   </div>
-  </el-tabs>
-  
 </template>
 
 <script>
-import { getComplaintByTel } from '@/api/complaintApi'
-import { getUserInfo } from '@/utils/auth'
+import { getHandle } from '@/api/repairApi'
 export default {
   data() {
     return {
@@ -90,9 +92,9 @@ export default {
     }
   },
   created() {
-    getComplaintByTel({tel: getUserInfo().tel}).then(res => {
+    getHandle().then(res => {
       this.tableData = res.data.map(item => {
-        item.status = item.status == '0'? '未处理' : '已处理'
+        item.status = '已处理'
         return item
       })
     })

@@ -13,6 +13,7 @@ const api = {
   report: '/report',
   getUnHandle: '/get/unHandle',
   getHandle: '/get/handle',
+  getReportsByTel: '/get/repair',
   handle: '/handle'
 }
 
@@ -50,7 +51,12 @@ router.get(api.getUnHandle, (req, res) => {
       })
     }
     if (result.length > 0) {
-      jsonWrite(res, result);
+      let data = JSON.parse(JSON.stringify(result));
+      data = data.map(item => {
+        item.date = moment(item.date).format("YYYY-MM-DD HH:mm");
+        return item
+      })
+      jsonWrite(res, data);
     } else {
       jsonWrite(res, []);
     }
@@ -69,7 +75,37 @@ router.get(api.getHandle, (req, res) => {
       })
     }
     if (result.length > 0) {
-      jsonWrite(res, result);
+      let data = JSON.parse(JSON.stringify(result));
+      data = data.map(item => {
+        item.date = moment(item.date).format("YYYY-MM-DD HH:mm");
+        return item
+      })
+      jsonWrite(res, data);
+    } else {
+      jsonWrite(res, []);
+    }
+  })
+})
+
+// 通过手机号获取维修记录
+router.get(api.getReportsByTel, (req, res) => {
+  let tel = req.query.tel
+  let sql = SQL.repair.selectRepairByTel;
+  sqlRun(sql, tel, (err, result) => {
+    if (err) {
+      console.log("err", err);
+      res.status(500);
+      jsonWrite(res, {
+        msg: "后端异常"
+      })
+    }
+    if (result.length > 0) {
+      let data = JSON.parse(JSON.stringify(result));
+      data = data.map(item => {
+        item.date = moment(item.date).format("YYYY-MM-DD HH:mm");
+        return item
+      })
+      jsonWrite(res, data);
     } else {
       jsonWrite(res, []);
     }
@@ -88,7 +124,7 @@ router.put(api.handle, (req, res) => {
         msg: "后端异常"
       })
     }
-    if (result.length > 0) {
+    if (result) {
       jsonWrite(res, {
         msg: '处理成功'
       });

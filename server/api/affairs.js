@@ -19,7 +19,8 @@ const api = {
   visitorAdd: '/visitor/add',
   visitorDelete: '/visitor/delete',
   healthyGet: '/healthy/get',
-  healthyDelete: '/healthy/delete'
+  healthyDelete: '/healthy/delete',
+  healthyPost: '/healthy/post'
 }
 
 // 发布公告
@@ -103,13 +104,13 @@ router.get(api.petGet, (req, res) => {
 
 // 添加宠物
 router.post(api.petAdd, (req, res) => {
-  let resident = req.body.tel;
+  let room = req.body.room;
   let variety = req.body.variety;
   let name = req.body.name;
   let documents = req.body.documents;
   let path = req.body.path ? req.body.path : '';
   let sql = SQL.pet.add;
-  sqlRun(sql, [resident, variety, name, documents, path], (err, result) => {
+  sqlRun(sql, [room, variety, name, documents, path], (err, result) => {
     if (err) {
       console.log("err", err);
     }
@@ -148,10 +149,11 @@ router.get(api.visitorGet, (req, res) => {
 })
 
 // 访客登记
-router.get(api.visitorAdd, (req, res) => {
-  let [name, room, resident, purposr, date] = req.body;
-  let sql = SQL.visitor.selectAll;
-  sqlRun(sql, [name, room, resident, purposr, date], (err, result) => {
+router.post(api.visitorAdd, (req, res) => {
+  let { name, room, resident, purpose, date } = req.body;
+  let sql = SQL.visitor.add;
+  date =  moment(date).format("YYYY-MM-DD");
+  sqlRun(sql, [name, room, resident, purpose, date], (err, result) => {
     if (err) {
       console.log("err", err);
     }
@@ -186,6 +188,30 @@ router.delete(api.visitorDelete, (req, res) => {
       jsonWrite(res, {
         mode: MODE.DELETE_FAILURE,
         msg: '删除失败'
+      })
+    }
+  })
+})
+
+// 健康上报
+router.post(api.healthyPost, (req, res) => {
+  let { name, room, symptom, temperature, supplement } = req.body;
+  let report_time = moment(new Date()).format("YYYY-MM-DD");
+  let symptomStr = symptom.join('、');
+  let sql = SQL.healthy.add;
+  sqlRun(sql, [name, room, symptomStr, temperature, supplement, report_time], (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.ADD_SUCCESS,
+        msg: '上报成功'
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.ADD_FAILURE,
+        msg: '上报失败'
       })
     }
   })

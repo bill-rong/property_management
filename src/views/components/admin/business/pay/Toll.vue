@@ -21,11 +21,11 @@
           ></el-autocomplete>
         </el-form-item>
         <el-form-item label="数值：">
-          <el-input  placeholder="" v-model="data.num"></el-input>
+          <el-input  placeholder="" v-model="data.current"></el-input>
         </el-form-item>
         <el-form-item label="年-月：">
-          <el-input placeholder="年" v-model="data.year" style="width:40%;float:left"></el-input>
-          <el-input  placeholder="月" v-model="data.month" style="width:40%;float:left;margin-left:20px"></el-input>
+          <el-input placeholder="年" v-model="data.curryear" style="width:40%;float:left"></el-input>
+          <el-input  placeholder="月" v-model="data.currmonth" style="width:40%;float:left;margin-left:20px"></el-input>
         </el-form-item>
         <el-form-item label="金额：">
           <el-input  placeholder="" v-model="data.amount" disabled></el-input>
@@ -39,6 +39,8 @@
 
 <script>
 import {getRoomName} from '@/api/communityApi'
+import { toll } from '@/api/paymentApi'
+import Mode from '@/utils/Mode'
 export default {
   data() {
     return {
@@ -54,9 +56,9 @@ export default {
       data: {
         type: '水',
         room: '',
-        num: 0,
-        year: '',
-        month: '',
+        current: 0,
+        curryear: '',
+        currmonth: '',
         amount: 0
       },
       restaurants: [],
@@ -64,13 +66,25 @@ export default {
   },
   updated() {
     let flag = this.data.type == '水'?5:(this.data.type == '电'?0.67:0);
-    this.data.amount = this.data.num * flag;
+    this.data.amount = this.data.current * flag;
     this.data.amount.toFixed(2)
   },
   
   methods: {
     submit() {
-      console.log(this.data.room);
+      toll(this.data).then(res => {
+        if (res.data.mode == Mode.TOLL_SUCCESS) {
+          this.$message({
+            message: res.data.msg,
+            type: 'success'
+          });
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: 'error'
+          });
+        }
+      })
     },
     querySearch(queryString, cb) {
         var restaurants = this.restaurants;
@@ -92,14 +106,12 @@ export default {
       },
   },
   created() {
-      getRoomName().then(res => {
-        this.restaurants = res.data;
-        // for (let item in res.data) {
-        //   let name = item.name;
-        //   this.restaurants.push({"name": name});
-        // }
-      });
-    }
+    this.data.curryear = new Date().getFullYear();
+    this.data.currmonth = new Date().getMonth() + 1;
+    getRoomName().then(res => {
+      this.restaurants = res.data;
+    });
+  }
 }
 </script>
 

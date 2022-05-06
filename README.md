@@ -30,10 +30,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 ### TODO
-缴费管理
-- 收取费用
-- 未缴费删除
-- 已缴费删除
-报修
-- 空白
 宠物
+- 管理
+业务
+- 访客登记
+近半年水电统计

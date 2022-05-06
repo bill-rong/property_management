@@ -13,7 +13,8 @@ const api = {
   report: '/report',
   getUnHandle: '/get/unHandle',
   getHandle: '/get/handle',
-  handle: '/handle'
+  handle: '/handle',
+  getComplaintByTel: '/get/complaint'
 }
 
 // 投诉上报
@@ -51,9 +52,10 @@ router.get(api.getUnHandle, (req, res) => {
     }
     if (result.length > 0) {
       let data = JSON.parse(JSON.stringify(result));
-      for (let i=0; i<data.length; i++) {
-        data[i].date = moment(data[i].date).format("YYYY-MM-DD HH:mm");
-      }
+      data = data.map(item => {
+        item.date = moment(item.date).format("YYYY-MM-DD HH:mm");
+        return item
+      })
       jsonWrite(res, data);
     } else {
       jsonWrite(res, []);
@@ -77,6 +79,31 @@ router.get(api.getHandle, (req, res) => {
       for (let i=0; i<data.length; i++) {
         data[i].date = moment(data[i].date).format("YYYY-MM-DD HH:mm");
       }
+      jsonWrite(res, data);
+    } else {
+      jsonWrite(res, []);
+    }
+  })
+})
+
+// 获取住户的投诉
+router.get(api.getComplaintByTel, (req, res) => {
+  let tel = req.query.tel;
+  let sql = SQL.complaint.selectComplaintByTel;
+  sqlRun(sql, tel, (err, result) => {
+    if (err) {
+      console.log("err", err);
+      res.status(500);
+      jsonWrite(res, {
+        msg: "后端异常"
+      })
+    }
+    if (result.length > 0) {
+      let data = JSON.parse(JSON.stringify(result));
+      data = data.map(item => {
+        item.date = moment(item.date).format("YYYY-MM-DD HH:mm");
+        return item
+      })
       jsonWrite(res, data);
     } else {
       jsonWrite(res, []);

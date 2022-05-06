@@ -1,12 +1,5 @@
 <template>
-  <el-tabs type="border-card" style="height: 97% !important;">
-    <el-breadcrumb separator-class="el-icon-arrow-right" 
-      style="margin-bottom: 30px;">
-      <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
-      <el-breadcrumb-item>报修</el-breadcrumb-item>
-      <el-breadcrumb-item>报修记录</el-breadcrumb-item>
-    </el-breadcrumb>
-    <div>
+  <div>
     <el-table
       ref="table"
       :data="tableData.slice((currentPage-1)*pageSize, currentPage*pageSize)"
@@ -14,16 +7,21 @@
       style="width: 100%">
       <el-table-column prop="contacts" label="投诉者"></el-table-column>
       <el-table-column prop="tel" label="联系方式"></el-table-column>
-      <el-table-column prop="date" label="投诉时间" sortable></el-table-column>
+      <el-table-column prop="date" label="投诉时间"></el-table-column>
       <el-table-column prop="status" label="处理状态"></el-table-column>
       <el-table-column prop="id" label="操作">
-            <template slot-scope="scope">
-              <el-button
-                size="mini"
-                @click="handleView(scope.$index, scope.row)">查看详情
-              </el-button>
-            </template>
-          </el-table-column>
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            @click="handleView(scope.$index, scope.row)">查看详情
+          </el-button>
+          <el-button
+            size="mini"
+            type="success"
+            @click="handler(scope.$index, scope.row)">处 理
+          </el-button>
+        </template>
+      </el-table-column>
       
     </el-table>
     <el-pagination
@@ -46,15 +44,24 @@
         <p>{{this.drawerData.contacts}}</p>
         <p>{{this.drawerData.date}}</p>
       </div>
+      <el-timeline style="margin-top:150px;">
+        <el-timeline-item
+          v-for="(activity, index) in activities"
+          :key="index"
+          :icon="activity.icon"
+          :type="activity.type"
+          :color="activity.color"
+          :size="activity.size"
+          :timestamp="activity.timestamp">
+          {{activity.content}}
+        </el-timeline-item>
+      </el-timeline>
     </el-drawer>
   </div>
-  </el-tabs>
-  
 </template>
 
 <script>
-import { getComplaintByTel } from '@/api/complaintApi'
-import { getUserInfo } from '@/utils/auth'
+import { getUnHandle, handleRepair } from '@/api/repairApi'
 export default {
   data() {
     return {
@@ -69,7 +76,8 @@ export default {
         color: '#0bbd87'
       }, {
         content: '已处理',
-        color: '#0bbd87'
+        timestamp: '',
+        size: 'large'
       }],
       centerDialogVisible: false,
       drawer: false,
@@ -90,14 +98,17 @@ export default {
     }
   },
   created() {
-    getComplaintByTel({tel: getUserInfo().tel}).then(res => {
-      this.tableData = res.data.map(item => {
-        item.status = item.status == '0'? '未处理' : '已处理'
-        return item
-      })
-    })
+    this.bindData();
   },
   methods: {
+    bindData() {
+      getUnHandle().then(res => {
+        this.tableData = res.data.map(item => {
+          item.status = '未处理'
+          return item
+        })
+      })
+    },
     changePage(page) {
       this.currentPage = page
     },
@@ -106,6 +117,21 @@ export default {
       this.drawerData = row;
       this.drawer = true;
     },
+    handler(index, row) {
+      this.$confirm('确定处理好了吗?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        handleRepair({id: row.id}).then(res => {
+          this.$message({
+            message: res.data.msg,
+            type: 'success'
+          });
+          this.bindData();
+        })
+      })
+    }
   }
 
 }

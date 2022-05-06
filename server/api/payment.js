@@ -14,7 +14,9 @@ const api = {
   getPay: '/get/pay',
   getUnPayByRoom: '/get/unPay/byRoom',
   getPayByRoom: '/get/pay/byRoom',
-  pay: '/pay'
+  pay: '/pay',
+  toll: '/toll',
+  delete: '/delete'
 }
 
 // 获取未支付记录
@@ -109,7 +111,47 @@ router.post(api.pay, (req, res) => {
   })
 })
 
+// 收取费用
+router.post(api.toll, (req, res) => {
+  let { type, room, current, curryear, currmonth, amount } = req.body;
+  let sql = SQL.payment.toll;
+  sqlRun(sql, [type, room, current, curryear, currmonth, amount], (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {;
+      jsonWrite(res, {
+        mode: MODE.TOLL_SUCCESS,
+        msg: '收费发起成功'
+      });
+    } else {
+      jsonWrite(res, {
+        mode: MODE.TOLL_FAILURE,
+        msg: '收费发起失败'
+      });
+    }
+  })
+})
 
+// 删除
+router.delete(api.delete, (req, res) => {
+  let id = req.query.id;
+  let sql = SQL.payment.delete;
+  sqlRun(sql, id, (err, result) => {
+    if (err) { console.log("err", err) }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.DELETE_SUCCES,
+        msg: "删除成功"
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.DELETE_FAILURE,
+        msg: "删除失败"
+      })
+    }
+  })
+})
 
 
 

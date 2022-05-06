@@ -9,13 +9,13 @@
     </el-breadcrumb>
     <el-form label-position="right" label-width="100px" style="width:400px; height: 96% !important;margin:0 auto;">
       <el-form-item label="联系人：">
-        <el-input  placeholder="" v-model="data.contacts"></el-input>
+        <el-input  placeholder="" v-model="data.contacts" disabled></el-input>
       </el-form-item>
       <el-form-item label="联系方式：">
-        <el-input  placeholder="" v-model="data.tel"></el-input>
+        <el-input  placeholder="" v-model="data.tel" disabled></el-input>
       </el-form-item>
       <el-form-item label="房号：">
-        <el-input  placeholder="" v-model="data.room"></el-input>
+        <el-input  placeholder="" v-model="data.room" disabled></el-input>
       </el-form-item>
       <el-form-item label="类别：">
         <el-select v-model="data.type" placeholder="请选择" style="width:100%">
@@ -38,8 +38,9 @@
 </template>
 
 <script>
-import {getRoomName} from '@/api/communityApi'
+import { getUserInfo } from '@/utils/auth'
 import {addRepair} from '@/api/repairApi'
+import {getUser} from '@/api/userApi'
 export default {
   data() {
     return {
@@ -87,14 +88,12 @@ export default {
     
   },
   created() {
-      // getRoomName().then(res => {
-      //   this.restaurants = res.data;
-      //   // for (let item in res.data) {
-      //   //   let name = item.name;
-      //   //   this.restaurants.push({"name": name});
-      //   // }
-      // });
-    }
+    this.data.contacts = getUserInfo().name;
+    this.data.tel = getUserInfo().tel;
+    getUser(getUserInfo().tel).then(res => {
+      this.data.room = res.data.room;
+    })
+  }
 }
 </script>
 
