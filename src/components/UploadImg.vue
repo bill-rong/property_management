@@ -32,7 +32,7 @@
         console.log(file, fileList);
       },
       handleSuccess(res, file, fileList) {
-        console.log("uploadSuccess", res.data.path);
+        console.log("res", res);
         this.$emit("uploadSuccess", res.data.path);
       },
       handlePictureCardPreview(file) {

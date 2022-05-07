@@ -6,8 +6,8 @@ app.use(express.urlencoded({ extended: true }))
 //资源共享
 const cors = require('cors')
 app.use(cors())
-// 静态文件托管 ----  访问：http:localhost:8989/图片.jpg
-app.use(express.static('upload'))
+// http:localhost:3000/public/images/...png
+app.use('/public/images', express.static('public/images'))
 
 // 上传图片需要的模块
 const multer = require('multer')
@@ -75,6 +75,9 @@ app.use('/api/complaint', complaint)
 
 const upload = require('./api/upload')
 app.use('/api/upload', upload)
+
+const access = require('./api/access')
+app.use('/public/images', access)
 
 
 

@@ -32,6 +32,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 ### TODO
 宠物
 - 管理
-业务
-- 访客登记
 近半年水电统计

@@ -11,7 +11,8 @@ const multer = require('multer')
 const fs = require('fs')
 
 const api = {
-  uploadImg: '/img'
+  uploadImg: '/img',
+  readImg: '/public/images'
 }
 
 //图片上传
@@ -39,7 +40,6 @@ router.post(api.uploadImg,
     });
   }
 )
-
 
 
 module.exports = router;
