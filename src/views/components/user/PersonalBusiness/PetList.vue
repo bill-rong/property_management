@@ -1,10 +1,5 @@
 <template>
-  <el-tabs type="border-card" style="height: 97% !important;">
-    <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 30px">
-        <el-breadcrumb-item :to="{ path: '/adminHome/' }">大厅</el-breadcrumb-item>
-        <el-breadcrumb-item>住户管理</el-breadcrumb-item>
-        <el-breadcrumb-item>宠物列表</el-breadcrumb-item>
-      </el-breadcrumb>
+  <div>
       <!-- <el-tab-pane label="宠物列表"> -->
         <MyTable :tableColumn="column" :tableData="petData" @check="checkRow" @handleDelete="handleDelete" :editShow="false" :checkShow="true"></MyTable>
       <!-- </el-tab-pane> -->
@@ -19,12 +14,14 @@
         <el-button @click="dialogVisible = false">确 认</el-button>
       </span>
     </el-dialog>
-  </el-tabs>
+  </div>
 </template>
 
 <script>
 import MyTable from '@/components/MyTable.vue'
-import { getPet, deletePet } from '@/api/affairsApi'
+import { getPetByRoom, deletePet } from '@/api/affairsApi'
+import { getUser } from '@/api/userApi'
+import { getUserInfo } from '@/utils/auth'
 export default {
   components: {
     MyTable
@@ -92,13 +89,17 @@ export default {
       });
     },
     bindData() {
-      getPet().then(res => {
+      getUser(getUserInfo().tel).then(res => {
+      this.room = res.data.room
+      getPetByRoom({room: this.room}).then(res => {
         this.petData = res.data;
         this.petData = this.petData.map(item => {
           item.documents = item.documents == 1 ? '是' : '否'
           return item
         });
       })
+    }) 
+      
     }
   }
 }

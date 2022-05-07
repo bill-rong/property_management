@@ -30,7 +30,7 @@
           <div class="icon"><i class="el-icon-user-solid"></i></div>
           <div class="title"><span>人数统计</span></div>
           <br><br><br>
-          <div style="font-size: 40px;float: left;margin-left: 20px"><span>10</span></div>
+          <div style="font-size: 40px;float: left;margin-left: 20px"><span>{{this.peopleTotal + this.roomCurrent}}</span></div>
           <!-- <div style="font-size: 40px;float: right;margin-right: 20px"><span>0</span></div> -->
           <br><br><br>
           <div style="font-size: 20px;float: left;margin-left: 10px"><span>住户数量</span></div>
@@ -76,6 +76,8 @@
 <script>
 import { getRoomName, getRoomLiving, getParking, getParkingBind } from '@/api/communityApi'
 import { getPet } from '@/api/affairsApi'
+import { getFamilyAll } from '@/api/userApi'
+import { getWater, getElec } from '@/api/paymentApi'
 export default {
   data() {
     this.chartSettings = {}
@@ -128,6 +130,16 @@ export default {
     getPet().then(res => {
       this.petTotal = res.data.length
     })
+    getFamilyAll().then(res => {
+      this.peopleTotal = res.data.length
+    })
+    getWater().then(res => {
+      this.waterData.rows = res.data
+    })
+    getElec().then(res => {
+      this.elecData.rows = res.data
+    })
+
   }
 
 }

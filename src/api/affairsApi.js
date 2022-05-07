@@ -36,6 +36,15 @@ export function getPet() {
   })
 }
 
+// 获取所有宠物
+export function getPetByRoom(room) {
+  return request({
+    url: '/api/affairs/pet/get/room',
+    method: 'get',
+    params: room
+  })
+}
+
 // 添加宠物
 export function addPet(data) {
   return request({
@@ -45,7 +54,14 @@ export function addPet(data) {
   })
 }
 
-
+// 删除访客
+export function deletePet(id) {
+  return request({
+    url: '/api/affairs/pet/delete',
+    method: 'delete',
+    params: id
+  })
+}
 
 /////////////////////////// 访客
 
@@ -54,6 +70,15 @@ export function getVisitor() {
   return request({
     url: '/api/affairs/visitor/get',
     method: 'get'
+  })
+}
+
+// 获取某房的访客
+export function getVisitorByRoom(room) {
+  return request({
+    url: '/api/affairs/visitor/get/room',
+    method: 'get',
+    params: room
   })
 }
 
@@ -92,6 +117,15 @@ export function getHealthy() {
   return request({
     url: '/api/affairs/healthy/get',
     method: 'get'
+  })
+}
+
+// 获取某房的健康信息
+export function getHealthyByRoom(room) {
+  return request({
+    url: '/api/affairs/healthy/get/room',
+    method: 'get',
+    params: room
   })
 }
 

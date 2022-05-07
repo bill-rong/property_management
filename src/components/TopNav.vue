@@ -25,6 +25,7 @@
         </el-submenu>
         <el-submenu index="personalBusiness">
           <template slot="title">个人业务</template>
+          <el-menu-item index="family">家庭成员</el-menu-item>
           <el-menu-item index="healthCommit">健康上报</el-menu-item>
           <el-menu-item index="petCommit">宠物上报</el-menu-item>
           <el-menu-item index="visitorCommit">访客登记</el-menu-item>

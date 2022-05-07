@@ -1,53 +1,64 @@
 <template>
-  <el-tabs type="border-card" style="height: 97% !important;">
-    <el-breadcrumb separator-class="el-icon-arrow-right" 
-      style="margin-bottom: 30px;">
-      <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
-      <el-breadcrumb-item>个人业务</el-breadcrumb-item>
-      <el-breadcrumb-item>健康上报</el-breadcrumb-item>
-    </el-breadcrumb>
-    <div class="outDiv">
-      <el-form :model="ruleForm" 
-      :rules="rules" ref="ruleForm" 
-      label-width="100px" class="demo-ruleForm">
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model="ruleForm.name"></el-input>
-        </el-form-item>
+  <el-tabs type="border-card" tab-position="left" style="height: 97% !important;">
+    <el-tab-pane label="健康上报">
+      <el-breadcrumb separator-class="el-icon-arrow-right" 
+        style="margin-bottom: 30px;">
+        <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
+        <el-breadcrumb-item>个人业务</el-breadcrumb-item>
+        <el-breadcrumb-item>健康上报</el-breadcrumb-item>
+      </el-breadcrumb>
+      <div class="outDiv">
+        <el-form :model="ruleForm" 
+        :rules="rules" ref="ruleForm" 
+        label-width="100px" class="demo-ruleForm">
+          <el-form-item label="姓名" prop="name">
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
 
-        <el-form-item label="房号" prop="room">
-          <el-input v-model="ruleForm.room"></el-input>
-        </el-form-item>
+          <el-form-item label="房号" prop="room">
+            <el-input v-model="ruleForm.room"></el-input>
+          </el-form-item>
 
 
-        <el-form-item label="症状">
-          <el-checkbox-group v-model="ruleForm.symptom">
-            <el-checkbox label="正常" name="type"></el-checkbox>
-            <el-checkbox label="发热" name="type"></el-checkbox>
-            <el-checkbox label="腹泻" name="type"></el-checkbox>
-            <el-checkbox label="头痛/头晕" name="type"></el-checkbox>
-            <el-checkbox label="恶心/呕吐" name="type"></el-checkbox>
-          </el-checkbox-group>
-        </el-form-item>
+          <el-form-item label="症状">
+            <el-checkbox-group v-model="ruleForm.symptom">
+              <el-checkbox label="正常" name="type"></el-checkbox>
+              <el-checkbox label="发热" name="type"></el-checkbox>
+              <el-checkbox label="腹泻" name="type"></el-checkbox>
+              <el-checkbox label="头痛/头晕" name="type"></el-checkbox>
+              <el-checkbox label="恶心/呕吐" name="type"></el-checkbox>
+            </el-checkbox-group>
+          </el-form-item>
 
-        <el-form-item label="体温" prop="temperature">
-          <el-input v-model="ruleForm.temperature"></el-input>
-        </el-form-item>
+          <el-form-item label="体温" prop="temperature">
+            <el-input v-model="ruleForm.temperature"></el-input>
+          </el-form-item>
 
-        <el-form-item label="补充">
-          <el-input type="textarea" v-model="ruleForm.supplement"></el-input>
-        </el-form-item>
+          <el-form-item label="补充">
+            <el-input type="textarea" v-model="ruleForm.supplement"></el-input>
+          </el-form-item>
 
-        <el-form-item>
-        <el-button class="upBtn" type="primary" @click="submitForm('ruleForm')">立即上传</el-button>
-        </el-form-item>
-    </el-form>
+          <el-form-item>
+          <el-button class="upBtn" type="primary" @click="submitForm('ruleForm')">立即上传</el-button>
+          </el-form-item>
+      </el-form>
 
-    </div>
+      </div>
+    </el-tab-pane>
+    <el-tab-pane label="上报记录">
+      <el-breadcrumb separator-class="el-icon-arrow-right" 
+        style="margin-bottom: 30px;">
+        <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
+        <el-breadcrumb-item>个人业务</el-breadcrumb-item>
+        <el-breadcrumb-item>上报记录</el-breadcrumb-item>
+      </el-breadcrumb>
+      <HealthList></HealthList>
+    </el-tab-pane>
   </el-tabs>
 </template>
 
 <script>
-import UploadImg from '@/components/UploadImg.vue'
+import HealthList from './HealthList.vue'
 import { getUserInfo } from '@/utils/auth'
 import { getUser } from '@/api/userApi'
 import { postHealthy } from '@/api/affairsApi'
@@ -55,7 +66,7 @@ import Mode from '@/utils/Mode'
 
 export default {
   components: {
-    UploadImg,
+    HealthList,
   },
 
   props: {

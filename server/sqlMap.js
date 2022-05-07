@@ -105,17 +105,28 @@ const sqlMap = {
   },
   pet: {
     selectAll: 'SELECT * FROM pet;',
-    add: 'INSERT INTO pet(resident,variety,name,documents,path) VALUES(?,?,?,?,?);'
+    selectByRoom: 'SELECT * FROM pet WHERE resident=?;',
+    add: 'INSERT INTO pet(resident,variety,name,documents,path) VALUES(?,?,?,?,?);',
+    delete: "DELETE FROM pet WHERE id=?;",
   },
   visitor: {
     selectAll: 'SELECT * FROM visitor;',
+    selectByRoom: 'SELECT * FROM visitor WHERE room=?;',
     add: 'INSERT INTO visitor(name,room,resident,purpose,date) VALUES(?,?,?,?,?);',
     delete: "DELETE FROM visitor WHERE id=?;",
   },
   healthy: {
     selectAll: 'SELECT * FROM healthy;',
+    selectByRoom: 'SELECT * FROM healthy WHERE room=?;',
     delete: 'DELETE FROM healthy WHERE id=?;',
     add: 'INSERT INTO healthy(name,room,symptom,temperature,supplement,report_time) VALUES(?,?,?,?,?,?);'
+  },
+  family: {
+    add: "INSERT INTO family(resident_tel,idcard,name,sex,relation,tel) VALUES(?,?,?,?,?,?);",
+    selectByTel: "SELECT * FROM family WHERE resident_tel=?;",
+    select: "SELECT * FROM family;",
+    update: "UPDATE family SET idcard=?, name=?, sex=?, relation=?, tel=? WHERE id=?;",
+    delete: 'DELETE FROM family WHERE id=?;',
   }
   
 }

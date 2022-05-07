@@ -29,6 +29,7 @@ import AdminManage from '../views/components/admin/system/AdminManage.vue'
 import PetCommit from '../views/components/user/PersonalBusiness/PetCommit.vue'
 import VisitorCommit from '../views/components/user/PersonalBusiness/VisitorCommit.vue'
 import HealthCommit from '../views/components/user/PersonalBusiness/HealthCommit.vue'
+import Family from '../views/components/user/PersonalBusiness/Family.vue'
 
 
 Vue.use(VueRouter)
@@ -99,6 +100,11 @@ const routes = [
         path: 'visitorCommit',
         name: 'visitorCommit',
         component: VisitorCommit
+      },
+      {
+        path: 'family',
+        name: 'family',
+        component: Family
       }
     ]
   },

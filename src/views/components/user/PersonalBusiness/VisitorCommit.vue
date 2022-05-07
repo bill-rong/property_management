@@ -1,52 +1,63 @@
 <template>
-  <el-tabs type="border-card" style="height: 97% !important;">
-    <el-breadcrumb separator-class="el-icon-arrow-right" 
-      style="margin-bottom: 30px;">
-      <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
-      <el-breadcrumb-item>个人业务</el-breadcrumb-item>
-      <el-breadcrumb-item>访客登记</el-breadcrumb-item>
-    </el-breadcrumb>
-    <div class="outDiv">
-      <el-form :model="ruleForm" 
-      :rules="rules" ref="ruleForm" 
-      label-width="100px" class="demo-ruleForm">
-        <el-form-item label="姓名" prop="name" label-width="20%">
-          <el-input v-model="ruleForm.name"></el-input>
-        </el-form-item>
+  <el-tabs type="border-card" tab-position="left" style="height: 97% !important;">
+    <el-tab-pane label="访客登记">
+      <el-breadcrumb separator-class="el-icon-arrow-right" 
+        style="margin-bottom: 30px;">
+        <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
+        <el-breadcrumb-item>个人业务</el-breadcrumb-item>
+        <el-breadcrumb-item>访客登记</el-breadcrumb-item>
+      </el-breadcrumb>
+      <div class="outDiv">
+        <el-form :model="ruleForm" 
+        :rules="rules" ref="ruleForm" 
+        label-width="100px" class="demo-ruleForm">
+          <el-form-item label="姓名" prop="name" label-width="20%">
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
 
-        <el-form-item label="到访房号" prop="room" label-width="20%">
-          <el-input v-model="ruleForm.room" disabled></el-input>
-        </el-form-item>
+          <el-form-item label="到访房号" prop="room" label-width="20%">
+            <el-input v-model="ruleForm.room" disabled></el-input>
+          </el-form-item>
 
 
-        <el-form-item label="户主姓名" prop="resident " label-width="20%">
-          <el-input v-model="ruleForm.resident" disabled></el-input>
-        </el-form-item>
-        
+          <el-form-item label="户主姓名" prop="resident " label-width="20%">
+            <el-input v-model="ruleForm.resident" disabled></el-input>
+          </el-form-item>
+          
 
-        <el-form-item label="来访目的" prop="purpose" label-width="20%">
-          <el-input type="textarea" v-model="ruleForm.purpose"></el-input>
-        </el-form-item>
+          <el-form-item label="来访目的" prop="purpose" label-width="20%">
+            <el-input type="textarea" v-model="ruleForm.purpose"></el-input>
+          </el-form-item>
 
-        <el-form-item label="到访时间" prop="date" label-width="20%">
-          <el-date-picker
-            v-model="ruleForm.date"
-            type="date"
-            placeholder="选择日期">
-          </el-date-picker>
-        </el-form-item>
+          <el-form-item label="到访时间" prop="date" label-width="20%">
+            <el-date-picker
+              v-model="ruleForm.date"
+              type="date"
+              placeholder="选择日期">
+            </el-date-picker>
+          </el-form-item>
 
-        <el-form-item>
-        <el-button class="upBtn" type="primary" @click="submitForm('ruleForm')">立即上传</el-button>
-        </el-form-item>
-    </el-form>
+          <el-form-item>
+          <el-button class="upBtn" type="primary" @click="submitForm('ruleForm')">立即上传</el-button>
+          </el-form-item>
+      </el-form>
 
-    </div>
+      </div>
+    </el-tab-pane>
+    <el-tab-pane label="登记记录">
+      <el-breadcrumb separator-class="el-icon-arrow-right" 
+        style="margin-bottom: 30px;">
+        <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
+        <el-breadcrumb-item>个人业务</el-breadcrumb-item>
+        <el-breadcrumb-item>登记记录</el-breadcrumb-item>
+      </el-breadcrumb>
+      <VisitorList></VisitorList>
+    </el-tab-pane>
   </el-tabs>
 </template>
 
 <script>
-import UploadImg from '@/components/UploadImg.vue'
+import VisitorList from './VisitorList.vue'
 import { addVisitor } from '@/api/affairsApi'
 import { getUserInfo } from '@/utils/auth'
 import { getUser } from '@/api/userApi'
@@ -54,7 +65,7 @@ import Mode from '@/utils/Mode'
 
 export default {
   components: {
-    UploadImg,
+    VisitorList,
   },
 
   props: {

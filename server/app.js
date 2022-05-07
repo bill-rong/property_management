@@ -76,9 +76,6 @@ app.use('/api/complaint', complaint)
 const upload = require('./api/upload')
 app.use('/api/upload', upload)
 
-const access = require('./api/access')
-app.use('/public/images', access)
-
 
 
 // 监听3000端口

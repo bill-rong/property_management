@@ -1,69 +1,80 @@
 <template>
-  <el-tabs type="border-card" style="height: 97% !important;">
-    <el-breadcrumb separator-class="el-icon-arrow-right" 
-      style="margin-bottom: 30px;">
-      <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
-      <el-breadcrumb-item>个人业务</el-breadcrumb-item>
-      <el-breadcrumb-item>健康上报</el-breadcrumb-item>
-    </el-breadcrumb>
-    <div class="outDiv">
-      <el-form :model="ruleForm" 
-      :rules="rules" ref="ruleForm" 
-      label-width="100px" class="demo-ruleForm">
-        <el-form-item label="宠物名称" prop="name" label-width="20%">
-          <el-input v-model="ruleForm.name"></el-input>
-        </el-form-item>
+  <el-tabs type="border-card" tab-position="left" style="height: 97% !important;">
+    <el-tab-pane label="宠物登记">
+      <el-breadcrumb separator-class="el-icon-arrow-right" 
+        style="margin-bottom: 30px;">
+        <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
+        <el-breadcrumb-item>个人业务</el-breadcrumb-item>
+        <el-breadcrumb-item>宠物登记</el-breadcrumb-item>
+      </el-breadcrumb>
+      <div class="outDiv">
+        <el-form :model="ruleForm" 
+        :rules="rules" ref="ruleForm" 
+        label-width="100px" class="demo-ruleForm">
+          <el-form-item label="宠物名称" prop="name" label-width="20%">
+            <el-input v-model="ruleForm.name"></el-input>
+          </el-form-item>
 
-        <el-form-item label="所属房号" prop="room" label-width="20%">
-          <el-input v-model="ruleForm.room" disabled></el-input>
-        </el-form-item>
+          <el-form-item label="所属房号" prop="room" label-width="20%">
+            <el-input v-model="ruleForm.room" disabled></el-input>
+          </el-form-item>
 
-        <el-form-item label="品种" prop="variety" label-width="20%">
-          <el-input v-model="ruleForm.variety"></el-input>
-        </el-form-item>
+          <el-form-item label="品种" prop="variety" label-width="20%">
+            <el-input v-model="ruleForm.variety"></el-input>
+          </el-form-item>
 
-        <el-form-item label="证件是否齐全" prop="documents" label-width="20%">
-          <el-select v-model="ruleForm.documents" placeholder="请选择" style="width:100%">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="上传图片"  label-width="20%">
+          <el-form-item label="证件是否齐全" prop="documents" label-width="20%">
+            <el-select v-model="ruleForm.documents" placeholder="请选择" style="width:100%">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="上传图片"  label-width="20%">
 
-            <UploadImg @uploadSuccess="uploadSuccess"></UploadImg>
-            
-            <!-- <span slot="footer" class="dialog-footer">
-                <el-button type="primary">确 定</el-button>
-                <el-button @click="dialogVisibleImg = false">取 消</el-button>
-            </span> -->
-        </el-form-item>
+              <UploadImg @uploadSuccess="uploadSuccess"></UploadImg>
+              
+              <!-- <span slot="footer" class="dialog-footer">
+                  <el-button type="primary">确 定</el-button>
+                  <el-button @click="dialogVisibleImg = false">取 消</el-button>
+              </span> -->
+          </el-form-item>
 
-        <!-- <el-dialog
-        title="提示"
-        :visible.sync="dialogVisibleImg"
-        width="30%"
-        append-to-body>
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary">确 定</el-button>
-                <el-button @click="dialogVisibleImg = false">取 消</el-button>
-            </span>
-        </el-dialog> -->
+          <!-- <el-dialog
+          title="提示"
+          :visible.sync="dialogVisibleImg"
+          width="30%"
+          append-to-body>
+              <span slot="footer" class="dialog-footer">
+                  <el-button type="primary">确 定</el-button>
+                  <el-button @click="dialogVisibleImg = false">取 消</el-button>
+              </span>
+          </el-dialog> -->
 
-        <el-form-item>
-        <el-button class="upBtn" type="primary" @click="submitForm('ruleForm')">立即上传</el-button>
-        </el-form-item>
-    </el-form>
+          <el-form-item>
+          <el-button class="upBtn" type="primary" @click="submitForm('ruleForm')">立即上传</el-button>
+          </el-form-item>
+      </el-form>
 
-    </div>
+      </div>
+    </el-tab-pane>
+    <el-tab-pane label="登记记录">
+      <el-breadcrumb separator-class="el-icon-arrow-right" 
+        style="margin-bottom: 30px;">
+        <el-breadcrumb-item :to="{ path: '/home/' }">大厅</el-breadcrumb-item>
+        <el-breadcrumb-item>个人业务</el-breadcrumb-item>
+        <el-breadcrumb-item>登记记录</el-breadcrumb-item>
+      </el-breadcrumb>
+      <PetList></PetList>
+    </el-tab-pane>
   </el-tabs>
 </template>
 
 <script>
-import UploadImg from '@/components/UploadImg.vue'
+import PetList from './PetList.vue'
 import { addPet } from '@/api/affairsApi'
 import { getUserInfo } from '@/utils/auth'
 import { getUser } from '@/api/userApi'
@@ -71,7 +82,7 @@ import Mode from '@/utils/Mode'
 
 export default {
   components: {
-    UploadImg,
+    PetList,
   },
 
   props: {

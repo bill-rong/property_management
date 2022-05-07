@@ -80,3 +80,46 @@ export function deleteUser(data) {
   })
 }
 
+// 添加家庭成员
+export function addFamily(data) {
+  return request({
+    url: '/api/user/add/family',
+    method: 'post',
+    data: data
+  })
+}
+
+// 获取家庭成员
+export function getFamilyByTel(tel) {
+  return request({
+    url: '/api/user/get/family',
+    method: 'get',
+    params: tel
+  })
+}
+
+// 获取家庭成员
+export function getFamilyAll() {
+  return request({
+    url: '/api/user/get/all/family',
+    method: 'get'
+  })
+}
+
+// 添加家庭成员
+export function updateFamily(data) {
+  return request({
+    url: '/api/user/update/family',
+    method: 'put',
+    data: data
+  })
+}
+
+// 获取家庭成员
+export function deleteFamily(id) {
+  return request({
+    url: '/api/user/delete/family',
+    method: 'delete',
+    params: id
+  })
+}

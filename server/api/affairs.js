@@ -14,11 +14,15 @@ const api = {
   annouGet: '/announcement/get',
   annouDelete: '/announcement/delete',
   petGet: '/pet/get',
+  petGetByRoom: '/pet/get/room',
   petAdd: '/pet/add',
+  petDelete: '/pet/delete',
   visitorGet: '/visitor/get',
+  visitorGetByRoom: '/visitor/get/room',
   visitorAdd: '/visitor/add',
   visitorDelete: '/visitor/delete',
   healthyGet: '/healthy/get',
+  healthyGetByRoom: '/healthy/get/room',
   healthyDelete: '/healthy/delete',
   healthyPost: '/healthy/post'
 }
@@ -85,11 +89,27 @@ router.get(api.annouGet, (req, res) => {
   })
 })
 
-
 // 获取所有宠物
 router.get(api.petGet, (req, res) => {
   let sql = SQL.pet.selectAll;
   sqlRun(sql, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result.length > 0) {
+      let data = JSON.parse(JSON.stringify(result));
+      jsonWrite(res, data);
+    } else {
+      jsonWrite(res, []);
+    }
+  })
+})
+
+// 获取所有宠物
+router.get(api.petGetByRoom, (req, res) => {
+  let room = req.query.room
+  let sql = SQL.pet.selectByRoom;
+  sqlRun(sql, room, (err, result) => {
     if (err) {
       console.log("err", err);
     }
@@ -128,10 +148,53 @@ router.post(api.petAdd, (req, res) => {
   })
 })
 
+// 删除宠物
+router.delete(api.petDelete, (req, res) => {
+  let id = req.query.id;
+  let sql = SQL.pet.delete;
+  sqlRun(sql, id, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.DELETE_SUCCES,
+        msg: '删除成功'
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.DELETE_FAILURE,
+        msg: '删除失败'
+      })
+    }
+  })
+})
+
 // 获取所有访客
 router.get(api.visitorGet, (req, res) => {
   let sql = SQL.visitor.selectAll;
   sqlRun(sql, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result.length > 0) {
+      let data = JSON.parse(JSON.stringify(result));
+      data = data.map((item) => {
+        item.date = moment(item.date).format("YYYY-MM-DD");
+        return item
+      })
+      jsonWrite(res, data);
+    } else {
+      jsonWrite(res, []);
+    }
+  })
+})
+
+// 获取某房号的访客
+router.get(api.visitorGetByRoom, (req, res) => {
+  let room = req.query.room
+  let sql = SQL.visitor.selectByRoom;
+  sqlRun(sql, room, (err, result) => {
     if (err) {
       console.log("err", err);
     }
@@ -221,6 +284,27 @@ router.post(api.healthyPost, (req, res) => {
 router.get(api.healthyGet, (req, res) => {
   let sql = SQL.healthy.selectAll;
   sqlRun(sql, (err, result) => {
+    if (err) {
+      console.log("err", err);
+    }
+    if (result.length > 0) {
+      let data = JSON.parse(JSON.stringify(result));
+      data = data.map((item) => {
+        item.report_time = moment(item.report_time).format("YYYY-MM-DD");
+        return item
+      })
+      jsonWrite(res, data);
+    } else {
+      jsonWrite(res, []);
+    }
+  })
+})
+
+// 获取某房号健康上报
+router.get(api.healthyGetByRoom, (req, res) => {
+  let room = req.query.room
+  let sql = SQL.healthy.selectByRoom;
+  sqlRun(sql, room, (err, result) => {
     if (err) {
       console.log("err", err);
     }

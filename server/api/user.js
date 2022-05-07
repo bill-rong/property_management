@@ -20,7 +20,12 @@ const api = {
   resetPwd: '/reset/password',
   forgetPwd: '/forget/password',
   uodateInfo: '/update/info',
-  delete: '/delete'
+  delete: '/delete',
+  addFamily: '/add/family',
+  getFamily: '/get/family',
+  getAllFamily: '/get/all/family',
+  updateFamily: '/update/family',
+  deleteFamily: '/delete/family'
 }
 
 /**
@@ -319,5 +324,94 @@ router.delete(api.delete, (req, res) => {
   })
 })
 
+
+// 添加家庭成员
+router.post(api.addFamily, (req, res) => {
+  let { resident_tel, idcard, name, sex, relation, tel } = req.body
+  let sql = SQL.family.add
+  sqlRun(sql, [resident_tel, idcard, name, sex, relation, tel], (err, result) => {
+    if (err) console.log("err", err);
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.ADD_SUCCESS,
+        msg: '添加成功'
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.ADD_FAILURE,
+        msg: '添加失败'
+      })
+    }
+  })
+})
+
+// 获取家庭成员
+router.get(api.getFamily, (req, res) => {
+  let tel = req.query.tel;
+  let sql = SQL.family.selectByTel;
+  sqlRun(sql, tel, (err, result) => {
+    if (err) console.log("err", err);
+    if (result && result.length > 0) {
+      let data = JSON.parse(JSON.stringify(result));
+      jsonWrite(res, data)
+    } else {
+      jsonWrite(res, [])
+    }
+  })
+})
+
+// 获取家庭成员
+router.get(api.getAllFamily, (req, res) => {
+  let sql = SQL.family.select;
+  sqlRun(sql, (err, result) => {
+    if (err) console.log("err", err);
+    if (result && result.length > 0) {
+      let data = JSON.parse(JSON.stringify(result));
+      jsonWrite(res, data)
+    } else {
+      jsonWrite(res, [])
+    }
+  })
+})
+
+// 添加家庭成员
+router.put(api.updateFamily, (req, res) => {
+  let { resident_tel, idcard, name, sex, relation, tel, id } = req.body
+  let sql = SQL.family.update
+  sqlRun(sql, [idcard, name, sex, relation, tel, id], (err, result) => {
+    if (err) console.log("err", err);
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.UPDATE_SUCCESS,
+        msg: '修改成功'
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.UPDATE_FAILURE,
+        msg: '修改失败'
+      })
+    }
+  })
+})
+
+// 删除家庭成员
+router.delete(api.deleteFamily, (req, res) => {
+  let id = req.query.id;
+  let sql = SQL.family.delete;
+  sqlRun(sql, id, (err, result) => {
+    if (err) { console.log("err", err) }
+    if (result) {
+      jsonWrite(res, {
+        mode: MODE.DELETE_SUCCES,
+        msg: "删除成功"
+      })
+    } else {
+      jsonWrite(res, {
+        mode: MODE.DELETE_FAILURE,
+        msg: "删除失败"
+      })
+    }
+  })
+})
 
 module.exports = router;

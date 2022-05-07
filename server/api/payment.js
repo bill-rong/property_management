@@ -8,6 +8,7 @@ const MODE = require('../utils/Mode');
 const jsonWrite = require('../utils/JsonWrite');
 const JWT = require('../utils/Token');
 const moment = require('moment');
+const { setTimeout } = require('core-js');
 
 const api = {
   getUnPay: '/get/unPay',
@@ -16,7 +17,12 @@ const api = {
   getPayByRoom: '/get/pay/byRoom',
   pay: '/pay',
   toll: '/toll',
-  delete: '/delete'
+  delete: '/delete',
+
+  getWater: '/get/water',
+  getElec: '/get/elec',
+  getWaterByRoom: '/get/waterby',
+  getElecByRoom: '/get/elecby',
 }
 
 // 获取未支付记录
@@ -153,7 +159,107 @@ router.delete(api.delete, (req, res) => {
   })
 })
 
+// 获取近半年的水用量
+router.get(api.getWater, (req, res) => {
+  let data = []
+  let curryear = new Date().getFullYear();
+  let currmonth = new Date().getMonth() + 1;
+  for (let i = 0; i < 6; i++) {
+    let year = curryear;
+    let month = (currmonth - i) % 12;
+    if (month < 1) {
+      month = month + 12;
+      year = year - 1;
+    }
+    let sql = `SELECT sum(current) sum FROM property_management.payment WHERE curryear='${year}' and currmonth='${month}' and type='水';`
+    sqlRun(sql, (err, result) => {
+      if (err) console.log("err", err);
+      if (result.length > 0) {
+        data.push({ '日期': year + '.' + month, '水': result[0].sum });
+      }
+    })
+  }
+  setTimeout(() => {
+    jsonWrite(res, data.reverse());
+  }, 100) 
+})
 
+// 获取近半年的电用量
+router.get(api.getElec, (req, res) => {
+  let data = []
+  let curryear = new Date().getFullYear();
+  let currmonth = new Date().getMonth() + 1;
+  for (let i = 0; i < 6; i++) {
+    let year = curryear;
+    let month = (currmonth - i) % 12;
+    if (month < 1) {
+      month = month + 12;
+      year = year - 1;
+    }
+    let sql = `SELECT sum(current) sum FROM property_management.payment WHERE curryear='${year}' and currmonth='${month}' and type='电';`
+    sqlRun(sql, (err, result) => {
+      if (err) console.log("err", err);
+      if (result.length > 0) {
+        data.push({ '日期': year + '.' + month, '电': result[0].sum });
+      }
+    })
+  }
+  setTimeout(() => {
+    jsonWrite(res, data.reverse());
+  }, 100) 
+})
+
+// 获取住户近半年的水用量
+router.get(api.getWaterByRoom, (req, res) => {
+  let data = []
+  let room = req.query.room
+  let curryear = new Date().getFullYear();
+  let currmonth = new Date().getMonth() + 1;
+  for (let i = 0; i < 6; i++) {
+    let year = curryear;
+    let month = (currmonth - i) % 12;
+    if (month < 1) {
+      month = month + 12;
+      year = year - 1;
+    }
+    let sql = `SELECT sum(current) sum FROM property_management.payment WHERE curryear='${year}' and currmonth='${month}' and type='水' and room='${room}';`
+    sqlRun(sql, (err, result) => {
+      if (err) console.log("err", err);
+      if (result.length > 0) {
+        data.push({ '日期': year + '.' + month, '水': result[0].sum });
+      }
+    })
+  }
+  setTimeout(() => {
+    jsonWrite(res, data.reverse());
+  }, 100) 
+})
+
+// 获取住户近半年的电用量
+router.get(api.getElecByRoom, (req, res) => {
+  let data = []
+  let room = req.query.room
+  let curryear = new Date().getFullYear();
+  let currmonth = new Date().getMonth() + 1;
+  for (let i = 0; i < 6; i++) {
+    let year = curryear;
+    let month = (currmonth - i) % 12;
+    if (month < 1) {
+      month = month + 12;
+      year = year - 1;
+    }
+    let sql = `SELECT sum(current) sum FROM property_management.payment WHERE curryear='${year}' and currmonth='${month}' and type='电' and room='${room}';`
+    sqlRun(sql, (err, result) => {
+      if (err) console.log("err", err);
+      if (result.length > 0) {
+        data.push({ '日期': year + '.' + month, '电': result[0].sum });
+      }
+    })
+  }
+  setTimeout(() => {
+    jsonWrite(res, data.reverse());
+  }, 100) 
+})
 
 
 module.exports = router;

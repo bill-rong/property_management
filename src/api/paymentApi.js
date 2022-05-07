@@ -56,3 +56,31 @@ export function deletePayment(data) {
     params: data
   })
 }
+
+export function getWater() {
+  return request({
+    url: '/api/payment/get/water',
+    method: 'get'
+  })
+}
+
+export function getElec() {
+  return request({
+    url: '/api/payment/get/elec',
+    method: 'get'
+  })
+}
+
+export function getWaterByRoom(room) {
+  return request({
+    url: '/api/payment/get/water?tel=' + room,
+    method: 'get'
+  })
+}
+
+export function getElecByRoom(room) {
+  return request({
+    url: '/api/payment/get/elec?tel=' + room,
+    method: 'get'
+  })
+}
